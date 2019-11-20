@@ -42,7 +42,7 @@ public class GrabbableItemsManager : MonoBehaviour
 
     private void UpdateGrabPreviewCursor()
     {
-        bool showCursor = GrabPreview.Grabbable != null && !PinchDetector.Instance.Pinching;
+        bool showCursor = GrabPreview.Grabbable != null && !MainPinchDetector.Instance.Pinching;
         if(showCursor)
         {
             GrabCursor.DoGrabHover(GrabPreview.GrabPosition);
@@ -57,7 +57,7 @@ public class GrabbableItemsManager : MonoBehaviour
 
     private void UpdateGrabbing()
     {
-        if (PinchDetector.Instance.Pinching )
+        if (MainPinchDetector.Instance.Pinching )
         {
             if (!wasGrabbing && GrabPreview.Grabbable != null)
             {
@@ -68,17 +68,17 @@ public class GrabbableItemsManager : MonoBehaviour
         {
             UpdateGrabPreviewing();
         }
-        if (!PinchDetector.Instance.Pinching && GrabbedItem != null)
+        if (!MainPinchDetector.Instance.Pinching && GrabbedItem != null)
         {
             HandleStopGrabbing();
         }
-        wasGrabbing = PinchDetector.Instance.Pinching;
+        wasGrabbing = MainPinchDetector.Instance.Pinching;
     }
 
     private void UpdateSmoothedGrabPoint()
     {
-        Vector3 positionTarget = PinchDetector.Instance.PinchPoint.position;
-        Quaternion rotationTarget = PinchDetector.Instance.PinchPoint.rotation;
+        Vector3 positionTarget = MainPinchDetector.Instance.PinchPoint.position;
+        Quaternion rotationTarget = MainPinchDetector.Instance.PinchPoint.rotation;
         SmoothedGrabPoint.position = Vector3.Lerp(positionTarget, SmoothedGrabPoint.position, GrabSmoothing * Time.deltaTime);
         SmoothedGrabPoint.rotation = Quaternion.Lerp(rotationTarget, SmoothedGrabPoint.rotation, GrabSmoothing * Time.deltaTime);
     }
@@ -107,7 +107,7 @@ public class GrabbableItemsManager : MonoBehaviour
 
     private void UpdateGrabPreviewing()
     {
-        Vector3 grabPoint = PinchDetector.Instance.PinchPoint.position;
+        Vector3 grabPoint = MainPinchDetector.Instance.PinchPoint.position;
         
         float closestGrabDist = GrabMargin;
         GrabPreview.Clear();

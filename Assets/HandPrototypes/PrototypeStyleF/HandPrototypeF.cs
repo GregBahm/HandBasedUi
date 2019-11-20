@@ -12,13 +12,48 @@ public class HandPrototypeF : StandardHandPrototype
     public GameObject CallControlButtons;
 
     public MeshCollider HoverZone;
-    
+
+    private SubPincher leftHandPincher;
+
+    private bool wasPinching;
+    private bool isLocked;
+    public PinchDetector LeftPinchDetector;
+    public MenuItemButton CloseButton;
+
+    private void Start()
+    {
+        this.leftHandPincher = new SubPincher(HandPrototypeProxies.Instance.LeftIndex, HandPrototypeProxies.Instance.LeftThumb);
+        this.CloseButton.Released += OnClose;
+    }
+
+    private void OnClose(object sender, EventArgs e)
+    {
+        isLocked = false;
+    }
 
     private void Update()
     {
-        UpdatePrimaryVisibility();
-        UpdatePosition();
+        UpdatePinning();
+        CloseButton.gameObject.SetActive(isLocked);
+        if (!isLocked)
+        {
+            UpdatePrimaryVisibility();
+            UpdatePosition();
+        }
         UpdateCallControlButtons();
+    }
+
+    private void UpdatePinning()
+    {
+        if(!IsSummoned)
+        {
+            return;
+        }
+        if(!wasPinching && LeftPinchDetector.Pinching)
+        {
+            isLocked = true;
+        }
+        wasPinching = LeftPinchDetector.Pinching;
     }
 
     private void UpdateCallControlButtons()
@@ -38,7 +73,7 @@ public class HandPrototypeF : StandardHandPrototype
 
     private bool GetShouldShowCallButtons(float hoverness)
     {
-        return (hoverness > 0.99f);
+        return hoverness > 0.99f;
     }
 
     private bool GetShouldShowProgressbar(float hoverness)

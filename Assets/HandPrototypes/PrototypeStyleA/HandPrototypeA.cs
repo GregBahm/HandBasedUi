@@ -166,23 +166,4 @@ public class HandPrototypeA : StandardHandPrototype
         Vector3 personalUp = Vector3.Cross(toCamera, skyTangent);
         return Quaternion.LookRotation(proxies.LeftPalm.up, -personalUp);
     }
-
-    private class SubPincher
-    {
-        private Transform thumbProxy;
-        private Transform fingerProxy;
-        
-        public SubPincher(Transform thumbProxy, Transform fingerProxy)
-        {
-            this.thumbProxy = thumbProxy;
-            this.fingerProxy = fingerProxy;
-        }
-
-        public bool GetIsPinching()
-        {
-            float tipDistance = (thumbProxy.position - fingerProxy.position).magnitude;
-            return tipDistance < PinchDetector.Instance.PinchDist;
-
-        }
-    }
 }

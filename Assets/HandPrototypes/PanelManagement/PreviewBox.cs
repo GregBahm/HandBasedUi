@@ -16,7 +16,7 @@ public class PreviewBox : MonoBehaviour
 
     public float GetDistanceToGrab()
     {
-        Vector3 grabPoint = PinchDetector.Instance.PinchPoint.position;
+        Vector3 grabPoint = MainPinchDetector.Instance.PinchPoint.position;
         Vector3 closestPoint = Box.ClosestPoint(grabPoint);
         return (grabPoint - closestPoint).magnitude;
     }

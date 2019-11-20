@@ -26,6 +26,8 @@ public class MenuItemButton : MonoBehaviour
 
     public Transform ButtonContent;
 
+    private Color currentColor;
+
     private enum ButtonState
     {
         Disabled,
@@ -61,8 +63,6 @@ public class MenuItemButton : MonoBehaviour
         float newBackdropZ = Mathf.Lerp(BackgroundRenderer.transform.localPosition.z, backdropTarget, Time.deltaTime * 50);
         BackgroundRenderer.transform.localPosition = new Vector3(BackgroundRenderer.transform.localPosition.x, BackgroundRenderer.transform.localPosition.y, newBackdropZ);
     }
-
-    private Color currentColor;
 
     private void UpdateMaterial()
     {

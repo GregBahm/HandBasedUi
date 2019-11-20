@@ -74,7 +74,7 @@ public class PrototypeCursor : MonoBehaviour
         grabBPositions[1] = proxies.RightThumb.position;
 
         Vector3 grabCenter = (proxies.RightIndex.position + proxies.RightThumb.position) / 2;
-        Vector3 toA = (proxies.RightIndex.position - grabCenter).normalized * PinchDetector.Instance.PinchDist / 2;
+        Vector3 toA = (proxies.RightIndex.position - grabCenter).normalized * MainPinchDetector.Instance.PinchDist / 2;
         Vector3 toB = -toA;
         grabAPositions[0] = grabAPositions[1] + toB;
         grabBPositions[0] = grabBPositions[1] + toA ;

@@ -8,26 +8,23 @@ public class PinchDetector : MonoBehaviour
     public float PinchDist = 0.03f;
     public float UnpinchDist = 0.09f;
     private HandPrototypeProxies proxies;
-    public static PinchDetector Instance;
+
+    public Transform ThumbProxy;
+    public Transform FingertipProxy;
+    public Transform PalmProxy;
 
     public bool Pinching { get; private set; }
 
     public Transform PinchPoint { get; private set; }
 
-    private void Awake()
-    {
-        Instance = this;
-    }
-
     private void Start()
     {
-        proxies = HandPrototypeProxies.Instance;
         PinchPoint = new GameObject("Pinch Point").transform;
     }
 
     private void Update()
     {
-        float tipDistance = (proxies.RightIndex.transform.position - proxies.RightThumb.transform.position).magnitude;
+        float tipDistance = (ThumbProxy.position - FingertipProxy.position).magnitude;
         if(Pinching)
         {
             Pinching = tipDistance < UnpinchDist;
@@ -42,9 +39,9 @@ public class PinchDetector : MonoBehaviour
 
     private void UpdateGrabPoint()
     {
-        Vector3 grabPos = (proxies.RightThumb.transform.position + proxies.RightIndex.transform.position) / 2;
+        Vector3 pinchPos = (ThumbProxy.position + FingertipProxy.position) / 2;
 
-        PinchPoint.position = grabPos;
-        PinchPoint.rotation = proxies.RightPalm.rotation;
+        PinchPoint.position = pinchPos;
+        PinchPoint.rotation = PalmProxy.rotation;
     }
 }

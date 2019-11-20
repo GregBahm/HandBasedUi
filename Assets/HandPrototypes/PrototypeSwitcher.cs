@@ -19,7 +19,8 @@ public class PrototypeSwitcher : MonoBehaviour
         StyleC,
         StyleD,
         StyleE,
-        StyleF
+        StyleF,
+        StyleG,
     }
 
     private void Start()
