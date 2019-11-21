@@ -10,7 +10,7 @@ public class GazeClickable : MonoBehaviour
     public Renderer BackgroundRenderer;
     private Material quadMeshMat;
 
-    public ButtonManager Manager;
+    public ButtonColors Manager;
 
     private ButtonState state;
 
@@ -75,12 +75,12 @@ public class GazeClickable : MonoBehaviour
 
     private void OnRelease()
     {
-        Manager.OnAnyButtonRelease();
+        //Manager.OnAnyButtonRelease();
     }
 
     private void OnPress()
     {
-        Manager.OnAnyButtonPress();
+        //Manager.OnAnyButtonPress();
     }
 
     private bool IsHoveringOver(out RaycastHit hitInfo)

@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using TMPro;
+using UnityEditor;
 using UnityEngine;
 
 namespace RemoteAssist.UI
@@ -16,191 +17,100 @@ namespace RemoteAssist.UI
     [RequireComponent(typeof(TMP_Text))]
     public class IconController : MonoBehaviour
     {
-#if (UNITY_EDITOR)
-        // Edit this whenever a new icon is added
+        // Edit this and the IconsMap whenever a new icon is added
         public enum IconKey
         {
-            [IconCharacterMapping("")]
             Add,
-            [IconCharacterMapping("A", true)]
             Arrow_annotate,
-            [IconCharacterMapping("")]
             Arrow_next,
-            [IconCharacterMapping("")]
             Arrow_previous,
-            [IconCharacterMapping("")]
             At,
-            [IconCharacterMapping("J", true)]
             Back,
-            [IconCharacterMapping("")]
             Backspace,
-            [IconCharacterMapping("")]
             Call,
-            [IconCharacterMapping("")]
             Calendar,
-            [IconCharacterMapping("")]
             Capture,
-            [IconCharacterMapping("B", true)]
             Chat_cutout,
-            [IconCharacterMapping("")]
             Chat_dot,
-            [IconCharacterMapping("")]
             Chat_lines,
-            [IconCharacterMapping("")]
             Chat_nolines,
-            [IconCharacterMapping("")]
             Chats,
-            [IconCharacterMapping("")]
             Check,
-            [IconCharacterMapping("")]
             Chevron_down,
-            [IconCharacterMapping("")]
             Chevron_left,
-            [IconCharacterMapping("")]
             Chevron_right,
-            [IconCharacterMapping("")]
             Chevron_up,
-            [IconCharacterMapping("")]
             Close,
-            [IconCharacterMapping("")]
             Cloud_download,
-            [IconCharacterMapping("")]
             Cloud_upload,
-            [IconCharacterMapping("I", true)]
             Colorpicker,
-            [IconCharacterMapping("")]
             Contacts,
-            [IconCharacterMapping("")]
             Copy,
-            [IconCharacterMapping("")]
             Copy_sdf,
-            [IconCharacterMapping("")]
             Delete,
-            [IconCharacterMapping("C", true)]
             Dock,
-            [IconCharacterMapping("D", true)]
             Dock_chat,
-            [IconCharacterMapping("")]
             Dynamics,
-            [IconCharacterMapping("M", true)]
             Endcall,
-            [IconCharacterMapping("")]
             Erase,
-            [IconCharacterMapping("")]
             Error_badge,
-            [IconCharacterMapping("E", true)]
             External_link,
-            [IconCharacterMapping("")]
             Files,
-            [IconCharacterMapping("")]
             Folder,
-            [IconCharacterMapping("")]
             Folder1,
-            [IconCharacterMapping("")]
+            Follow,
             Help,
-            [IconCharacterMapping("")]
             Hololens,
-            [IconCharacterMapping("")]
             Image,
-            [IconCharacterMapping("")]
             Incident_triangle,
-            [IconCharacterMapping("")]
             Info,
-            [IconCharacterMapping("")]
             Leave_chat,
-            [IconCharacterMapping("")]
             Link,
-            [IconCharacterMapping("")]
             Locked,
-            [IconCharacterMapping("")]
             Mic,
-            [IconCharacterMapping("F", true)]
             Mic_mute,
-            [IconCharacterMapping("")]
             Minimize,
-            [IconCharacterMapping("")]
             Move,
-            [IconCharacterMapping("H", true)]
             Onedrive,
-            [IconCharacterMapping("")]
             Participantlist,
-            [IconCharacterMapping("")]
             Pen,
-            [IconCharacterMapping("")]
             Pen_palette,
-            [IconCharacterMapping("")]
             Pencil,
-            [IconCharacterMapping("")]
             Penworkspace,
-            [IconCharacterMapping("")]
             People_add,
-            [IconCharacterMapping("")]
             Person_add,
-            [IconCharacterMapping("")]
             Phone,
-            [IconCharacterMapping("")]
             Pin,
-            [IconCharacterMapping("")]
             Pin_sideways,
-            [IconCharacterMapping("")]
             Poor_wifi,
-            [IconCharacterMapping("")]
             Ruler,
-            [IconCharacterMapping("")]
             Scale,
-            [IconCharacterMapping("")]
             Search,
-            [IconCharacterMapping("")]
             Search_user,
-            [IconCharacterMapping("")]
             Security_alert,
-            [IconCharacterMapping("")]
             Send,
-            [IconCharacterMapping("")]
             Settings,
-            [IconCharacterMapping("")]
             Share,
-            [IconCharacterMapping("")]
             Status_onbreak,
-            [IconCharacterMapping("")]
             Status_committed,
-            [IconCharacterMapping("")]
             Status_error,
-            [IconCharacterMapping("")]
             Status_generic,
-            [IconCharacterMapping("")]
             Status_inprogress,
-            [IconCharacterMapping("")]
             Status_scheduled,
-            [IconCharacterMapping("")]
             Status_traveling,
-            [IconCharacterMapping("G", true)]
             Switch_user,
-            [IconCharacterMapping("")]
             Three_dimensional_file,
-            [IconCharacterMapping("")]
             Undo,
-            [IconCharacterMapping("")]
             Undock,
-            [IconCharacterMapping("")]
             Unshift_left,
-            [IconCharacterMapping("")]
             Unshift_right,
-            [IconCharacterMapping("")]
             Uptotop,
-            [IconCharacterMapping("K", true)]
             Video,
-            [IconCharacterMapping("L", true)]
             Video_mute,
-            [IconCharacterMapping("")]
             Warning,
-            [IconCharacterMapping("")]
             Wifi_1,
-            [IconCharacterMapping("")]
             Wifi_2,
-            [IconCharacterMapping("")]
             Wifi_3,
-            [IconCharacterMapping("")]
             Wifi_4,
         }
 
@@ -208,7 +118,101 @@ namespace RemoteAssist.UI
 
         static IconController()
         {
-            IconsMap = CreateIconMap();
+            IconsMap = new Dictionary<IconKey, IconCharacterMapping>
+            {
+                { IconKey.Add, new IconCharacterMapping("")},
+                { IconKey.Arrow_annotate, new IconCharacterMapping("A", true)},
+                { IconKey.Arrow_next, new IconCharacterMapping("")},
+                { IconKey.Arrow_previous, new IconCharacterMapping("")},
+                { IconKey.At, new IconCharacterMapping("")},
+                { IconKey.Back, new IconCharacterMapping("J", true)},
+                { IconKey.Backspace, new IconCharacterMapping("")},
+                { IconKey.Call, new IconCharacterMapping("")},
+                { IconKey.Calendar, new IconCharacterMapping("")},
+                { IconKey.Capture, new IconCharacterMapping("")},
+                { IconKey.Chat_cutout, new IconCharacterMapping("B", true)},
+                { IconKey.Chat_dot, new IconCharacterMapping("")},
+                { IconKey.Chat_lines, new IconCharacterMapping("")},
+                { IconKey.Chat_nolines, new IconCharacterMapping("")},
+                { IconKey.Chats, new IconCharacterMapping("")},
+                { IconKey.Check, new IconCharacterMapping("")},
+                { IconKey.Chevron_down, new IconCharacterMapping("")},
+                { IconKey.Chevron_left, new IconCharacterMapping("")},
+                { IconKey.Chevron_right, new IconCharacterMapping("")},
+                { IconKey.Chevron_up, new IconCharacterMapping("")},
+                { IconKey.Close, new IconCharacterMapping("")},
+                { IconKey.Cloud_download, new IconCharacterMapping("")},
+                { IconKey.Cloud_upload, new IconCharacterMapping("")},
+                { IconKey.Colorpicker, new IconCharacterMapping("I", true)},
+                { IconKey.Contacts, new IconCharacterMapping("")},
+                { IconKey.Copy, new IconCharacterMapping("")},
+                { IconKey.Copy_sdf, new IconCharacterMapping("")},
+                { IconKey.Delete, new IconCharacterMapping("")},
+                { IconKey.Dock, new IconCharacterMapping("C", true)},
+                { IconKey.Dock_chat, new IconCharacterMapping("D", true)},
+                { IconKey.Dynamics, new IconCharacterMapping("")},
+                { IconKey.Endcall, new IconCharacterMapping("M", true)},
+                { IconKey.Erase, new IconCharacterMapping("")},
+                { IconKey.Error_badge, new IconCharacterMapping("")},
+                { IconKey.External_link, new IconCharacterMapping("E", true)},
+                { IconKey.Files, new IconCharacterMapping("")},
+                { IconKey.Folder, new IconCharacterMapping("")},
+                { IconKey.Folder1, new IconCharacterMapping("")},
+                { IconKey.Follow, new IconCharacterMapping("") },
+                { IconKey.Help, new IconCharacterMapping("")},
+                { IconKey.Hololens, new IconCharacterMapping("")},
+                { IconKey.Image, new IconCharacterMapping("")},
+                { IconKey.Incident_triangle, new IconCharacterMapping("")},
+                { IconKey.Info, new IconCharacterMapping("")},
+                { IconKey.Leave_chat, new IconCharacterMapping("")},
+                { IconKey.Link, new IconCharacterMapping("")},
+                { IconKey.Locked, new IconCharacterMapping("")},
+                { IconKey.Mic, new IconCharacterMapping("")},
+                { IconKey.Mic_mute, new IconCharacterMapping("F", true)},
+                { IconKey.Minimize, new IconCharacterMapping("")},
+                { IconKey.Move, new IconCharacterMapping("")},
+                { IconKey.Onedrive, new IconCharacterMapping("H", true)},
+                { IconKey.Participantlist, new IconCharacterMapping("")},
+                { IconKey.Pen, new IconCharacterMapping("")},
+                { IconKey.Pen_palette, new IconCharacterMapping("")},
+                { IconKey.Pencil, new IconCharacterMapping("")},
+                { IconKey.Penworkspace, new IconCharacterMapping("")},
+                { IconKey.People_add, new IconCharacterMapping("")},
+                { IconKey.Person_add, new IconCharacterMapping("")},
+                { IconKey.Phone, new IconCharacterMapping("")},
+                { IconKey.Pin, new IconCharacterMapping("")},
+                { IconKey.Pin_sideways, new IconCharacterMapping("")},
+                { IconKey.Poor_wifi, new IconCharacterMapping("")},
+                { IconKey.Ruler, new IconCharacterMapping("")},
+                { IconKey.Scale, new IconCharacterMapping("")},
+                { IconKey.Search, new IconCharacterMapping("")},
+                { IconKey.Search_user, new IconCharacterMapping("")},
+                { IconKey.Security_alert, new IconCharacterMapping("")},
+                { IconKey.Send, new IconCharacterMapping("")},
+                { IconKey.Settings, new IconCharacterMapping("")},
+                { IconKey.Share, new IconCharacterMapping("")},
+                { IconKey.Status_onbreak, new IconCharacterMapping("")},
+                { IconKey.Status_committed, new IconCharacterMapping("")},
+                { IconKey.Status_error, new IconCharacterMapping("")},
+                { IconKey.Status_generic, new IconCharacterMapping("")},
+                { IconKey.Status_inprogress, new IconCharacterMapping("")},
+                { IconKey.Status_scheduled, new IconCharacterMapping("")},
+                { IconKey.Status_traveling, new IconCharacterMapping("")},
+                { IconKey.Switch_user, new IconCharacterMapping("G", true)},
+                { IconKey.Three_dimensional_file, new IconCharacterMapping("")},
+                { IconKey.Undo, new IconCharacterMapping("")},
+                { IconKey.Undock, new IconCharacterMapping("")},
+                { IconKey.Unshift_left, new IconCharacterMapping("")},
+                { IconKey.Unshift_right, new IconCharacterMapping("")},
+                { IconKey.Uptotop, new IconCharacterMapping("")},
+                { IconKey.Video, new IconCharacterMapping("K", true)},
+                { IconKey.Video_mute, new IconCharacterMapping("L", true)},
+                { IconKey.Warning, new IconCharacterMapping("")},
+                { IconKey.Wifi_1, new IconCharacterMapping("")},
+                { IconKey.Wifi_2, new IconCharacterMapping("")},
+                { IconKey.Wifi_3, new IconCharacterMapping("")},
+                { IconKey.Wifi_4, new IconCharacterMapping("")},
+            };
         }
 
         private static Dictionary<IconKey, IconCharacterMapping> CreateIconMap()
@@ -275,9 +279,11 @@ namespace RemoteAssist.UI
 
         private void UpdateIconText()
         {
+            Undo.RecordObject(textMeshComponent, "Icon Change");
             IconCharacterMapping mapping = IconsMap[icon];
             textMeshComponent.font = mapping.IsCustom ? GetCustomIconFont() : GetOfficialIconFont();
             textMeshComponent.text = mapping.IconCharacter;
+            PrefabUtility.RecordPrefabInstancePropertyModifications(textMeshComponent);
         }
 
         private TMP_FontAsset GetCustomIconFont()
@@ -311,6 +317,5 @@ namespace RemoteAssist.UI
                 IconCharacter = iconCharacter;
             }
         }
-#endif
     }
 }
