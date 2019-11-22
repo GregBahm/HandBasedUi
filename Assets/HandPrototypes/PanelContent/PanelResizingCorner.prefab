@@ -219,3 +219,5 @@ MonoBehaviour:
   GrabBox: {fileID: 8736834187542654923}
   IsGrabbed: 0
   ResizingPivot: {x: 0, y: 0}
+  LineRender: {fileID: 4536238437022340857}
+  ShowVisuals: 0

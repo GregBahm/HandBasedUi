@@ -4,11 +4,17 @@ using UnityEngine;
 
 public class VideoCardBottomButtons : MonoBehaviour
 {
+    private float fullScale;
     public MainPanelArrangement MainPanel;
 
     public Transform[] Buttons;
 
     public float VerticalOffset;
+
+    private void Start()
+    {
+        fullScale = Buttons[0].localScale.x;
+    }
 
     private void Update()
     {
@@ -19,6 +25,9 @@ public class VideoCardBottomButtons : MonoBehaviour
         {
             float x = i * MainPanel.BottomButtonSpacing - fullWidth / 2;
             Buttons[i].localPosition = new Vector3(x, y, 0);
+
+            float effectiveScale = fullScale * MainPanel.ButtonSummoness;
+            Buttons[i].localScale = new Vector3(effectiveScale, effectiveScale, effectiveScale);
         }
     }
 }

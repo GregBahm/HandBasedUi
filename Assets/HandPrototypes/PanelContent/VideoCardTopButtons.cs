@@ -4,10 +4,16 @@ using UnityEngine;
 
 public class VideoCardTopButtons : MonoBehaviour
 {
+    private float fullScale;
     public MainPanelArrangement MainPanel;
 
     public Transform[] Buttons;
-    
+
+    private void Start()
+    {
+        fullScale = Buttons[0].localScale.x;
+    }
+
     private void Update()
     {
         transform.localPosition = Vector3.zero;
@@ -24,6 +30,9 @@ public class VideoCardTopButtons : MonoBehaviour
             float param = (float)i / (Buttons.Length - 1);
             float x = Mathf.Lerp(xStart, xEnd, param);
             Buttons[i].localPosition = new Vector3(x, y, 0);
+
+            float effectiveScale = fullScale * MainPanel.ButtonSummoness;
+            Buttons[i].localScale = new Vector3(effectiveScale, effectiveScale, effectiveScale);
         }
     }
 }

@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class SlateResizing : MonoBehaviour
 {
+    public MainPanelArrangement Main;
     private Transform pivotPoint;
     private Transform videoProxy;
 
@@ -37,6 +38,7 @@ public class SlateResizing : MonoBehaviour
 
     private void Update()
     {
+        UpdateCornerVisibility();
         bool anyCornersGrabbed = corners.Any(item => item.IsGrabbed);
         if (!anyCornersGrabbed)
         {
@@ -47,6 +49,15 @@ public class SlateResizing : MonoBehaviour
             HandleContinueGrab();
         }
         PositionCorners();
+    }
+
+    private void UpdateCornerVisibility()
+    {
+        bool isAvailable = Main.Summonness < .9f;
+        foreach (SlateResizingCorner item in corners)
+        {
+            item.gameObject.SetActive(isAvailable);
+        }
     }
 
     private void HandleContinueGrab()

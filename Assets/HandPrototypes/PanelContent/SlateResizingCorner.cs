@@ -8,4 +8,13 @@ public class SlateResizingCorner : MonoBehaviour
 
     public bool IsGrabbed;
     public Vector2 ResizingPivot;
+
+    public LineRenderer LineRender;
+
+    public bool ShowVisuals;
+
+    private void Update()
+    {
+        LineRender.enabled = ShowVisuals;
+    }
 }

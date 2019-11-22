@@ -8,6 +8,24 @@ public class MainPanelArrangement : MonoBehaviour
     [Range(0, 1)]
     public float Summonness;
 
+    public float ButtonSummoness
+    {
+        get
+        {
+            float remap = Mathf.Clamp01((Summonness - .5f) * 2);
+            return Mathf.Pow(remap, 2);
+        }
+    }
+
+    public float PanelSummoness
+    {
+        get
+        {
+            float remap = Mathf.Clamp01(Summonness * 2);
+            return Mathf.Pow(Summonness, .7f);
+        }
+    }
+
     public Transform VideoCard;
     public Transform Slate;
     public Transform NamePlate;
@@ -32,7 +50,9 @@ public class MainPanelArrangement : MonoBehaviour
 
     private void PositionSlate()
     {
-        Vector3 slateScale = new Vector3(VideoCard.localScale.x + HorizontalSlateMargin, VideoCard.localScale.y + VerticalSlateMargin, 1);
+        float effectiveHorizontalMargin = HorizontalSlateMargin * PanelSummoness;
+        float effectiveVerticalMargin = VerticalSlateMargin * PanelSummoness;
+        Vector3 slateScale = new Vector3(VideoCard.localScale.x + effectiveHorizontalMargin, VideoCard.localScale.y + effectiveVerticalMargin, 1);
         Slate.localScale = slateScale;
     }
 }
