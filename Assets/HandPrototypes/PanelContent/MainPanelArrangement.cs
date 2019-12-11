@@ -29,6 +29,7 @@ public class MainPanelArrangement : MonoBehaviour
     public Transform VideoCard;
     public Transform Slate;
     public Transform NamePlate;
+    public Transform Thumbnail;
     public float VerticalButtonMargin;
     public float HorizontalSlateMargin;
     public float VerticalSlateMargin;
@@ -37,8 +38,13 @@ public class MainPanelArrangement : MonoBehaviour
 
     private void Update()
     {
+        SummonToThumbnail();
         PositionSlate();
         PositionNamePlate();
+    }
+
+    private void SummonToThumbnail()
+    {
     }
 
     private void PositionNamePlate()
@@ -46,6 +52,7 @@ public class MainPanelArrangement : MonoBehaviour
         float x = -VideoCard.localScale.x / 2 - NameplateMargin;
         float y = VideoCard.localScale.y / 2 + NameplateMargin;
         NamePlate.localPosition = new Vector3(x, y, 0);
+        NamePlate.localScale = new Vector3(Summonness, Summonness, Summonness);
     }
 
     private void PositionSlate()

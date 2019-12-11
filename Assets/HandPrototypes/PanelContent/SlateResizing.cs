@@ -27,7 +27,10 @@ public class SlateResizing : MonoBehaviour
     private IEnumerable<SlateResizingCorner> corners;
     private bool wasPinching;
     private float startDistToPivot;
-    
+
+    public SlateResizingCorner HoveredCorner { get; private set; }
+    public float CornerGrabMargin = .1f;
+
     private void Start()
     {
         pivotPoint = new GameObject("PivotPoint").transform;
@@ -38,38 +41,40 @@ public class SlateResizing : MonoBehaviour
 
     private void Update()
     {
-        UpdateCornerVisibility();
-        bool anyCornersGrabbed = corners.Any(item => item.IsGrabbed);
-        if (!anyCornersGrabbed)
+        bool pinching = MainPinchDetector.Instance.Pinching;
+        bool currentlyGrabbing = corners.Any(item => item.IsGrabbed);
+
+        if (currentlyGrabbing)
         {
-            MaybeStartGrab();
+            if (pinching)
+            {
+                DoGrabUpdate();
+            }
+            else
+            {
+                EndGrab();
+            }
         }
         else
         {
-            HandleContinueGrab();
+            HoveredCorner = GetHoveredCorner();
+            if (ShouldStartGrab(pinching))
+            {
+                StartGrab(HoveredCorner);
+            }
         }
+        UpdateCornerVisibility();
         PositionCorners();
+        wasPinching = pinching;
     }
 
     private void UpdateCornerVisibility()
     {
-        bool isAvailable = Main.Summonness < .9f;
+        bool isAvailable = Main.Summonness > .9f;
         foreach (SlateResizingCorner item in corners)
         {
+            item.ShowVisuals = HoveredCorner == item;
             item.gameObject.SetActive(isAvailable);
-        }
-    }
-
-    private void HandleContinueGrab()
-    {
-        bool pinching = MainPinchDetector.Instance.Pinching;
-        if(pinching)
-        {
-            DoGrabUpdate();
-        }
-        else
-        {
-            EndGrab();
         }
     }
 
@@ -93,30 +98,21 @@ public class SlateResizing : MonoBehaviour
         }
     }
 
-    private void MaybeStartGrab()
+    private bool ShouldStartGrab(bool pinching)
     {
-        bool pinching = MainPinchDetector.Instance.Pinching;
-        if(pinching && !wasPinching)
-        {
-            SlateResizingCorner corner = TryGetPinchedCorner();
-            if(corner != null)
-            {
-                StartGrab(corner);
-            }
-        }
-        wasPinching = pinching;
+        return pinching && !wasPinching && HoveredCorner != null;
     }
 
-    private SlateResizingCorner TryGetPinchedCorner()
+    private SlateResizingCorner GetHoveredCorner()
     {
         Vector3 grabPoint = MainPinchDetector.Instance.PinchPoint.position;
-        float closestGrabDist = float.PositiveInfinity;
+        float closestGrabDist = CornerGrabMargin;
         SlateResizingCorner ret = null;
         foreach (SlateResizingCorner corner in corners)
         {
             Vector3 closestPoint = corner.GrabBox.ClosestPoint(grabPoint);
             float grabDist = (grabPoint - closestPoint).magnitude;
-            if(grabDist < closestGrabDist)
+            if (grabDist < closestGrabDist)
             {
                 closestGrabDist = grabDist;
                 ret = corner;

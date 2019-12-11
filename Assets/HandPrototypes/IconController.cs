@@ -279,11 +279,16 @@ namespace RemoteAssist.UI
 
         private void UpdateIconText()
         {
+#if(UNITY_EDITOR)
             Undo.RecordObject(textMeshComponent, "Icon Change");
+#endif
             IconCharacterMapping mapping = IconsMap[icon];
             textMeshComponent.font = mapping.IsCustom ? GetCustomIconFont() : GetOfficialIconFont();
             textMeshComponent.text = mapping.IconCharacter;
+
+#if (UNITY_EDITOR)
             PrefabUtility.RecordPrefabInstancePropertyModifications(textMeshComponent);
+#endif
         }
 
         private TMP_FontAsset GetCustomIconFont()

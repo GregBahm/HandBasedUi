@@ -19,6 +19,7 @@
             #include "UnityCG.cginc"
 
             float _Highlight;
+			float _Fade;
 
             struct appdata
             {
