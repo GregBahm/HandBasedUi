@@ -5,6 +5,7 @@ using System.Linq;
 
 public class HandState
 {
+    private static readonly IEnumerable<Card> NoCards = new Card[0];
     public bool PlayerGeneratorUpToDate { get; private set; }
     public bool OpponentGeneratorUpToDate { get; private set; }
     private Card _holeA;
@@ -104,40 +105,58 @@ public class HandState
         }
     }
 
-    public IEnumerable<Card> Cards
+    public IEnumerable<Card> PlayerHand
     {
         get
         {
-            yield return HoleA;
-            yield return HoleB;
-            foreach (Card card in OpponentCards)
+            if(HoleA != null)
+                yield return HoleA;
+            if (HoleB != null)
+                yield return HoleB;
+        }
+    }
+
+    public IEnumerable<Card> SharedCards
+    {
+        get
+        {
+            if (FlopA != null)
+                yield return FlopA;
+            if (FlopB != null)
+                yield return FlopB;
+            if (FlopC != null)
+                yield return FlopC;
+            if (Turn != null)
+                yield return Turn;
+            if (River != null)
+                yield return River;
+        }
+    }
+
+    public IEnumerable<Card> AllCards
+    {
+        get
+        {
+            foreach (Card card in PlayerHand)
+            {
+                yield return card;
+            }
+            foreach (Card card in SharedCards)
             {
                 yield return card;
             }
         }
     }
 
-    public IEnumerable<Card> OpponentCards
-    {
-        get
-        {
-            yield return FlopA;
-            yield return FlopB;
-            yield return FlopC;
-            yield return Turn;
-            yield return River;
-        }
-    }
-
     public RandomHandGenerator GetPlayerHandGenerator()
     {
         PlayerGeneratorUpToDate = true;
-        return new RandomHandGenerator(Cards);
+        return new RandomHandGenerator(AllCards, NoCards);
     }
 
     public RandomHandGenerator GetOpponentHandGenerator()
     {
         OpponentGeneratorUpToDate = true;
-        return new RandomHandGenerator(OpponentCards);
+        return new RandomHandGenerator(SharedCards, PlayerHand);
     }
 }

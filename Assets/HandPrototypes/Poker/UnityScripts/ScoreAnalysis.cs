@@ -14,11 +14,15 @@ public class ScoreAnalysisTable
 
     public ScoreAnalysis GetScoreAnalysis(Hand hand)
     {
-        return allScoreAnalysis[hand.Rank];
+        return allScoreAnalysis[hand.Score];
     }
     public int GetSevenCardRanking(Hand hand)
     {
-        return fiveToSevenCardRerankings[hand.Rank];
+        return fiveToSevenCardRerankings[hand.Score];
+    }
+    public int GetSevenCardRanking(int fiveCardRanking)
+    {
+        return fiveToSevenCardRerankings[fiveCardRanking];
     }
 
     public ScoreAnalysisTable(TextAsset frequencyTableData)

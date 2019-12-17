@@ -48,6 +48,10 @@ public class HandSetup : MonoBehaviour
         Vector3 cursorPos = PinchDetector.PinchPoint.position;
 
         bool isSelecting = PinchDetector.Pinching;
+#if UNITY_EDITOR
+        isSelecting = Input.GetMouseButton(0);
+        cursorPos = GetEditorMousePos();
+#endif
 
         if (isSelecting)
         {
@@ -74,6 +78,15 @@ public class HandSetup : MonoBehaviour
             SettleCardPositions();
         }
         wasSelecting = isSelecting;
+    }
+
+    private Vector3 GetEditorMousePos()
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Plane plane = new Plane(CardOptionsPool.forward, CardOptionsPool.position);
+        float enter = 0;
+        plane.Raycast(ray, out enter);
+        return ray.GetPoint(enter);
     }
 
     private void SettleCardPositions()
@@ -145,8 +158,6 @@ public class HandSetup : MonoBehaviour
     private Vector3 GetBasePosition(Card card)
     {
         float x = (card.Value - 2) * (1 + PokerMain.Instance.CardOptionMargin);
-        //float maxX = 13f * (1 + PokerMain.Instance.CardOptionMargin);
-        //x -= maxX / 2;
         x += .5f;
         
         float y = card.Suit * (PokerMain.CardHeight + PokerMain.Instance.CardOptionMargin);

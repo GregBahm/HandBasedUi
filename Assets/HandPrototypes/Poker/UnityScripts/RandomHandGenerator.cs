@@ -22,20 +22,26 @@ public class RandomHandGenerator
         return baseIndices.AsReadOnly();
     }
 
-    private readonly List<Card> BaseCards;
-    private readonly ReadOnlyCollection<int> AvailableIndices;
+    private readonly List<Card> unavailableCards;
+    private readonly List<Card> receivedCards;
+    private readonly ReadOnlyCollection<int> availableIndices;
 
-    public RandomHandGenerator(IEnumerable<Card> cards)
+    public RandomHandGenerator(IEnumerable<Card> receivedCards, IEnumerable<Card> unavailableCards)
     {
-        BaseCards = cards.Where(item => item != null).ToList();
+        this.unavailableCards = unavailableCards.ToList();
+        this.receivedCards = receivedCards.ToList();
         
-        AvailableIndices = GetAvailableIndices();
+        this.availableIndices = GetAvailableIndices();
     }
 
     private ReadOnlyCollection<int> GetAvailableIndices()
     {
         HashSet<int> availableIndices = new HashSet<int>(BaseIndices);
-        foreach (int val in BaseCards.Select(item => item.DeckIndex))
+        foreach (int val in receivedCards.Select(item => item.DeckIndex))
+        {
+            availableIndices.Remove(val);
+        }
+        foreach (int val in unavailableCards.Select(item => item.DeckIndex))
         {
             availableIndices.Remove(val);
         }
@@ -45,9 +51,9 @@ public class RandomHandGenerator
     public Hand GetRandomHand()
     {
         List<Card> cards = new List<Card>(7);
-        List<int> availableIndices = new List<int>(AvailableIndices);
-        cards.AddRange(BaseCards);
-        for (int remainingCards = BaseCards.Count; remainingCards < 7; remainingCards++)
+        List<int> availableIndices = new List<int>(this.availableIndices);
+        cards.AddRange(receivedCards);
+        for (int remainingCards = receivedCards.Count; remainingCards < 7; remainingCards++)
         {
             int availableIndicesIndex = random.Next(availableIndices.Count);
             int deckIndex = availableIndices[availableIndicesIndex];

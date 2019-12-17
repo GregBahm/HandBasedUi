@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 
-public class HandScore
+public class HandScoreDescription
 {
     public string Key { get; }
     public string FriendlyDescription { get; }
     
-    public HandScore(string friendlyDescription, string key)
+    public HandScoreDescription(string friendlyDescription, string key)
     {
         FriendlyDescription = friendlyDescription;
         Key = key;
@@ -50,7 +50,7 @@ public class HandScore
         return GetHighCardKey(hand);
     }
 
-    public static IEnumerable<HandScore> GetHighCards()
+    public static IEnumerable<HandScoreDescription> GetHighCards()
     {
         for (int valA = 14; valA > 1; valA--)
         {
@@ -66,7 +66,7 @@ public class HandScore
                             {
                                 string friendlyLabel = GetHighCardLabel(valA);
                                 string key = GetHighCardKey(valA, valB, valC, valD, valE);
-                                yield return new HandScore(friendlyLabel, key);
+                                yield return new HandScoreDescription(friendlyLabel, key);
                             }
                         }
                     }
@@ -130,7 +130,7 @@ public class HandScore
         return GetPairKey(hand.PairValue, valC, valD, valE);
     }
 
-    public static IEnumerable<HandScore> GetPairs()
+    public static IEnumerable<HandScoreDescription> GetPairs()
     {
         for (int pairVal = 14; pairVal > 1; pairVal--)
         {
@@ -144,7 +144,7 @@ public class HandScore
                         {
                             string label = GetPairLabel(pairVal);
                             string key = GetPairKey(pairVal, valC, valD, valE);
-                            yield return new HandScore(label, key);
+                            yield return new HandScoreDescription(label, key);
                         }
                     }
                 }
@@ -175,7 +175,7 @@ public class HandScore
         return GetTwoPairsKey(valA, valB, valC);
     }
 
-    public static IEnumerable<HandScore> GetTwoPairs()
+    public static IEnumerable<HandScoreDescription> GetTwoPairs()
     {
         for (int pairA = 14; pairA > 1; pairA--)
         {
@@ -189,7 +189,7 @@ public class HandScore
                         {
                             string label = GetTwoPairsLabel(pairA, pairB);
                             string key = GetTwoPairsKey(pairA, pairB, kicker);
-                            yield return new HandScore(label, key);
+                            yield return new HandScoreDescription(label, key);
                         }
                     }
                 }
@@ -211,7 +211,7 @@ public class HandScore
         return label + " (kicker " + kicker + ")";
     }
 
-    public static IEnumerable<HandScore> GetThreeOfAKinds()
+    public static IEnumerable<HandScoreDescription> GetThreeOfAKinds()
     {
         for (int firstThree = 14; firstThree > 1; firstThree--)
         {
@@ -225,7 +225,7 @@ public class HandScore
                         {
                             string label = GetThreeOfAKindFriendlyName(firstThree);
                             string key = GetThreeOfAKindKey(firstThree, nextHighest, lowest);
-                            yield return new HandScore(label, key);
+                            yield return new HandScoreDescription(label, key);
                         }
                     }
                 }
@@ -269,12 +269,12 @@ public class HandScore
         return "Three " + name;
     }
 
-    public static IEnumerable<HandScore> GetStraights()
+    public static IEnumerable<HandScoreDescription> GetStraights()
     {
         for (int i = 14; i > 4; i--)
         {
             string straightKey = GetStraightKey(i);
-            yield return new HandScore(straightKey, straightKey);
+            yield return new HandScoreDescription(straightKey, straightKey);
         }
     }
 
@@ -294,7 +294,7 @@ public class HandScore
         return GetFlushKey(cardA, cardB, cardC, cardD, cardE);
     }
 
-    public static IEnumerable<HandScore> GetFlushes()
+    public static IEnumerable<HandScoreDescription> GetFlushes()
     {
         for (int cardOne = 14; cardOne > 1; cardOne--)
         {
@@ -310,7 +310,7 @@ public class HandScore
                             {
                                 string label = GetFlushFriendlyName(cardOne);
                                 string key = GetFlushKey(cardOne, cardTwo, cardThree, cardFour, cardFive);
-                                yield return new HandScore(label, key);
+                                yield return new HandScoreDescription(label, key);
                             }
                         }
                     }
@@ -356,7 +356,7 @@ public class HandScore
         return cardName + " flush";
     }
 
-    public static IEnumerable<HandScore> GetFullHouses()
+    public static IEnumerable<HandScoreDescription> GetFullHouses()
     {
         for (int fullHouseThreeCard = 14; fullHouseThreeCard > 1; fullHouseThreeCard--)
         {
@@ -365,7 +365,7 @@ public class HandScore
                 if(fullHouseThreeCard != fullHouseTwoCard)
                 {
                     string key = GetFullHouseKey(fullHouseThreeCard, fullHouseTwoCard);
-                    yield return new HandScore(key, key);
+                    yield return new HandScoreDescription(key, key);
                 }
             }
         }
@@ -384,7 +384,7 @@ public class HandScore
         return GetFourOfAKindKey(hand.FourOfAKindValue, otherCard);
     }
 
-    public static IEnumerable<HandScore> GetFourOfAKinds()
+    public static IEnumerable<HandScoreDescription> GetFourOfAKinds()
     {
         for (int mainValue = 14; mainValue > 1; mainValue--)
         {
@@ -394,7 +394,7 @@ public class HandScore
                 {
                     string key = GetFourOfAKindKey(mainValue, minorValue);
                     string friendlyName = GetFourOfAKindFriendlyName(mainValue);
-                    yield return new HandScore(friendlyName, key);
+                    yield return new HandScoreDescription(friendlyName, key);
                 }
             }
         }
@@ -412,12 +412,12 @@ public class HandScore
         return "Four " + Card.GetPluralCardValueName(fourOfAKindValue);
     }
 
-    public static IEnumerable<HandScore> GetStraightFlushes()
+    public static IEnumerable<HandScoreDescription> GetStraightFlushes()
     {
         for (int i = 14; i > 4; i--)
         {
             string key = GetStraightFlushKey(i);
-            yield return new HandScore(key, key);
+            yield return new HandScoreDescription(key, key);
         }
     }
 

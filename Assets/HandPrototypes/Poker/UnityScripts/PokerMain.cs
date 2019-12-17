@@ -80,10 +80,16 @@ public class PokerMain : MonoBehaviour
         UpdateWinProbabilityLabel();
     }
 
+    private StringBuilder outputBuilder = new StringBuilder();
+
     private void UpdateWinProbabilityLabel()
     {
-        string text = "Win Probability: " + (int)(Scoring.WinProbability * 100) + "%";
-        WinProbabilityText.text = text;
+        outputBuilder.Clear();
+        outputBuilder.AppendLine("Rounds: " + Scoring.RoundsPlayed);
+        outputBuilder.AppendLine("Wins: " + Scoring.Wins + "\tLosses: " + Scoring.Losses + "\tTies: " + Scoring.Ties);
+        outputBuilder.AppendLine("Win Probability: " + (int)(Scoring.WinProbability * 100) + "%");
+
+        WinProbabilityText.text = outputBuilder.ToString();
     }
 
     private void RefreshGenerators()
@@ -92,7 +98,7 @@ public class PokerMain : MonoBehaviour
         {
             playerHandGenerator = HandState.GetPlayerHandGenerator();
             opponentHandGenerator = HandState.GetOpponentHandGenerator();
-            Scoring = new StateScoring();
+            Scoring = new StateScoring(scoreAnalysis);
         }
     }
 }

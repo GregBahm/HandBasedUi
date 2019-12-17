@@ -17,8 +17,11 @@ public class Hand : IComparable<Hand>
     public int TwoPairValue { get; }
     public int PairValue { get; }
 
-    public HandScore Score { get; }
-    public int Rank { get; }
+    public HandScoreDescription Description { get; }
+    /// <summary>
+    /// 0 is the best score. 
+    /// </summary>
+    public int Score { get; }
 
     public Hand(Card cardA, Card cardB, Card cardC, Card cardD, Card cardE)
         : this(new List<Card> { cardA, cardB, cardC, cardD, cardE })
@@ -58,9 +61,9 @@ public class Hand : IComparable<Hand>
             FullHouseTwoCardValue = PairValue;
         }
 
-        string scoreTablesKey = HandScore.GetHandScoreKey(this);
-        Score = HandScoresTable.All[scoreTablesKey];
-        Rank = HandScoresTable.Ranks[scoreTablesKey];
+        string scoreTablesKey = HandScoreDescription.GetHandScoreKey(this);
+        Description = HandScoresTable.All[scoreTablesKey];
+        Score = HandScoresTable.Scores[scoreTablesKey];
     }
 
     private int[] GetGroupingsArray()
@@ -142,7 +145,7 @@ public class Hand : IComparable<Hand>
     public int CompareTo(Hand other)
     {
         if (other == null) return 1;
-        return Rank.CompareTo(other.Rank);
+        return Score.CompareTo(other.Score);
     }
 
     private int CompareHighCard(Hand other)
