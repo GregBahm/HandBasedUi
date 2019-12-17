@@ -14,9 +14,7 @@ public class PokerMain : MonoBehaviour
     public int OpponentsCount;
     public TextAsset HandFrequencyTable;
     public TextMeshPro WinProbabilityText;
-
-    private Thread thread;
-
+    
     private ScoreAnalysisTable scoreAnalysis;
     public HandState HandState;
     public StateScoring Scoring;
@@ -30,6 +28,8 @@ public class PokerMain : MonoBehaviour
 
     public GameObject CardOptionPrefab;
 
+    private StringBuilder outputBuilder = new StringBuilder();
+
     private void Awake()
     {
         Instance = this;
@@ -40,14 +40,6 @@ public class PokerMain : MonoBehaviour
         scoreAnalysis = new ScoreAnalysisTable(HandFrequencyTable);
         HandState = new HandState();
         RefreshGenerators();
-        thread = new Thread(() => PerpetuallyScoreHands());
-        thread.IsBackground = true;
-        thread.Start();
-    }
-
-    private void OnDestroy()
-    {
-        thread.Abort();
     }
 
     public Hand GetRandomPlayerHand()
@@ -60,27 +52,23 @@ public class PokerMain : MonoBehaviour
         return opponentHandGenerator.GetRandomHand();
     }
 
-    private void PerpetuallyScoreHands()
+    private void ScoreSomeHands()
     {
-        while (true)
+        Hand playerHand = GetRandomPlayerHand();
+        Hand[] opponentHands = new Hand[OpponentsCount];
+        for (int i = 0; i < OpponentsCount; i++)
         {
-            Hand playerHand = GetRandomPlayerHand();
-            Hand[] opponentHands = new Hand[OpponentsCount];
-            for (int i = 0; i < OpponentsCount; i++)
-            {
-                opponentHands[i] = GetRandomOpponentHand();
-            }
-            Scoring.RegisterHandScore(playerHand, opponentHands);
+            opponentHands[i] = GetRandomOpponentHand();
         }
+        Scoring.RegisterHandScore(playerHand, opponentHands);
     }
 
     private void Update()
     {
         RefreshGenerators();
         UpdateWinProbabilityLabel();
+        ScoreSomeHands();
     }
-
-    private StringBuilder outputBuilder = new StringBuilder();
 
     private void UpdateWinProbabilityLabel()
     {

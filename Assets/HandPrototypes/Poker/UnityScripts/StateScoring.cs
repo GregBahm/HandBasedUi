@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 public class StateScoring
@@ -14,29 +15,31 @@ public class StateScoring
     public float WinProbability { get { return RoundsPlayed == 0 ? .5f : (float)Wins / RoundsPlayed; } }
     public float LossProbability { get { return RoundsPlayed == 0 ? .5f : (float)Losses / RoundsPlayed; } }
 
-    private int[] selfScores;
-    private int[] opponentScores;
+    public int[] SelfScores { get; } = new int[ScoreAnalysisTable.UniqueSevenCardHands];
+    public int[] OpponentScores { get; } = new int[ScoreAnalysisTable.UniqueSevenCardHands];
 
     public StateScoring(ScoreAnalysisTable scoreAnalysis)
     {
         this.scoreAnalysis = scoreAnalysis;
-        selfScores = new int[ScoreAnalysisTable.UniqueSevenCardHands];
-        opponentScores = new int[ScoreAnalysisTable.UniqueSevenCardHands];
     }
 
     public void RegisterHandScore(Hand playerHand, IEnumerable<Hand> opponentHands)
     {
         int playerScore = GetPlayerScore(playerHand);
         int opponentScore = GetOpponentScore(opponentHands);
+        UpdateTableData(playerScore, opponentScore);
+    }
 
-        selfScores[playerScore]++;
-        opponentScores[opponentScore]++;
+    private void UpdateTableData(int playerScore, int opponentScore)
+    {
+        SelfScores[playerScore]++;
+        OpponentScores[opponentScore]++;
 
         if (playerScore < opponentScore)
         {
             Wins++;
         }
-        else if(opponentScore < playerScore)
+        else if (opponentScore < playerScore)
         {
             Losses++;
         }
