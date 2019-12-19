@@ -33,6 +33,7 @@ public class MainPanelArrangement : MonoBehaviour
     public Transform NamePlate;
     public Transform Thumbnail;
     public SlateResizing Resizing;
+    public SlateRepositioning Repositioning;
     public VideoCardTopButtons TopButtons;
     public VideoCardBottomButtons ButtomButtons;
 
@@ -46,6 +47,7 @@ public class MainPanelArrangement : MonoBehaviour
     {
         SummonToThumbnail();
         Resizing.UpdateSlateResizing();
+        Repositioning.UpdateSlatePositioning();
         PositionVideoCard();
         PositionNamePlate();
         TopButtons.PlaceButtons();

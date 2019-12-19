@@ -202,8 +202,9 @@ GameObject:
   - component: {fileID: 61310266}
   - component: {fileID: 61310265}
   - component: {fileID: 61310267}
+  - component: {fileID: 61310268}
   m_Layer: 0
-  m_Name: Panel
+  m_Name: MainPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -227,6 +228,7 @@ MonoBehaviour:
   NamePlate: {fileID: 425777323}
   Thumbnail: {fileID: 0}
   Resizing: {fileID: 61310267}
+  Repositioning: {fileID: 61310268}
   TopButtons: {fileID: 140238646}
   ButtomButtons: {fileID: 1543847197}
   VerticalButtonMargin: 0.016
@@ -278,7 +280,22 @@ MonoBehaviour:
   MinHeight: 0
   MaxHeight: 0
   ResizingMargin: -0.006
-  CornerGrabMargin: 0.1
+  CornerGrabMargin: 0.05
+--- !u!114 &61310268
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 61310264}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a12fe33560b08db4c8a6c91bc1ca37b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Resizing: {fileID: 61310267}
+  SlateBox: {fileID: 6869178200843373535}
+  GrabThreshold: 0.05
 --- !u!1 &75942304
 GameObject:
   m_ObjectHideFlags: 0

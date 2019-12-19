@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class SlateResizing : MonoBehaviour
 {
+    public bool CurrentlyResizing { get; private set; }
     public MainPanelArrangement Main;
     private Transform pivotPoint;
     
@@ -32,16 +33,16 @@ public class SlateResizing : MonoBehaviour
 
     private void Start()
     {
-        pivotPoint = new GameObject("PivotPoint").transform;
+        pivotPoint = new GameObject("Resizing PivotPoint").transform;
         corners = new SlateResizingCorner[] { LowerLeftCorner, LowerRightCorner, UpperLeftCorner, UpperRightCorner };
     }
 
     public void UpdateSlateResizing()
     {
         bool pinching = MainPinchDetector.Instance.Pinching;
-        bool currentlyGrabbing = corners.Any(item => item.IsGrabbed);
+        CurrentlyResizing = corners.Any(item => item.IsGrabbed);
 
-        if (currentlyGrabbing)
+        if (CurrentlyResizing)
         {
             if (pinching)
             {
@@ -81,7 +82,7 @@ public class SlateResizing : MonoBehaviour
         Vector3 grabPoint = MainPinchDetector.Instance.PinchPoint.position;
         Vector3 relativeStartPoint = pivotPoint.worldToLocalMatrix * new Vector4(pinchStartPos.x, pinchStartPos.y, pinchStartPos.z, 1);
         Vector3 relativeGrabPoint = pivotPoint.worldToLocalMatrix * new Vector4(grabPoint.x, grabPoint.y, grabPoint.z, 1);
-
+        
         float xRatio = relativeGrabPoint.x / relativeStartPoint.x;
         float yRatio = relativeGrabPoint.y / relativeStartPoint.y;
         pivotPoint.localScale = new Vector3(xRatio, yRatio, 1);
@@ -126,6 +127,7 @@ public class SlateResizing : MonoBehaviour
         
         pivotPoint.SetParent(Slate);
         pivotPoint.localPosition = - grabbedCorner.ResizingPivot / 2;
+        pivotPoint.localRotation = Quaternion.identity;
         pivotPoint.SetParent(null);
         pivotPoint.localScale = Vector3.one;
         
