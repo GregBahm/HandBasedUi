@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class MainPanelArrangement : MonoBehaviour
 {
+    public const float VideoWidthHeightRatio = 1200f / 720;
+
     [Range(0, 1)]
     public float Summonness;
 
@@ -30,6 +32,10 @@ public class MainPanelArrangement : MonoBehaviour
     public Transform Slate;
     public Transform NamePlate;
     public Transform Thumbnail;
+    public SlateResizing Resizing;
+    public VideoCardTopButtons TopButtons;
+    public VideoCardBottomButtons ButtomButtons;
+
     public float VerticalButtonMargin;
     public float HorizontalSlateMargin;
     public float VerticalSlateMargin;
@@ -39,12 +45,40 @@ public class MainPanelArrangement : MonoBehaviour
     private void Update()
     {
         SummonToThumbnail();
-        PositionSlate();
+        Resizing.UpdateSlateResizing();
+        PositionVideoCard();
         PositionNamePlate();
+        TopButtons.PlaceButtons();
+        ButtomButtons.PlaceButtons();
+    }
+
+    private void PositionVideoCard()
+    {
+        float effectiveHorizontalMargin = HorizontalSlateMargin * PanelSummoness;
+        float effectiveVerticalMargin = VerticalSlateMargin * PanelSummoness;
+        Vector3 videoCardScale = new Vector3(Slate.localScale.x - effectiveHorizontalMargin, Slate.localScale.y - effectiveVerticalMargin, 1);
+        Vector3 clampedVideoCardScale = GetClampedVideocardScale(videoCardScale);
+        VideoCard.localScale = clampedVideoCardScale;
+    }
+
+    private Vector3 GetClampedVideocardScale(Vector3 availableSpace)
+    {
+        float ratio = availableSpace.x / availableSpace.y;
+        if(ratio < VideoWidthHeightRatio)
+        {
+            float newY = availableSpace.x * (1 / VideoWidthHeightRatio);
+            return new Vector3(availableSpace.x, newY, 1);
+        }
+        else
+        {
+            float newX = availableSpace.y * (VideoWidthHeightRatio);
+            return new Vector3(newX, availableSpace.y, 1);
+        }
     }
 
     private void SummonToThumbnail()
     {
+        //TODO: This
     }
 
     private void PositionNamePlate()
@@ -53,13 +87,5 @@ public class MainPanelArrangement : MonoBehaviour
         float y = VideoCard.localScale.y / 2 + NameplateMargin;
         NamePlate.localPosition = new Vector3(x, y, 0);
         NamePlate.localScale = new Vector3(Summonness, Summonness, Summonness);
-    }
-
-    private void PositionSlate()
-    {
-        float effectiveHorizontalMargin = HorizontalSlateMargin * PanelSummoness;
-        float effectiveVerticalMargin = VerticalSlateMargin * PanelSummoness;
-        Vector3 slateScale = new Vector3(VideoCard.localScale.x + effectiveHorizontalMargin, VideoCard.localScale.y + effectiveVerticalMargin, 1);
-        Slate.localScale = slateScale;
     }
 }

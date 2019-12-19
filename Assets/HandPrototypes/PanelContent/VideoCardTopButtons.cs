@@ -14,7 +14,7 @@ public class VideoCardTopButtons : MonoBehaviour
         fullScale = Buttons[0].localScale.x;
     }
 
-    private void Update()
+    public void PlaceButtons()
     {
         transform.localPosition = Vector3.zero;
 
@@ -22,7 +22,7 @@ public class VideoCardTopButtons : MonoBehaviour
         float itemWidth = Buttons[0].localScale.x;
 
         float videoSpan = MainPanel.VideoCard.localScale.x;
-        float xStart = -videoSpan / 2  + itemWidth / 2;
+        float xStart = -videoSpan / 2 + itemWidth / 2;
         float xEnd = videoSpan / 2 - itemWidth / 2;
 
         for (int i = 0; i < Buttons.Length; i++)

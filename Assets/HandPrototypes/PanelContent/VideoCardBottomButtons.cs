@@ -16,7 +16,7 @@ public class VideoCardBottomButtons : MonoBehaviour
         fullScale = Buttons[0].localScale.x;
     }
 
-    private void Update()
+    public void PlaceButtons()
     {
         transform.localPosition = Vector3.zero;
         float y = -MainPanel.VideoCard.localScale.y / 2 - MainPanel.VerticalButtonMargin;

@@ -8,25 +8,24 @@ public class SlateResizing : MonoBehaviour
 {
     public MainPanelArrangement Main;
     private Transform pivotPoint;
-    private Transform videoProxy;
-
-    public Transform MasterPosition;
+    
     public Transform Slate;
-    public Transform Video;
 
     public SlateResizingCorner LowerLeftCorner;
     public SlateResizingCorner LowerRightCorner;
     public SlateResizingCorner UpperLeftCorner;
     public SlateResizingCorner UpperRightCorner;
 
-    public float MinScale;
-    public float MaxScale;
+    public float MinWidth;
+    public float MaxWidth;
+    public float MinHeight;
+    public float MaxHeight;
 
     public float ResizingMargin;
 
     private IEnumerable<SlateResizingCorner> corners;
     private bool wasPinching;
-    private float startDistToPivot;
+    private Vector3 pinchStartPos;
 
     public SlateResizingCorner HoveredCorner { get; private set; }
     public float CornerGrabMargin = .1f;
@@ -34,12 +33,10 @@ public class SlateResizing : MonoBehaviour
     private void Start()
     {
         pivotPoint = new GameObject("PivotPoint").transform;
-        videoProxy = new GameObject("video Proxy").transform;
-        videoProxy.SetParent(pivotPoint);
         corners = new SlateResizingCorner[] { LowerLeftCorner, LowerRightCorner, UpperLeftCorner, UpperRightCorner };
     }
 
-    private void Update()
+    public void UpdateSlateResizing()
     {
         bool pinching = MainPinchDetector.Instance.Pinching;
         bool currentlyGrabbing = corners.Any(item => item.IsGrabbed);
@@ -80,14 +77,16 @@ public class SlateResizing : MonoBehaviour
 
     private void DoGrabUpdate()
     {
+        Slate.parent = pivotPoint;
         Vector3 grabPoint = MainPinchDetector.Instance.PinchPoint.position;
-        float distToPivot = (grabPoint - pivotPoint.position).magnitude;
-        distToPivot = Mathf.Clamp(distToPivot, MinScale, MaxScale);
+        Vector3 relativeStartPoint = pivotPoint.worldToLocalMatrix * new Vector4(pinchStartPos.x, pinchStartPos.y, pinchStartPos.z, 1);
+        Vector3 relativeGrabPoint = pivotPoint.worldToLocalMatrix * new Vector4(grabPoint.x, grabPoint.y, grabPoint.z, 1);
 
-        float ratio = distToPivot / startDistToPivot;
-        pivotPoint.localScale = new Vector3(ratio, ratio, ratio);
-        Video.localScale = videoProxy.lossyScale;
-        MasterPosition.position = videoProxy.position;
+        float xRatio = relativeGrabPoint.x / relativeStartPoint.x;
+        float yRatio = relativeGrabPoint.y / relativeStartPoint.y;
+        pivotPoint.localScale = new Vector3(xRatio, yRatio, 1);
+        transform.position = Slate.position;
+        Slate.parent = transform;
     }
 
     private void EndGrab()
@@ -123,24 +122,14 @@ public class SlateResizing : MonoBehaviour
 
     private void StartGrab(SlateResizingCorner grabbedCorner)
     {
-        // Start a pinch
         grabbedCorner.IsGrabbed = true;
-
-        float x = Slate.localScale.x / 2;
-        x *= -grabbedCorner.ResizingPivot.x;
-        float y = Slate.localScale.y / 2;
-        y *= -grabbedCorner.ResizingPivot.y;
-
-        pivotPoint.SetParent(MasterPosition.transform);
-        pivotPoint.localPosition = new Vector3(x, y, 0);
+        
+        pivotPoint.SetParent(Slate);
+        pivotPoint.localPosition = - grabbedCorner.ResizingPivot / 2;
         pivotPoint.SetParent(null);
         pivotPoint.localScale = Vector3.one;
-
-        videoProxy.position = Video.position;
-        videoProxy.localScale = Video.localScale;
-
-        Vector3 pinchStartPos = MainPinchDetector.Instance.PinchPoint.position;
-        startDistToPivot = (pinchStartPos - pivotPoint.position).magnitude;
+        
+        pinchStartPos = MainPinchDetector.Instance.PinchPoint.position;
     }
 
     private void PositionCorners()
