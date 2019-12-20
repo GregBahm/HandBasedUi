@@ -5,17 +5,32 @@ using UnityEngine;
 
 public class SlateRepositioning : MonoBehaviour
 {
+    public float Smoothing;
+    public float SnapThreshold;
     private bool wasPinching;
-    private Transform pinchPoint;
 
     public bool CurrentlyRepositioning { get; private set; }
     public SlateResizing Resizing;
     public BoxCollider SlateBox;
     public float GrabThreshold;
+    private Transform unsnappedTransform;
+    private Transform snappedTransform;
+
+    private Vector3 targetPosition;
+    private Quaternion targetRotation;
 
     private void Start()
     {
-        pinchPoint = new GameObject("Repositioning Point").transform;
+        unsnappedTransform = new GameObject("Unsnapped Transform").transform;
+        unsnappedTransform.position = transform.position;
+        unsnappedTransform.rotation = transform.rotation;
+
+        snappedTransform = new GameObject("Snapped Transform").transform;
+        snappedTransform.position = transform.position;
+        snappedTransform.rotation = transform.rotation;
+
+        targetPosition = transform.position;
+        targetRotation = transform.rotation;
     }
 
     public void UpdateSlatePositioning()
@@ -30,49 +45,80 @@ public class SlateRepositioning : MonoBehaviour
 
     private void UpdateInteraction(bool pinching)
     {
-
-        if (!pinching)
+        if(pinching)
         {
-            CurrentlyRepositioning = false;
-            transform.parent = null;
-        }
-        if(pinching && CurrentlyRepositioning)
-        {
-            ContinuePinch();
-        }
-        if(pinching && !wasPinching)
-        {
-            bool shoulStartPinch = GetShouldStartGrab();
-            if(shoulStartPinch)
+            if(CurrentlyRepositioning)
             {
-                StartGrab();
+                UpdatePinchPoint();
             }
         }
+        else
+        {
+            EndRepositioning();
+        }
+        bool shoulStartPinch = GetShouldStartGrab(pinching);
+        if (shoulStartPinch)
+        {
+            StartGrab();
+        }
+        UpdatePosition();
     }
 
-    private void ContinuePinch()
+    private void UpdatePosition()
     {
-        Vector3 positionTarget = MainPinchDetector.Instance.PinchPoint.position;
-        Quaternion rotationTarget = MainPinchDetector.Instance.PinchPoint.rotation;
-        // ToDo: The easing, snapping, etc.
-
-        pinchPoint.position = positionTarget;
-        pinchPoint.rotation = rotationTarget;
+        transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * Smoothing);
+        transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * Smoothing);
     }
 
-    private bool GetShouldStartGrab()
+    private void EndRepositioning()
     {
-        Vector3 grabPoint = MainPinchDetector.Instance.PinchPoint.position;
-        Vector3 closestPoint = SlateBox.ClosestPoint(grabPoint);
-        float grabDist = (grabPoint - closestPoint).magnitude;
-        return grabDist < GrabThreshold;
+        CurrentlyRepositioning = false;
+        snappedTransform.parent = null;
+        unsnappedTransform.parent = null;
+    }
+
+    private void UpdatePinchPoint()
+    {
+        targetPosition = snappedTransform.position;
+        targetRotation = GetSnappedRotation();
+    }
+    private Quaternion GetSnappedRotation()
+    {
+
+        snappedTransform.position = snappedTransform.position;
+        snappedTransform.LookAt(Camera.main.transform);
+        snappedTransform.Rotate(0, 180, 0, Space.Self);
+
+
+        float dot = Vector3.Dot(unsnappedTransform.forward, snappedTransform.forward);
+        if (dot > SnapThreshold)
+        {
+            return snappedTransform.rotation;
+        }
+        return unsnappedTransform.rotation;
+    }
+
+    private bool GetShouldStartGrab(bool pinching)
+    {
+        if(pinching && !wasPinching)
+        {
+            Vector3 grabPoint = MainPinchDetector.Instance.PinchPoint.position;
+            Vector3 closestPoint = SlateBox.ClosestPoint(grabPoint);
+            float grabDist = (grabPoint - closestPoint).magnitude;
+            return grabDist < GrabThreshold;
+        }
+        return false;
     }
 
     private void StartGrab()
     {
         CurrentlyRepositioning = true;
-        pinchPoint.position = MainPinchDetector.Instance.PinchPoint.position;
-        pinchPoint.rotation = MainPinchDetector.Instance.PinchPoint.rotation;
-        transform.parent = pinchPoint;
+        unsnappedTransform.position = transform.position;
+        unsnappedTransform.rotation = transform.rotation;
+        unsnappedTransform.parent = MainPinchDetector.Instance.PinchPoint;
+
+        snappedTransform.position = transform.position;
+        snappedTransform.rotation = transform.rotation;
+        snappedTransform.parent = MainPinchDetector.Instance.PinchPoint;
     }
 }
