@@ -37,21 +37,37 @@ public class MainPanelArrangement : MonoBehaviour
     public VideoCardTopButtons TopButtons;
     public VideoCardBottomButtons ButtomButtons;
 
+    public float ButtonHoverDist;
     public float VerticalButtonMargin;
     public float HorizontalSlateMargin;
     public float VerticalSlateMargin;
+    [Range(0, .1f)]
     public float BottomButtonSpacing;
     public float NameplateMargin;
 
+    private Vector3 unsummonedSlateScale;
+
     private void Update()
     {
-        SummonToThumbnail();
-        Resizing.UpdateSlateResizing();
+        HandleSlateSizing();
         Repositioning.UpdateSlatePositioning();
         PositionVideoCard();
         PositionNamePlate();
         TopButtons.PlaceButtons();
         ButtomButtons.PlaceButtons();
+    }
+
+    private void HandleSlateSizing()
+    {
+        if (Summonness < .99)
+        {
+            Slate.localScale = Vector3.Lerp(Thumbnail.localScale, unsummonedSlateScale, Summonness);
+        }
+        else
+        {
+            Resizing.UpdateSlateResizing();
+            unsummonedSlateScale = Slate.localScale;
+        }
     }
 
     private void PositionVideoCard()
@@ -78,16 +94,13 @@ public class MainPanelArrangement : MonoBehaviour
         }
     }
 
-    private void SummonToThumbnail()
-    {
-        //TODO: This
-    }
-
     private void PositionNamePlate()
     {
         float x = -VideoCard.localScale.x / 2 - NameplateMargin;
         float y = VideoCard.localScale.y / 2 + NameplateMargin;
-        NamePlate.localPosition = new Vector3(x, y, 0);
+        NamePlate.localPosition = new Vector3(x, y, NamePlate.localPosition.z);
+
+
         NamePlate.localScale = new Vector3(Summonness, Summonness, Summonness);
     }
 }

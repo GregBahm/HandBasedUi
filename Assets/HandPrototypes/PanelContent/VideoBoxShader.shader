@@ -31,6 +31,7 @@
                 float4 vertex : SV_POSITION;
 				float3 normal : NORMAL;
 				float3 objSpace : TEXCOORD1;
+				float3 worldNormal : TEXCOORD2;
 				UNITY_VERTEX_OUTPUT_STEREO
             };
 
@@ -47,6 +48,7 @@
                 o.uv = v.uv;
 				o.normal = v.normal;
 				o.objSpace = v.vertex;
+				o.worldNormal = normalize(mul(unity_ObjectToWorld, v.normal));
                 return o;
             }
 
@@ -62,9 +64,10 @@
 				borderAlpha = lerp(1, borderAlpha, saturate(-i.normal.z));
 
                 fixed4 cardTex = tex2D(_MainTex, i.objSpace.xy + .5);
-				float4 sideCol = (i.objSpace.y + .5) * .2;
-				sideCol += saturate(-i.normal.z) * .1;
-				sideCol += .2;
+				float4 sideCol = dot(i.worldNormal, float3(0, 1, 0)) * .5 + .5;
+				sideCol = lerp(sideCol, i.objSpace.y + 1, .5);
+				sideCol = lerp(sideCol, i.objSpace.y + 1, .5);
+				sideCol = pow(sideCol, .5);
 				//return sideCol;
 				//sideCol += (1 - (i.objSpace.z + .5)) * .5;
 				float4 ret = lerp(cardTex, sideCol, borderAlpha);

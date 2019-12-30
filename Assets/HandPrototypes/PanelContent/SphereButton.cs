@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MenuItemButton : MonoBehaviour
+public class SphereButton : MonoBehaviour
 {
     public bool IsDisabled;
     public ButtonInteractionStyles InteractionStyle;
@@ -13,7 +13,7 @@ public class MenuItemButton : MonoBehaviour
     public event EventHandler Pressed;
     public event EventHandler Released;
 
-    public ButtonStyling Colors;
+    public ButtonStyling Styling;
 
     private ButtonState state;
 
@@ -22,7 +22,9 @@ public class MenuItemButton : MonoBehaviour
     private float fingerDistance;
 
     public Renderer BackgroundRenderer;
+    public Renderer SphereRenderer;
     private Material quadMeshMat;
+    private Material sphereMeshMat;
 
     public Transform ButtonContent;
 
@@ -48,6 +50,7 @@ public class MenuItemButton : MonoBehaviour
     private void Start()
     {
         quadMeshMat = BackgroundRenderer.material;
+        sphereMeshMat = SphereRenderer.material;
     }
 
     private void Update()
@@ -72,8 +75,10 @@ public class MenuItemButton : MonoBehaviour
     {
         Color colorTarget = GetStateColor();
         currentColor = Color.Lerp(currentColor, colorTarget, Time.deltaTime * 15);
-        
+
+        sphereMeshMat.SetColor("_Color", currentColor);
         quadMeshMat.SetColor("_Color", currentColor);
+        sphereMeshMat.SetFloat("_Disabledness", state == ButtonState.Disabled ? 1 : 0);
         quadMeshMat.SetFloat("_Disabledness", state == ButtonState.Disabled ? 1 : 0);
     }
 
@@ -82,28 +87,33 @@ public class MenuItemButton : MonoBehaviour
         switch (state)
         {
             case ButtonState.Ready:
-                return Toggled ? Colors.ReadyToggledColor :Colors.ReadyColor;
+                return Toggled ? Styling.ReadyToggledColor :Styling.ReadyColor;
             case ButtonState.Hovered:
-                return Colors.HoverColor;
+                return Styling.HoverColor;
             case ButtonState.Pressing:
-                return Colors.PressingColor;
+                return Styling.PressingColor;
             case ButtonState.Disabled:
             default:
-                return Colors.DisabledColor;
+                return Styling.DisabledColor;
         }
     }
 
-    private bool IsHoveringOver(out RaycastHit hitInfo)
+    private bool IsHoveringOver(float fingerDist)
     {
-        Ray ray = new Ray(HandPrototypeProxies.Instance.RightIndex.position, transform.forward);
-        return Backdrop.Raycast(ray, out hitInfo, float.PositiveInfinity);
+        float radius = transform.lossyScale.x;
+        return fingerDist < (Styling.HoverRadius + radius);
     }
 
-    private bool IsHoveringUnder()
+    private float GetFingerDist()
     {
-        RaycastHit hitInfo;
-        Ray ray = new Ray(HandPrototypeProxies.Instance.RightIndex.position, -transform.forward);
-        return BackwardsBackdrop.Raycast(ray, out hitInfo, float.PositiveInfinity);
+        Vector3 fingerTipPos = HandPrototypeProxies.Instance.RightIndex.position;
+        return (transform.position - fingerTipPos).magnitude;
+    }
+
+    private bool IsHoveringUnder(float fingerDist)
+    {
+        float radius = transform.lossyScale.x;
+        return fingerDist < radius;
     }
 
     private void UpdateInteraction()
@@ -116,21 +126,21 @@ public class MenuItemButton : MonoBehaviour
         {
             state = ButtonState.Ready;
         }
+        float fingerDist = GetFingerDist();
         if(state == ButtonState.Pressing)
         {
-            if(!IsHoveringUnder())
+            if(!IsHoveringUnder(fingerDist))
             {
                 OnRelease();
             }
         }
-        RaycastHit hoverInfo;
         if(state == ButtonState.Hovered)
         {
-            if (IsHoveringUnder())
+            if (IsHoveringUnder(fingerDist))
             {
                 OnPress();
             }
-            else if (!IsHoveringOver(out hoverInfo))
+            else if (!IsHoveringOver(fingerDist))
             {
                 state = ButtonState.Ready;
             }
@@ -141,7 +151,7 @@ public class MenuItemButton : MonoBehaviour
         }
         if(state == ButtonState.Ready)
         {
-            if(IsHoveringOver(out hoverInfo))
+            if(IsHoveringOver(fingerDist))
             {
                 state = ButtonState.Hovered;
                 //Manager.RegisterHover(hoverInfo.point);

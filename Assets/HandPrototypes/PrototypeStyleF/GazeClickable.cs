@@ -10,7 +10,7 @@ public class GazeClickable : MonoBehaviour
     public Renderer BackgroundRenderer;
     private Material quadMeshMat;
 
-    public ButtonColors Manager;
+    public ButtonStyling Manager;
 
     private ButtonState state;
 

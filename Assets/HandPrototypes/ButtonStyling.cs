@@ -3,8 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ButtonColors : MonoBehaviour
+public class ButtonStyling : MonoBehaviour
 {
+    public MainPanelArrangement Main;
+    public float HoverRadius { get { return Main.ButtonHoverDist; } }
     public Color ReadyColor = Color.black;
     public Color ReadyToggledColor = Color.gray;
     public Color HoverColor = Color.blue;

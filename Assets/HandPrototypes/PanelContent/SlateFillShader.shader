@@ -43,6 +43,8 @@
 
             float _Grabbedness;
 
+			float3 _ButtonPositions[16];
+
             float GetFingerContribution(float3 fingerPos, float3 worldPos, float3 normal)
             {
                 float3 toFinger = fingerPos - worldPos;
