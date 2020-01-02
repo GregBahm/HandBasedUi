@@ -2,6 +2,7 @@
 {
     Properties
     {
+		_ButtonRadiusOffset("Button RadiusOffset ", Range(-0.001, .001)) = .05
     }
     SubShader
     {
@@ -10,7 +11,7 @@
 
         Cull Off
         ZWrite Off
-        Blend One One
+        Blend OneMinusDstColor One
         Pass
         {
             CGPROGRAM
@@ -36,6 +37,8 @@
                 UNITY_VERTEX_OUTPUT_STEREO
             };
 
+			float _ButtonRadiusOffset;
+
             float3 _LeftThumbTip;
             float3 _LeftIndexTip;
             float3 _RightThumbTip;
@@ -43,7 +46,31 @@
 
             float _Grabbedness;
 
-			float3 _ButtonPositions[16];
+			#define ButtonCount 15
+			float4 _ButtonPositions[ButtonCount]; // xyz is worldspace position, w is scale
+			float3 _ButtonColors[ButtonCount];
+
+
+			float4 GetButtonGlow(float3 worldPos)
+			{
+				float3 retColor = 0;
+				float retStrength = 1;
+				for (uint i = 0; i < ButtonCount; i++)
+				{
+					float3 buttonCol = _ButtonColors[i];
+					float3 buttonPos = _ButtonPositions[i].xyz;
+					float dist = length(worldPos - buttonPos) * .2;
+					float butttonRadius = _ButtonPositions[i].w * .1 +_ButtonRadiusOffset;
+					retStrength *= saturate(saturate(dist - butttonRadius) * 5000);
+
+					float strength = saturate(1 + butttonRadius - dist);
+					strength = pow(strength, 200);
+					strength *= .2;
+					retColor += buttonCol * strength;
+				}
+
+				return float4(retColor, retStrength);
+			}
 
             float GetFingerContribution(float3 fingerPos, float3 worldPos, float3 normal)
             {
@@ -92,8 +119,11 @@
                 float fingerLighting = GetFingerLighting(i.worldPos, i.worldNormal);
                 float baseFill = fingerLighting * .4;
                 float grabFill = GetGrabFill(i.uv);
-                float ret = lerp(baseFill, grabFill, _Grabbedness);
-                return ret;
+				float4 buttonGlow = GetButtonGlow(i.worldPos);
+                float3 ret = lerp(baseFill, grabFill, _Grabbedness);
+				ret += buttonGlow.rgb;
+				ret *= buttonGlow.a;
+                return float4(ret, 1);
             }
             ENDCG
         }

@@ -6,7 +6,16 @@ using UnityEngine;
 
 public class SlateResizing : MonoBehaviour
 {
-    public bool CurrentlyResizing { get; private set; }
+    public bool CurrentlyResizing
+    {
+        get
+        {
+            return LowerLeftCorner.IsGrabbed
+                || LowerRightCorner.IsGrabbed
+                || UpperLeftCorner.IsGrabbed
+                || UpperRightCorner.IsGrabbed;
+        }
+    }
     public MainPanelArrangement Main;
     private Transform pivotPoint;
     
@@ -40,7 +49,6 @@ public class SlateResizing : MonoBehaviour
     public void UpdateSlateResizing()
     {
         bool pinching = MainPinchDetector.Instance.Pinching;
-        CurrentlyResizing = corners.Any(item => item.IsGrabbed);
 
         if (CurrentlyResizing)
         {
@@ -80,14 +88,26 @@ public class SlateResizing : MonoBehaviour
     {
         Slate.parent = pivotPoint;
         Vector3 grabPoint = MainPinchDetector.Instance.PinchPoint.position;
+
         Vector3 relativeStartPoint = pivotPoint.worldToLocalMatrix * new Vector4(pinchStartPos.x, pinchStartPos.y, pinchStartPos.z, 1);
         Vector3 relativeGrabPoint = pivotPoint.worldToLocalMatrix * new Vector4(grabPoint.x, grabPoint.y, grabPoint.z, 1);
-        
-        float xRatio = relativeGrabPoint.x / relativeStartPoint.x;
-        float yRatio = relativeGrabPoint.y / relativeStartPoint.y;
+        Vector3 clampedGrabPoint = GetClampedGrabPoint(relativeGrabPoint);
+
+        float xRatio = clampedGrabPoint.x / relativeStartPoint.x;
+        float yRatio = clampedGrabPoint.y / relativeStartPoint.y;
         pivotPoint.localScale = new Vector3(xRatio, yRatio, 1);
         transform.position = Slate.position;
         Slate.parent = transform;
+    }
+
+    private Vector3 GetClampedGrabPoint(Vector3 grabPoint)
+    {
+        Vector3 test = pivotPoint.worldToLocalMatrix * new Vector4(grabPoint.x, grabPoint.y, grabPoint.z, 0);
+        Debug.Log("Test: " + test.y );
+        return grabPoint;
+        //float clampedX = Mathf.Clamp(grabPoint.x, MinWidth, MaxWidth);
+        //float clampedY = Mathf.Clamp(grabPoint.y, MinHeight, MaxHeight);
+        //return new Vector3(clampedX, clampedY, grabPoint.z);
     }
 
     private void EndGrab()
@@ -96,6 +116,7 @@ public class SlateResizing : MonoBehaviour
         {
             corner.IsGrabbed = false;
         }
+        Main.Repositioning.OnEndResizing();
     }
 
     private bool ShouldStartGrab(bool pinching)

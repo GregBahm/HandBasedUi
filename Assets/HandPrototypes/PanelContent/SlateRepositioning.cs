@@ -33,6 +33,12 @@ public class SlateRepositioning : MonoBehaviour
         targetRotation = transform.rotation;
     }
 
+    public void OnEndResizing()
+    {
+        targetPosition = transform.position;
+        targetRotation = transform.rotation;
+    }
+
     public void UpdateSlatePositioning()
     {
         bool pinching = MainPinchDetector.Instance.Pinching;

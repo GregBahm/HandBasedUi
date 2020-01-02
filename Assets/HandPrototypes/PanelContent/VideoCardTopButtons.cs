@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class VideoCardTopButtons : MonoBehaviour
@@ -14,6 +15,7 @@ public class VideoCardTopButtons : MonoBehaviour
     private void Start()
     {
         fullScale = Buttons[0].localScale.x;
+        SphereButton[] sphereButtons = Buttons.Select(item => item.GetComponent<SphereButton>()).ToArray();
     }
 
     public void PlaceButtons()

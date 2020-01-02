@@ -32,7 +32,7 @@ public class SphereButton : MonoBehaviour
     private const float HoverDist = -0.2f;
     private const float PressDist = 0.08f;
 
-    private Color currentColor;
+    public Color CurrentColor { get; private set; }
 
     private enum ButtonState
     {
@@ -74,10 +74,10 @@ public class SphereButton : MonoBehaviour
     private void UpdateMaterial()
     {
         Color colorTarget = GetStateColor();
-        currentColor = Color.Lerp(currentColor, colorTarget, Time.deltaTime * 15);
+        CurrentColor = Color.Lerp(CurrentColor, colorTarget, Time.deltaTime * 15);
 
-        sphereMeshMat.SetColor("_Color", currentColor);
-        quadMeshMat.SetColor("_Color", currentColor);
+        sphereMeshMat.SetColor("_Color", CurrentColor);
+        quadMeshMat.SetColor("_Color", CurrentColor);
         sphereMeshMat.SetFloat("_Disabledness", state == ButtonState.Disabled ? 1 : 0);
         quadMeshMat.SetFloat("_Disabledness", state == ButtonState.Disabled ? 1 : 0);
     }
