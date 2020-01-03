@@ -3,8 +3,8 @@
     Properties
     {
 		_Color("Color", Color) = (1,1,1,1)
-		_InnerRingThickness("Inner Ring Thickness", Range(0, 1))= .1
 		_ShineRamp("Shine Ramp", Float) = 1
+
     }
     SubShader
     {
@@ -39,7 +39,6 @@
 			};
 
 			float4 _Color;
-			float _InnerRingThickness;
 
 			v2f vert(appdata v)
 			{
@@ -47,6 +46,7 @@
 				UNITY_SETUP_INSTANCE_ID(v);
 				UNITY_INITIALIZE_OUTPUT(v2f, o);
 				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
+
 				o.vertex = UnityObjectToClipPos(v.vertex);
 				o.uv = v.uv;
 				o.worldNormal = v.normal;
@@ -62,6 +62,7 @@
 			}
 			ENDCG
 		}
+		/*
         Pass
         {
 			ZWrite Off
@@ -88,11 +89,11 @@
                 float4 vertex : SV_POSITION;
 				float3 worldNormal : NORMAL;
 				float3 objSpace : TEXCOORD1;
+				float3 viewDir : TEXCOORD2;
 				UNITY_VERTEX_OUTPUT_STEREO
             };
 
 			float4 _Color;
-			float _InnerRingThickness;
 			float _ShineRamp;
 
             v2f vert (appdata v)
@@ -105,19 +106,24 @@
                 o.uv = v.uv;
 				o.worldNormal = mul(unity_ObjectToWorld, v.normal);
 				o.objSpace = v.vertex;
+				o.viewDir = WorldSpaceViewDir(v.vertex);
                 return o;
             }
 
             fixed4 frag (v2f i) : SV_Target
             {
+				i.viewDir = normalize(i.viewDir);
 				float3 norm = normalize(i.worldNormal);
-				float3 light = normalize(float3(1, 1, -1));
-				float theDot = dot(norm, light);
+				float3 light = normalize(float3(0, 1, 0));
+				float3 reflected = normalize(light + i.viewDir);
+				float theDot = dot(norm, reflected);
 				theDot = theDot * .5 + .5;
 				theDot = pow(theDot, _ShineRamp);
+				theDot = 1 - theDot;
 				return theDot * _Color;
             }
             ENDCG
         }
+		*/
     }
 }

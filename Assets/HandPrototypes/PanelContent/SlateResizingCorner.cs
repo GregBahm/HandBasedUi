@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class SlateResizingCorner : MonoBehaviour
 {
+    public Transform Slate;
     public BoxCollider GrabBox;
 
     public bool IsGrabbed;
@@ -16,6 +17,15 @@ public class SlateResizingCorner : MonoBehaviour
 
     private float cornerScale;
     private float cornerOpacity;
+
+    public Transform Anchor { get; private set; }
+
+    private void Start()
+    {
+        Anchor = new GameObject("RisizingCornerAnchor").transform;
+        Anchor.SetParent(Slate, false);
+        Anchor.localPosition = new Vector3(ResizingPivot.x / 2, ResizingPivot.y / 2, 0);
+    }
 
     private void Update()
     {

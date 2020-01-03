@@ -64,8 +64,8 @@
 					retStrength *= saturate(saturate(dist - butttonRadius) * 5000);
 
 					float strength = saturate(1 + butttonRadius - dist);
-					strength = pow(strength, 200);
-					strength *= .2;
+					strength = pow(strength, 500);
+					strength *= .5;
 					retColor += buttonCol * strength;
 				}
 

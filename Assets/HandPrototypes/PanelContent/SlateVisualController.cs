@@ -7,15 +7,15 @@ public class SlateVisualController : MonoBehaviour
 {
     private float borderBrightness;
 
-    [Range(0, .1f)]
+    [Range(0, .005f)]
     [SerializeField]
     private float lineWidth;
 
-    [Range(0, 1)]
+    [Range(0, .05f)]
     [SerializeField]
     private float rounding;
 
-    [Range(1, 32)]
+    [Range(1, 16)]
     [SerializeField]
     private int cornerVerts;
 

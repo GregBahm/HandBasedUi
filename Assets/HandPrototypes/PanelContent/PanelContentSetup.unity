@@ -220,6 +220,11 @@ PrefabInstance:
       propertyPath: ResizingPivot.y
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5012297868976670124, guid: 11266f26a4ac6fd4cb8e497905fd9d25,
+        type: 3}
+      propertyPath: Slate
+      value: 
+      objectReference: {fileID: 9197353186617495837}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 11266f26a4ac6fd4cb8e497905fd9d25, type: 3}
 --- !u!1 &61310264
@@ -835,6 +840,11 @@ PrefabInstance:
       propertyPath: ResizingPivot.y
       value: -1
       objectReference: {fileID: 0}
+    - target: {fileID: 5012297868976670124, guid: 11266f26a4ac6fd4cb8e497905fd9d25,
+        type: 3}
+      propertyPath: Slate
+      value: 
+      objectReference: {fileID: 9197353186617495837}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 11266f26a4ac6fd4cb8e497905fd9d25, type: 3}
 --- !u!1 &267725243
@@ -3617,6 +3627,11 @@ PrefabInstance:
       propertyPath: ResizingPivot.y
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5012297868976670124, guid: 11266f26a4ac6fd4cb8e497905fd9d25,
+        type: 3}
+      propertyPath: Slate
+      value: 
+      objectReference: {fileID: 9197353186617495837}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 11266f26a4ac6fd4cb8e497905fd9d25, type: 3}
 --- !u!1001 &890975191
@@ -8126,6 +8141,11 @@ PrefabInstance:
       propertyPath: ResizingPivot.y
       value: -1
       objectReference: {fileID: 0}
+    - target: {fileID: 5012297868976670124, guid: 11266f26a4ac6fd4cb8e497905fd9d25,
+        type: 3}
+      propertyPath: Slate
+      value: 
+      objectReference: {fileID: 9197353186617495837}
     - target: {fileID: 4536238437022340857, guid: 11266f26a4ac6fd4cb8e497905fd9d25,
         type: 3}
       propertyPath: m_Parameters.colorGradient.m_Mode
@@ -8358,7 +8378,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lineWidth: 0.001
-  rounding: 0.016
+  rounding: 0.0426
   cornerVerts: 5
 --- !u!33 &9197353186617495834
 MeshFilter:

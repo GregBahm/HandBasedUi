@@ -35,7 +35,8 @@ public class SlateResizing : MonoBehaviour
 
     private IEnumerable<SlateResizingCorner> corners;
     private bool wasPinching;
-    private Vector3 pinchStartPos;
+    private Vector3 pinchHandStartPos;
+    private Vector3 pinchCornerStartPos;
 
     public SlateResizingCorner HoveredCorner { get; private set; }
     public float CornerGrabMargin = .1f;
@@ -88,8 +89,10 @@ public class SlateResizing : MonoBehaviour
     {
         Slate.parent = pivotPoint;
         Vector3 grabPoint = MainPinchDetector.Instance.PinchPoint.position;
-        
-        Vector2 newScale = GetScale(grabPoint);
+        Vector3 grabOffset = grabPoint - pinchHandStartPos;
+        Vector3 effectiveGrabPoint = pinchCornerStartPos + grabOffset;
+
+        Vector2 newScale = GetScale(effectiveGrabPoint);
 
         pivotPoint.localScale = new Vector3(newScale.x, newScale.y, 1);
         transform.position = Slate.position;
@@ -101,8 +104,7 @@ public class SlateResizing : MonoBehaviour
         Plane rightPlane = new Plane(pivotPoint.right, pivotPoint.position);
         Vector3 rightProjection = rightPlane.ClosestPointOnPlane(grabPoint);
         float xDist = (grabPoint - rightProjection).magnitude;
-
-
+        
         Plane upPlane = new Plane(pivotPoint.up, pivotPoint.position);
         Vector3 upProjection = upPlane.ClosestPointOnPlane(grabPoint);
         float yDist = (grabPoint - upProjection).magnitude;
@@ -154,8 +156,9 @@ public class SlateResizing : MonoBehaviour
         pivotPoint.localRotation = Quaternion.identity;
         pivotPoint.SetParent(null);
         pivotPoint.localScale = Slate.localScale;
-        
-        pinchStartPos = MainPinchDetector.Instance.PinchPoint.position;
+
+        pinchHandStartPos = MainPinchDetector.Instance.PinchPoint.position;
+        pinchCornerStartPos = grabbedCorner.Anchor.position;
     }
 
     private void PositionCorners()
