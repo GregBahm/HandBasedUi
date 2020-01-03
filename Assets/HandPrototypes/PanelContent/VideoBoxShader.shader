@@ -3,7 +3,7 @@
     Properties
     {
         _MainTex ("Texture", 2D) = "white" {}
-		_BorderThickness("Border", Range(0, 1)) = .5
+		_BorderThickness("Border", Range(0, .05)) = .5
     }
     SubShader
     {
@@ -65,9 +65,8 @@
 
                 fixed4 cardTex = tex2D(_MainTex, i.objSpace.xy + .5);
 				float4 sideCol = dot(i.worldNormal, float3(0, 1, 0)) * .5 + .5;
-				sideCol = lerp(sideCol, i.objSpace.y + 1, .5);
-				sideCol = lerp(sideCol, i.objSpace.y + 1, .5);
-				sideCol = pow(sideCol, .5);
+				sideCol = lerp(sideCol, i.objSpace.y + 1, .3);
+				//sideCol = pow(sideCol, .5);
 				//return sideCol;
 				//sideCol += (1 - (i.objSpace.z + .5)) * .5;
 				float4 ret = lerp(cardTex, sideCol, borderAlpha);

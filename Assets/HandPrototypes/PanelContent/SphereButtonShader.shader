@@ -58,6 +58,7 @@
 			{
 				clip(i.objSpace.z);
 				float shade = i.objSpace.y + 1;
+				shade = lerp(shade, 1, .5);
 				return _Color * shade;
 			}
 			ENDCG
