@@ -307,12 +307,12 @@ MonoBehaviour:
   LowerRightCorner: {fileID: 1395947097}
   UpperLeftCorner: {fileID: 2019083467}
   UpperRightCorner: {fileID: 1983730104}
-  MinWidth: 0.1
-  MaxWidth: 0.3
-  MinHeight: 0.1
-  MaxHeight: 0.03
+  MinWidth: 0.12
+  MaxWidth: 1
+  MinHeight: 0.13
+  MaxHeight: 1
   ResizingMargin: 0.02
-  CornerGrabMargin: 0.02
+  CornerGrabMargin: 0.03
 --- !u!114 &61310268
 MonoBehaviour:
   m_ObjectHideFlags: 0

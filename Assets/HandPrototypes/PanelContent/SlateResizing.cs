@@ -88,26 +88,29 @@ public class SlateResizing : MonoBehaviour
     {
         Slate.parent = pivotPoint;
         Vector3 grabPoint = MainPinchDetector.Instance.PinchPoint.position;
+        
+        Vector2 newScale = GetScale(grabPoint);
 
-        Vector3 relativeStartPoint = pivotPoint.worldToLocalMatrix * new Vector4(pinchStartPos.x, pinchStartPos.y, pinchStartPos.z, 1);
-        Vector3 relativeGrabPoint = pivotPoint.worldToLocalMatrix * new Vector4(grabPoint.x, grabPoint.y, grabPoint.z, 1);
-        Vector3 clampedGrabPoint = GetClampedGrabPoint(relativeGrabPoint);
-
-        float xRatio = clampedGrabPoint.x / relativeStartPoint.x;
-        float yRatio = clampedGrabPoint.y / relativeStartPoint.y;
-        pivotPoint.localScale = new Vector3(xRatio, yRatio, 1);
+        pivotPoint.localScale = new Vector3(newScale.x, newScale.y, 1);
         transform.position = Slate.position;
         Slate.parent = transform;
     }
 
-    private Vector3 GetClampedGrabPoint(Vector3 grabPoint)
+    private Vector2 GetScale(Vector3 grabPoint)
     {
-        Vector3 test = pivotPoint.worldToLocalMatrix * new Vector4(grabPoint.x, grabPoint.y, grabPoint.z, 0);
-        Debug.Log("Test: " + test.y );
-        return grabPoint;
-        //float clampedX = Mathf.Clamp(grabPoint.x, MinWidth, MaxWidth);
-        //float clampedY = Mathf.Clamp(grabPoint.y, MinHeight, MaxHeight);
-        //return new Vector3(clampedX, clampedY, grabPoint.z);
+        Plane rightPlane = new Plane(pivotPoint.right, pivotPoint.position);
+        Vector3 rightProjection = rightPlane.ClosestPointOnPlane(grabPoint);
+        float xDist = (grabPoint - rightProjection).magnitude;
+
+
+        Plane upPlane = new Plane(pivotPoint.up, pivotPoint.position);
+        Vector3 upProjection = upPlane.ClosestPointOnPlane(grabPoint);
+        float yDist = (grabPoint - upProjection).magnitude;
+
+        float clampedX = Mathf.Clamp(Mathf.Abs(xDist), MinWidth, MaxWidth);
+        float clampedy = Mathf.Clamp(Mathf.Abs(yDist), MinHeight, MaxHeight);
+
+        return new Vector2(clampedX, clampedy);
     }
 
     private void EndGrab()
@@ -150,7 +153,7 @@ public class SlateResizing : MonoBehaviour
         pivotPoint.localPosition = - grabbedCorner.ResizingPivot / 2;
         pivotPoint.localRotation = Quaternion.identity;
         pivotPoint.SetParent(null);
-        pivotPoint.localScale = Vector3.one;
+        pivotPoint.localScale = Slate.localScale;
         
         pinchStartPos = MainPinchDetector.Instance.PinchPoint.position;
     }
