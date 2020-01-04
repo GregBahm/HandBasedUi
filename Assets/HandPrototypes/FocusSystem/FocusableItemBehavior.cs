@@ -8,7 +8,11 @@ public abstract class FocusableItemBehavior : MonoBehaviour, IFocusableItem
 
     [SerializeField]
     private bool isFocusable = true;
-    public bool IsFocusable { get { return this.isFocusable; } }
+    public bool IsFocusable
+    {
+        get { return this.isFocusable; }
+        set { this.isFocusable = value; }
+    }
 
     [SerializeField]
     private FocusPriority priority = FocusPriority.Medium;

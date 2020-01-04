@@ -11,8 +11,14 @@ public class FocusManager : MonoBehaviour
     private readonly List<IFocusableItem> highPris = new List<IFocusableItem>();
     private readonly List<IFocusableItem> midPris = new List<IFocusableItem>();
     private readonly List<IFocusableItem> lowPris = new List<IFocusableItem>();
-    
+
+    public FocusableItemBehavior Debug;
     public IFocusableItem FocusedItem { get; set; }
+
+    public bool FocusForced
+    {
+        get { return FocusedItem != null && FocusedItem.ForceFocus; }
+    }
 
     private void Awake()
     {
@@ -21,10 +27,11 @@ public class FocusManager : MonoBehaviour
 
     private void Update()
     {
-        if(FocusedItem == null || !FocusedItem.ForceFocus)
+        if(!FocusForced)
         {
             FocusedItem = GetCurrentFocusedItem();
         }
+        Debug = FocusedItem as FocusableItemBehavior;
     }
 
     public void RegisterFocusable(IFocusableItem focusable)

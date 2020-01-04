@@ -122,8 +122,9 @@ GameObject:
   m_Component:
   - component: {fileID: 22620709}
   - component: {fileID: 22620710}
+  - component: {fileID: 22620711}
   m_Layer: 0
-  m_Name: Thumbnail
+  m_Name: MainPanelThumbnail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -161,6 +162,23 @@ MonoBehaviour:
   priority: 1
   activationDistance: 0.03
   box: {fileID: 1601752597}
+--- !u!114 &22620711
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 22620708}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91804a66418a26047858b92b9256bc5e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Focus: {fileID: 22620710}
+  Visuals: {fileID: 1601752595}
+  Panel: {fileID: 61310265}
+  SummonDuration: 0.3
+  SummonRamp: 0.5
 --- !u!1001 &57959784
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -281,7 +299,7 @@ MonoBehaviour:
   VideoCard: {fileID: 5734923561351271706}
   Slate: {fileID: 9197353186617495837}
   NamePlate: {fileID: 425777323}
-  Thumbnail: {fileID: 22620710}
+  Thumbnail: {fileID: 22620711}
   Resizing: {fileID: 61310267}
   Repositioning: {fileID: 61310268}
   TopButtons: {fileID: 140238646}
@@ -292,8 +310,6 @@ MonoBehaviour:
   VerticalSlateMargin: 0.08
   BottomButtonSpacing: 0.026
   NameplateMargin: -0.01
-  SummonDuration: 0.3
-  SummonRamp: 0.5
 --- !u!4 &61310266
 Transform:
   m_ObjectHideFlags: 0
@@ -366,7 +382,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 529d63acc2e682242a0a9266c871cd10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  focusType: 1
+  focusType: 0
   isFocusable: 1
   priority: 2
   activationDistance: 0.05
@@ -4675,6 +4691,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aaf8f5c102e71a14ea2751a730ea826e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Debug: {fileID: 0}
 --- !u!4 &1084615525
 Transform:
   m_ObjectHideFlags: 0
@@ -7135,36 +7152,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1701857235}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &1708120494
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1708120496}
-  m_Layer: 0
-  m_Name: SceneManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1708120496
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1708120494}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.07074389, y: 0.012251295, z: 0.68943083}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 6
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1715944812
 GameObject:
   m_ObjectHideFlags: 0

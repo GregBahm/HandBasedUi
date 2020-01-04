@@ -31,7 +31,7 @@ public class MainPanelArrangement : MonoBehaviour
     public Transform VideoCard;
     public Transform Slate;
     public Transform NamePlate;
-    public BoxFocusable Thumbnail;
+    public PanelThumbnailBehavior Thumbnail;
     public SlateResizing Resizing;
     public SlateRepositioning Repositioning;
     public VideoCardTopButtons TopButtons;
@@ -45,16 +45,11 @@ public class MainPanelArrangement : MonoBehaviour
     public float BottomButtonSpacing;
     public float NameplateMargin;
 
-    public float SummonDuration = 1;
-    public float SummonRamp = 1;
-    private float summonTime;
-    private bool thumbnailGrabbed;
     private Vector3 unsummonedSlateScale;
     
     private void Update()
     {
-        PositionThumbnail();
-        HandleThumbnailGrab();
+        Thumbnail.UpdateThumbnail();
         HandleSlateSizing();
         Repositioning.UpdateSlatePositioning();
         PositionVideoCard();
@@ -63,42 +58,9 @@ public class MainPanelArrangement : MonoBehaviour
         ButtomButtons.PlaceButtons();
     }
 
-    private void PositionThumbnail()
-    {
-        Thumbnail.transform.position = HandPrototypeProxies.Instance.LeftPalm.position + new Vector3(0, .1f, 0);
-    }
-
-    private void HandleThumbnailGrab()
-    {
-        if(ShouldStartThumbnailGrab())
-        {
-            StartThumbnailGrab();
-        }
-        summonTime -= Time.deltaTime;
-        summonTime = Mathf.Clamp(summonTime, 0, SummonDuration);
-        Summonness = 1 - (summonTime / SummonDuration);
-        Summonness = Mathf.Pow(Summonness, SummonRamp);
-        thumbnailGrabbed = MainPinchDetector.Instance.Pinching;
-        Thumbnail.gameObject.SetActive(!thumbnailGrabbed);
-    }
-
-    private void StartThumbnailGrab()
-    {
-        summonTime = SummonDuration;
-        transform.position = Thumbnail.transform.position;
-        transform.rotation = Thumbnail.transform.rotation;
-        Repositioning.StartGrab();
-        thumbnailGrabbed = true;
-    }
-
-    private bool ShouldStartThumbnailGrab()
-    {
-        return FocusManager.Instance.FocusedItem == Thumbnail && MainPinchDetector.Instance.PinchBeginning;
-    }
-
     private void HandleSlateSizing()
     {
-        if (Summonness < .99f)
+        if (Summonness < .999f)
         {
             Slate.localScale = Vector3.Lerp(Thumbnail.transform.localScale, unsummonedSlateScale, Summonness);
         }

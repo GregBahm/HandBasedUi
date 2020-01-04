@@ -46,12 +46,6 @@
 				UNITY_SETUP_INSTANCE_ID(v);
 				UNITY_INITIALIZE_OUTPUT(v2f, o);
 				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
-
-				if (v.vertex.z > .2)
-				{
-					v.vertex.z = .2;
-				}
-
 				o.vertex = UnityObjectToClipPos(v.vertex);
 				o.uv = v.uv;
 				o.worldNormal = v.normal;

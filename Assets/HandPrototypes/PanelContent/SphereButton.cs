@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class SphereButton : MonoBehaviour
 {
+    public PointFocusable Focus;
     public bool IsDisabled;
     public ButtonInteractionStyles InteractionStyle;
     public bool Toggled;
@@ -16,21 +17,13 @@ public class SphereButton : MonoBehaviour
     public ButtonStyling Styling;
 
     private ButtonState state;
-
-    public MeshCollider Backdrop;
-    public MeshCollider BackwardsBackdrop;
+    
     private float fingerDistance;
-
-    public Renderer BackgroundRenderer;
+    
     public Renderer SphereRenderer;
-    private Material quadMeshMat;
     private Material sphereMeshMat;
 
     public Transform ButtonContent;
-
-    private const float BaseDist = -0.08f;
-    private const float HoverDist = -0.2f;
-    private const float PressDist = 0.08f;
 
     public Color CurrentColor { get; private set; }
 
@@ -49,26 +42,14 @@ public class SphereButton : MonoBehaviour
 
     private void Start()
     {
-        quadMeshMat = BackgroundRenderer.material;
         sphereMeshMat = SphereRenderer.material;
     }
 
     private void Update()
     {
+        Focus.IsFocusable = !IsDisabled;
         UpdateInteraction();
         UpdateMaterial();
-        UpdatePositions();
-    }
-
-    private void UpdatePositions()
-    {
-        float buttonContentTarget = state == ButtonState.Hovered ? HoverDist : (state == ButtonState.Pressing ? 0 : BaseDist);
-        float newButtonZ = Mathf.Lerp(ButtonContent.localPosition.z, buttonContentTarget, Time.deltaTime * 50);
-        ButtonContent.localPosition = new Vector3(ButtonContent.localPosition.x, ButtonContent.localPosition.y, newButtonZ);
-
-        float backdropTarget = state == ButtonState.Pressing ? PressDist : 0;
-        float newBackdropZ = Mathf.Lerp(BackgroundRenderer.transform.localPosition.z, backdropTarget, Time.deltaTime * 50);
-        BackgroundRenderer.transform.localPosition = new Vector3(BackgroundRenderer.transform.localPosition.x, BackgroundRenderer.transform.localPosition.y, newBackdropZ);
     }
 
     private void UpdateMaterial()
@@ -77,9 +58,7 @@ public class SphereButton : MonoBehaviour
         CurrentColor = Color.Lerp(CurrentColor, colorTarget, Time.deltaTime * 15);
 
         sphereMeshMat.SetColor("_Color", CurrentColor);
-        quadMeshMat.SetColor("_Color", CurrentColor);
         sphereMeshMat.SetFloat("_Disabledness", state == ButtonState.Disabled ? 1 : 0);
-        quadMeshMat.SetFloat("_Disabledness", state == ButtonState.Disabled ? 1 : 0);
     }
 
     private Color GetStateColor()
@@ -122,41 +101,40 @@ public class SphereButton : MonoBehaviour
         {
             state = ButtonState.Disabled;
         }
-        else if (state == ButtonState.Disabled)
+        else
         {
-            state = ButtonState.Ready;
+            state = FocusManager.Instance.FocusedItem == Focus ? ButtonState.Hovered : ButtonState.Ready;
         }
-        float fingerDist = GetFingerDist();
-        if(state == ButtonState.Pressing)
-        {
-            if(!IsHoveringUnder(fingerDist))
-            {
-                OnRelease();
-            }
-        }
-        if(state == ButtonState.Hovered)
-        {
-            if (IsHoveringUnder(fingerDist))
-            {
-                OnPress();
-            }
-            else if (!IsHoveringOver(fingerDist))
-            {
-                state = ButtonState.Ready;
-            }
-            else
-            {
-                //Manager.RegisterHover(hoverInfo.point);
-            }
-        }
-        if(state == ButtonState.Ready)
-        {
-            if(IsHoveringOver(fingerDist))
-            {
-                state = ButtonState.Hovered;
-                //Manager.RegisterHover(hoverInfo.point);
-            }
-        }
+        //else if (state == ButtonState.Disabled)
+        //{
+        //    state = ButtonState.Ready;
+        //}
+        //float fingerDist = GetFingerDist();
+        //if(state == ButtonState.Pressing)
+        //{
+        //    if(!IsHoveringUnder(fingerDist))
+        //    {
+        //        OnRelease();
+        //    }
+        //}
+        //if(state == ButtonState.Hovered)
+        //{
+        //    if (IsHoveringUnder(fingerDist))
+        //    {
+        //        OnPress();
+        //    }
+        //    else if (!IsHoveringOver(fingerDist))
+        //    {
+        //        state = ButtonState.Ready;
+        //    }
+        //}
+        //if(state == ButtonState.Ready)
+        //{
+        //    if(IsHoveringOver(fingerDist))
+        //    {
+        //        state = ButtonState.Hovered;
+        //    }
+        //}
     }
 
     private void OnPress()
