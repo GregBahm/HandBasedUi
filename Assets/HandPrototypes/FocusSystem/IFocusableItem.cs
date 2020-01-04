@@ -7,4 +7,5 @@ public interface IFocusableItem
     FocusPriority Priority { get; }
     float ActivationDistance { get; }
     float GetDistanceToPointer(Vector3 pointerPos);
+    bool ForceFocus { get; set; }
 }

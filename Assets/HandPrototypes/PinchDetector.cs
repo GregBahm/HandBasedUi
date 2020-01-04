@@ -13,7 +13,17 @@ public class PinchDetector : MonoBehaviour
     public Transform FingertipProxy;
     public Transform PalmProxy;
 
+    private bool wasPinching;
+
+    /// <summary>
+    /// True during any frame where the users thumb and index fingers were brought within the distance thresholds
+    /// </summary>
     public bool Pinching { get; private set; }
+
+    /// <summary>
+    /// True on the frame where a pinch first starts
+    /// </summary>
+    public bool PinchBeginning { get; private set; }
 
     public Transform PinchPoint { get; private set; }
 
@@ -35,6 +45,9 @@ public class PinchDetector : MonoBehaviour
         }
 
         UpdateGrabPoint();
+
+        PinchBeginning = Pinching && !wasPinching;
+        wasPinching = Pinching;
     }
 
     private void UpdateGrabPoint()

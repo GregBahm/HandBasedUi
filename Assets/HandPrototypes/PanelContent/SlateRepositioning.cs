@@ -7,7 +7,7 @@ public class SlateRepositioning : MonoBehaviour
 {
     [SerializeField]
     private BoxFocusable focus;
-    public IFocusableItem Focus { get { return this.focus; } }
+    public BoxFocusable Focus { get { return this.focus; } }
 
     public float Smoothing;
     public float SnapThreshold;
@@ -44,18 +44,9 @@ public class SlateRepositioning : MonoBehaviour
     public void UpdateSlatePositioning()
     {
         bool pinching = MainPinchDetector.Instance.Pinching;
-        if (!Resizing.CurrentlyResizing)
+        if (pinching)
         {
-            UpdateInteraction(pinching);
-        }
-        wasPinching = pinching;
-    }
-
-    private void UpdateInteraction(bool pinching)
-    {
-        if(pinching)
-        {
-            if(CurrentlyRepositioning)
+            if (CurrentlyRepositioning)
             {
                 UpdatePinchPoint();
             }
@@ -70,12 +61,15 @@ public class SlateRepositioning : MonoBehaviour
             StartGrab();
         }
         UpdatePosition();
+        wasPinching = pinching;
     }
-
     private void UpdatePosition()
     {
-        transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * Smoothing);
-        transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * Smoothing);
+        if(!Resizing.CurrentlyResizing)
+        {
+            transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * Smoothing);
+            transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * Smoothing);
+        }
     }
 
     private void EndRepositioning()
@@ -83,6 +77,7 @@ public class SlateRepositioning : MonoBehaviour
         CurrentlyRepositioning = false;
         snappedTransform.parent = null;
         unsnappedTransform.parent = null;
+        Focus.ForceFocus = false;
     }
 
     private void UpdatePinchPoint()
@@ -92,7 +87,6 @@ public class SlateRepositioning : MonoBehaviour
     }
     private Quaternion GetSnappedRotation()
     {
-
         snappedTransform.position = snappedTransform.position;
         snappedTransform.LookAt(Camera.main.transform);
         snappedTransform.Rotate(0, 180, 0, Space.Self);
@@ -108,14 +102,10 @@ public class SlateRepositioning : MonoBehaviour
 
     private bool GetShouldStartGrab(bool pinching)
     {
-        if(pinching && !wasPinching)
-        {
-            return FocusManager.Instance.FocusedItem == Focus;
-        }
-        return false;
+        return pinching && !wasPinching && FocusManager.Instance.FocusedItem == Focus;
     }
 
-    private void StartGrab()
+    public void StartGrab()
     {
         CurrentlyRepositioning = true;
         unsnappedTransform.position = transform.position;
@@ -125,5 +115,6 @@ public class SlateRepositioning : MonoBehaviour
         snappedTransform.position = transform.position;
         snappedTransform.rotation = transform.rotation;
         snappedTransform.parent = MainPinchDetector.Instance.PinchPoint;
+        Focus.ForceFocus = true;
     }
 }

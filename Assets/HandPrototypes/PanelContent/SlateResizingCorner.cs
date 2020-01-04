@@ -7,7 +7,7 @@ public class SlateResizingCorner : MonoBehaviour
 {
     [SerializeField]
     private BoxFocusable focus;
-    public IFocusableItem Focus { get { return focus; } }
+    public BoxFocusable Focus { get { return focus; } }
 
     public Transform Slate;
 

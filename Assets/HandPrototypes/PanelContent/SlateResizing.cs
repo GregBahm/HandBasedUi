@@ -34,7 +34,6 @@ public class SlateResizing : MonoBehaviour
     public float ResizingMargin;
 
     private IEnumerable<SlateResizingCorner> corners;
-    private bool wasPinching;
     private Vector3 pinchHandStartPos;
     private Vector3 pinchCornerStartPos;
 
@@ -48,12 +47,9 @@ public class SlateResizing : MonoBehaviour
 
     public void UpdateSlateResizing()
     {
-        bool pinching = MainPinchDetector.Instance.Pinching;
-
-
         if (CurrentlyResizing)
         {
-            if (pinching)
+            if (MainPinchDetector.Instance.Pinching)
             {
                 DoGrabUpdate();
             }
@@ -65,14 +61,13 @@ public class SlateResizing : MonoBehaviour
         else
         {
             UpdateHoveredCorner();
-            if (ShouldStartGrab(pinching))
+            if (ShouldStartGrab())
             {
                 StartGrab(HoveredCorner);
             }
         }
         UpdateCornerVisibility();
         PositionCorners();
-        wasPinching = pinching;
     }
 
     private void UpdateHoveredCorner()
@@ -124,18 +119,20 @@ public class SlateResizing : MonoBehaviour
     {
         foreach (SlateResizingCorner corner in corners)
         {
+            corner.Focus.ForceFocus = false;
             corner.IsGrabbed = false;
         }
         Main.Repositioning.OnEndResizing();
     }
 
-    private bool ShouldStartGrab(bool pinching)
+    private bool ShouldStartGrab()
     {
-        return pinching && !wasPinching && HoveredCorner != null;
+        return MainPinchDetector.Instance.PinchBeginning && HoveredCorner != null;
     }
 
     private void StartGrab(SlateResizingCorner grabbedCorner)
     {
+        grabbedCorner.Focus.ForceFocus = true;
         grabbedCorner.IsGrabbed = true;
         
         pivotPoint.SetParent(Slate);
