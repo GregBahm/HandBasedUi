@@ -5,14 +5,16 @@ using UnityEngine;
 
 public class SlateRepositioning : MonoBehaviour
 {
+    [SerializeField]
+    private BoxFocusable focus;
+    public IFocusableItem Focus { get { return this.focus; } }
+
     public float Smoothing;
     public float SnapThreshold;
     private bool wasPinching;
 
     public bool CurrentlyRepositioning { get; private set; }
     public SlateResizing Resizing;
-    public BoxCollider SlateBox;
-    public float GrabThreshold;
     private Transform unsnappedTransform;
     private Transform snappedTransform;
 
@@ -108,10 +110,7 @@ public class SlateRepositioning : MonoBehaviour
     {
         if(pinching && !wasPinching)
         {
-            Vector3 grabPoint = MainPinchDetector.Instance.PinchPoint.position;
-            Vector3 closestPoint = SlateBox.ClosestPoint(grabPoint);
-            float grabDist = (grabPoint - closestPoint).magnitude;
-            return grabDist < GrabThreshold;
+            return FocusManager.Instance.FocusedItem == Focus;
         }
         return false;
     }

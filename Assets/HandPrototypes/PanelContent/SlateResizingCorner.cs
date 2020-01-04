@@ -5,8 +5,11 @@ using UnityEngine;
 
 public class SlateResizingCorner : MonoBehaviour
 {
+    [SerializeField]
+    private BoxFocusable focus;
+    public IFocusableItem Focus { get { return focus; } }
+
     public Transform Slate;
-    public BoxCollider GrabBox;
 
     public bool IsGrabbed;
     public Vector2 ResizingPivot;

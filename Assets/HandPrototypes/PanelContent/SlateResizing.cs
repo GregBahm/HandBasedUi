@@ -39,7 +39,6 @@ public class SlateResizing : MonoBehaviour
     private Vector3 pinchCornerStartPos;
 
     public SlateResizingCorner HoveredCorner { get; private set; }
-    public float CornerGrabMargin = .1f;
 
     private void Start()
     {
@@ -50,6 +49,7 @@ public class SlateResizing : MonoBehaviour
     public void UpdateSlateResizing()
     {
         bool pinching = MainPinchDetector.Instance.Pinching;
+
 
         if (CurrentlyResizing)
         {
@@ -64,7 +64,7 @@ public class SlateResizing : MonoBehaviour
         }
         else
         {
-            HoveredCorner = GetHoveredCorner();
+            UpdateHoveredCorner();
             if (ShouldStartGrab(pinching))
             {
                 StartGrab(HoveredCorner);
@@ -73,6 +73,11 @@ public class SlateResizing : MonoBehaviour
         UpdateCornerVisibility();
         PositionCorners();
         wasPinching = pinching;
+    }
+
+    private void UpdateHoveredCorner()
+    {
+        HoveredCorner = corners.FirstOrDefault(corner => corner.Focus == FocusManager.Instance.FocusedItem);
     }
 
     private void UpdateCornerVisibility()
@@ -127,24 +132,6 @@ public class SlateResizing : MonoBehaviour
     private bool ShouldStartGrab(bool pinching)
     {
         return pinching && !wasPinching && HoveredCorner != null;
-    }
-
-    private SlateResizingCorner GetHoveredCorner()
-    {
-        Vector3 grabPoint = MainPinchDetector.Instance.PinchPoint.position;
-        float closestGrabDist = CornerGrabMargin;
-        SlateResizingCorner ret = null;
-        foreach (SlateResizingCorner corner in corners)
-        {
-            Vector3 closestPoint = corner.GrabBox.ClosestPoint(grabPoint);
-            float grabDist = (grabPoint - closestPoint).magnitude;
-            if (grabDist < closestGrabDist)
-            {
-                closestGrabDist = grabDist;
-                ret = corner;
-            }
-        }
-        return ret;
     }
 
     private void StartGrab(SlateResizingCorner grabbedCorner)
