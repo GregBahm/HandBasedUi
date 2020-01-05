@@ -52,7 +52,7 @@ public class SlateVisualController : MonoBehaviour
 
     private void Update()
     {
-        lineRenderer.startWidth = lineWidth;
+        lineRenderer.widthMultiplier = lineWidth;
         UpdateHighlight();
         UpdateShader();
     }

@@ -121,7 +121,7 @@
                 float grabFill = GetGrabFill(i.uv);
 				float4 buttonGlow = GetButtonGlow(i.worldPos);
                 float3 ret = lerp(baseFill, grabFill, _Grabbedness);
-				ret += buttonGlow.rgb;
+				ret += buttonGlow.rgb * .5;
 				ret *= buttonGlow.a;
                 return float4(ret, 1);
             }

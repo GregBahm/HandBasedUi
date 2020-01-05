@@ -30,7 +30,7 @@ public class VideoCardBottomButtons : MonoBehaviour
         for (int i = 0; i < Buttons.Length; i++)
         {
             float x = i * MainPanel.BottomButtonSpacing * shrinking - centering;
-            Buttons[i].localPosition = new Vector3(x, y, 0);
+            Buttons[i].localPosition = new Vector3(x, y + VerticalOffset, 0);
 
             float effectiveScale = fullScale * shrinking * MainPanel.ButtonSummoness;
             Buttons[i].localScale = new Vector3(effectiveScale, effectiveScale, effectiveScale);

@@ -8,7 +8,8 @@
         Tags { "Queue" = "Transparent" }
         LOD 100
 
-        Blend One One
+		BlendOp Max
+		//Blend OneMinusDstColor One
         ZWrite Off
         Pass
         {
