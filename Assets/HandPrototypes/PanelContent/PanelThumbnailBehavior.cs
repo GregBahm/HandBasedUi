@@ -14,7 +14,6 @@ public class PanelThumbnailBehavior : MonoBehaviour
 
     public void UpdateThumbnail()
     {
-        PositionThumbnail();
         HandleThumbnailGrab();
     }
 
@@ -36,13 +35,6 @@ public class PanelThumbnailBehavior : MonoBehaviour
         Panel.Summonness = Mathf.Pow(param, SummonRamp);
         thumbnailGrabbed = MainPinchDetector.Instance.Pinching;
         Visuals.SetActive(!thumbnailGrabbed);
-    }
-
-    private void PositionThumbnail()
-    {
-        transform.position = HandPrototypeProxies.Instance.LeftPalm.position + new Vector3(0, .15f, 0);
-        transform.LookAt(Camera.main.transform);
-        transform.Rotate(0, 180, 0);
     }
 
     private void StartThumbnailGrab()

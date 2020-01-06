@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class SphereButton : MonoBehaviour
 {
+    public TextMeshPro Label;
     public SphereButtonRailing Rail;
     public FocusableItemBehavior Focus;
     public bool IsDisabled;
@@ -61,7 +63,7 @@ public class SphereButton : MonoBehaviour
     private void UpdateVisuals()
     {
         UpdateMaterials();
-        UpdateRailing();
+        UpdateHoverFeatures();
         UpdateIconPosition();
         UpdateClickAnimation();
     }
@@ -87,11 +89,12 @@ public class SphereButton : MonoBehaviour
         }
     }
 
-    private void UpdateRailing()
+    private void UpdateHoverFeatures()
     {
         float hoverednessTarget = (state == ButtonState.Hovered || state == ButtonState.ClickOutro) ? 1 : 0;
         hoveredness = Mathf.Lerp(hoveredness, hoverednessTarget, Time.deltaTime * 15);
         Rail.VerticalOffset = RailHeight * hoveredness;
+        Label.color = new Color(1, 1, 1, hoveredness);
     }
 
     private void UpdateMaterials()
