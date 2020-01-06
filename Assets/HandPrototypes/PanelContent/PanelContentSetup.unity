@@ -1422,6 +1422,8 @@ MonoBehaviour:
   HoverColor: {r: 0.21226418, g: 0.6061321, b: 1, a: 1}
   PressingColor: {r: 0.18823525, g: 0.462745, b: 0.737255, a: 1}
   DisabledColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  HoverSound: {fileID: 2054311951}
+  ClickSound: {fileID: 2041959055}
 --- !u!1 &305120157
 GameObject:
   m_ObjectHideFlags: 0
@@ -2264,10 +2266,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Main: {fileID: 61310265}
   ReadyColor: {r: 0, g: 0, b: 0, a: 1}
-  ReadyToggledColor: {r: 0.18823525, g: 0.462745, b: 0.737255, a: 1}
+  ReadyToggledColor: {r: 0.2688679, g: 0.634434, b: 1, a: 1}
   HoverColor: {r: 0.18823525, g: 0.462745, b: 0.737255, a: 1}
   PressingColor: {r: 0.18823525, g: 0.462745, b: 0.737255, a: 1}
   DisabledColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  HoverSound: {fileID: 2054311951}
+  ClickSound: {fileID: 2041959055}
 --- !u!1 &573107503
 GameObject:
   m_ObjectHideFlags: 0
@@ -7780,9 +7784,11 @@ MonoBehaviour:
   Main: {fileID: 61310265}
   ReadyColor: {r: 0.7372549, g: 0.18823528, b: 0.1992133, a: 1}
   ReadyToggledColor: {r: 0.7372549, g: 0.18823528, b: 0.1992133, a: 1}
-  HoverColor: {r: 0.7372549, g: 0.18823528, b: 0.1992133, a: 1}
+  HoverColor: {r: 1, g: 0.24056602, b: 0.2568396, a: 1}
   PressingColor: {r: 0.7372549, g: 0.18823528, b: 0.1992133, a: 1}
   DisabledColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  HoverSound: {fileID: 2054311951}
+  ClickSound: {fileID: 2041959055}
 --- !u!114 &2143978461 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 461372241154976544, guid: f9e5cdcad640a1940bfaee0efd41f28f,

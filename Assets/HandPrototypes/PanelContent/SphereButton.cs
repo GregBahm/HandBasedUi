@@ -6,7 +6,7 @@ using UnityEngine;
 public class SphereButton : MonoBehaviour
 {
     public SphereButtonRailing Rail;
-    public PointFocusable Focus;
+    public FocusableItemBehavior Focus;
     public bool IsDisabled;
     public ButtonInteractionStyles InteractionStyle;
     public bool Toggled;
@@ -25,6 +25,9 @@ public class SphereButton : MonoBehaviour
     public Transform ButtonContent;
     public Transform Icon;
 
+    public float ClickAnimationDuration;
+    private float clickProgression;
+
     private float hoveredness;
 
     public Color CurrentColor { get; private set; }
@@ -35,7 +38,7 @@ public class SphereButton : MonoBehaviour
         Disabled,
         Ready,
         Hovered,
-        Pressing,
+        ClickOutro,
     }
     public enum ButtonInteractionStyles
     {
@@ -60,20 +63,33 @@ public class SphereButton : MonoBehaviour
         UpdateMaterials();
         UpdateRailing();
         UpdateIconPosition();
+        UpdateClickAnimation();
+    }
+
+    private void UpdateClickAnimation()
+    {
+        clickProgression -= Time.deltaTime;
+        clickProgression = Mathf.Max(0, clickProgression);
+        float param = clickProgression / ClickAnimationDuration;
+        param = Mathf.Pow(param, 2);
+        ButtonContent.localRotation = Quaternion.Euler(0, param * 360, 0); 
     }
 
     private void UpdateIconPosition()
     {
-        Vector3 fingerPos = HandPrototypeProxies.Instance.RightIndex.position;
-        Vector3 toFinger = (ButtonContent.transform.position - fingerPos);
-        float weight = 1 - Mathf.Clamp01(Mathf.Abs(toFinger.magnitude - .02f) * 50);
-        Icon.localPosition = toFinger.normalized * weight * .05f * hoveredness;
-        Icon.forward = Vector3.Lerp(transform.forward, -toFinger.normalized, weight * .3f * hoveredness); 
+        if(state == ButtonState.Hovered)
+        {
+            Vector3 fingerPos = HandPrototypeProxies.Instance.RightIndex.position;
+            Vector3 toFinger = (ButtonContent.transform.position - fingerPos);
+            float weight = 1 - Mathf.Clamp01(Mathf.Abs(toFinger.magnitude - .02f) * 50);
+            Icon.localPosition = toFinger.normalized * weight * .05f * hoveredness;
+            Icon.forward = Vector3.Lerp(transform.forward, -toFinger.normalized, weight * .3f * hoveredness);
+        }
     }
 
     private void UpdateRailing()
     {
-        float hoverednessTarget = state == ButtonState.Hovered ? 1 : 0;
+        float hoverednessTarget = (state == ButtonState.Hovered || state == ButtonState.ClickOutro) ? 1 : 0;
         hoveredness = Mathf.Lerp(hoveredness, hoverednessTarget, Time.deltaTime * 15);
         Rail.VerticalOffset = RailHeight * hoveredness;
     }
@@ -98,7 +114,7 @@ public class SphereButton : MonoBehaviour
                 return Toggled ? Styling.ReadyToggledColor :Styling.ReadyColor;
             case ButtonState.Hovered:
                 return Styling.HoverColor;
-            case ButtonState.Pressing:
+            case ButtonState.ClickOutro:
                 return Styling.PressingColor;
             case ButtonState.Disabled:
             default:
@@ -117,7 +133,21 @@ public class SphereButton : MonoBehaviour
         }
         else
         {
-            state = FocusManager.Instance.FocusedItem == Focus ? ButtonState.Hovered : ButtonState.Ready;
+            if (clickProgression > 0)
+            {
+                state = ButtonState.ClickOutro;
+            }
+            else
+            {
+                if(state == ButtonState.ClickOutro)
+                {
+                    state = ButtonState.Ready;
+                }
+                else
+                {
+                    state = FocusManager.Instance.FocusedItem == Focus ? ButtonState.Hovered : ButtonState.Ready;
+                }
+            }
         }
 
         if(state == ButtonState.Hovered)
@@ -125,33 +155,42 @@ public class SphereButton : MonoBehaviour
             float fingerHeight = HandPrototypeProxies.Instance.RightIndex.position.y; // TODO: Make this in localspace instead of worldspace
             if (oldState == ButtonState.Ready)
             {
-                hoverStartHeight = fingerHeight;
+                OnHoverStart(fingerHeight);
             }
-            float riseAmount = fingerHeight - hoverStartHeight;
-            if(riseAmount > RailHeight)
-            {
-                OnRelease();
-            }
-            riseAmount = Mathf.Clamp(riseAmount / transform.lossyScale.y, 0, RailHeight);
-            ButtonContent.localPosition = new Vector3(0, riseAmount, 0);
+            UpdateHoveringInteraction(fingerHeight);
         }
-        else
+        if(!(state == ButtonState.Hovered || state == ButtonState.ClickOutro))
         {
             ButtonContent.localPosition = Vector3.Lerp(ButtonContent.localPosition, Vector3.zero, Time.deltaTime * 15);
         }
     }
 
-    private void OnPress()
+    private void UpdateHoveringInteraction(float fingerHeight)
     {
-        state = ButtonState.Pressing;
-        //Manager.OnAnyButtonPress();
-        Pressed?.Invoke(this, EventArgs.Empty);
+        float riseAmount = fingerHeight - hoverStartHeight;
+        riseAmount = riseAmount / transform.lossyScale.y;
+
+        if (riseAmount > RailHeight)
+        {
+            OnClick();
+        }
+
+        riseAmount = Mathf.Clamp(riseAmount, 0, RailHeight);
+        ButtonContent.localPosition = new Vector3(0, riseAmount, 0);
     }
 
-    private void OnRelease()
+    private void OnHoverStart(float fingerHeight)
     {
-        //Manager.OnAnyButtonRelease();
-        state = ButtonState.Ready;
+        hoverStartHeight = Mathf.Max(transform.position.y, fingerHeight);
+        Styling.HoverSound.Play();
+    }
+
+    private void OnClick()
+    {
+        clickProgression = ClickAnimationDuration;
+
+        Styling.ClickSound.Play();
+        state = ButtonState.ClickOutro;
         if(InteractionStyle == ButtonInteractionStyles.ToggleButton)
         {
             Toggled = !Toggled;

@@ -12,4 +12,7 @@ public class ButtonStyling : MonoBehaviour
     public Color HoverColor = Color.blue;
     public Color PressingColor = Color.cyan;
     public Color DisabledColor = Color.gray;
+
+    public AudioSource HoverSound;
+    public AudioSource ClickSound;
 }

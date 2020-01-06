@@ -123,7 +123,7 @@
                 float3 ret = lerp(baseFill, grabFill, _Grabbedness);
 				ret += buttonGlow.rgb;
 				ret *= buttonGlow.a;
-                return float4(ret, 1);
+                return float4(ret, 0);
             }
             ENDCG
         }

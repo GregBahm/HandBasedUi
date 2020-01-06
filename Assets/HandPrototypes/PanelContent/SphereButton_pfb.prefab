@@ -108,7 +108,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 407318385413742977}
-  - component: {fileID: 1995463002120239265}
+  - component: {fileID: 3612274488573722874}
   m_Layer: 0
   m_Name: MovingContent
   m_TagString: Untagged
@@ -132,7 +132,7 @@ Transform:
   m_Father: {fileID: 8052564052144481240}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1995463002120239265
+--- !u!114 &3612274488573722874
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -141,13 +141,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1603071537342571680}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9c76e9d50ec877b4ea502ef76b63ebad, type: 3}
+  m_Script: {fileID: 11500000, guid: 1f78de357dc4109488023d4cf7357f88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   focusType: 1
   isFocusable: 1
   priority: 1
-  activationDistance: 0.03
+  activationDistance: 100
 --- !u!1 &2279576059165427730
 GameObject:
   m_ObjectHideFlags: 0
@@ -788,7 +788,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Rail: {fileID: 80828863646400258}
-  Focus: {fileID: 1995463002120239265}
+  Focus: {fileID: 3612274488573722874}
   IsDisabled: 0
   InteractionStyle: 1
   Toggled: 0
@@ -797,6 +797,7 @@ MonoBehaviour:
   SphereRenderer: {fileID: 5806024203351892531}
   ButtonContent: {fileID: 407318385413742977}
   Icon: {fileID: 210057244040196211}
+  ClickAnimationDuration: 0.5
 --- !u!1 &7143823786124929978
 GameObject:
   m_ObjectHideFlags: 0
