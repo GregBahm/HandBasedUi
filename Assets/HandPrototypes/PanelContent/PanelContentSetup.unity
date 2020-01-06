@@ -307,7 +307,7 @@ MonoBehaviour:
   ButtonHoverDist: 0.03
   VerticalButtonMargin: 0.016
   HorizontalSlateMargin: 0.04
-  VerticalSlateMargin: 0.08
+  VerticalSlateMargin: 0.1
   BottomButtonSpacing: 0.026
   NameplateMargin: -0.01
 --- !u!4 &61310266
@@ -351,7 +351,7 @@ MonoBehaviour:
   UpperRightCorner: {fileID: 1983730104}
   MinWidth: 0.12
   MaxWidth: 1
-  MinHeight: 0.13
+  MinHeight: 0.15
   MaxHeight: 1
   ResizingMargin: 0.02
 --- !u!114 &61310268
@@ -1417,9 +1417,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Main: {fileID: 61310265}
-  ReadyColor: {r: 0.18823525, g: 0.462745, b: 0.737255, a: 1}
+  ReadyColor: {r: 0, g: 0.2924528, b: 0.5849056, a: 1}
   ReadyToggledColor: {r: 0.18823525, g: 0.462745, b: 0.737255, a: 1}
-  HoverColor: {r: 0.18823525, g: 0.462745, b: 0.737255, a: 1}
+  HoverColor: {r: 0.21226418, g: 0.6061321, b: 1, a: 1}
   PressingColor: {r: 0.18823525, g: 0.462745, b: 0.737255, a: 1}
   DisabledColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
 --- !u!1 &305120157
@@ -2911,11 +2911,6 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 0}
-    - target: {fileID: 461372241154976544, guid: f9e5cdcad640a1940bfaee0efd41f28f,
-        type: 3}
-      propertyPath: ButtonContent
-      value: 
-      objectReference: {fileID: 2131947993}
     - target: {fileID: 461372241154976544, guid: f9e5cdcad640a1940bfaee0efd41f28f,
         type: 3}
       propertyPath: Colors

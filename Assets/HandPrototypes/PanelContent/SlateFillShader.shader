@@ -81,7 +81,7 @@
                 float distShade = 1 - saturate(dist * .5);
                 distShade = pow(distShade, 10);
                 float ret = theDot * distShade;
-                return ret;
+                return ret ;
             }
 
             float GetFingerLighting(float3 worldPos, float3 normal)
@@ -116,12 +116,12 @@
 
             fixed4 frag (v2f i) : SV_Target
             {
-                float fingerLighting = GetFingerLighting(i.worldPos, i.worldNormal);
+                float fingerLighting = GetFingerLighting(i.worldPos, i.worldNormal) * .5;
                 float baseFill = fingerLighting * .4;
                 float grabFill = GetGrabFill(i.uv);
 				float4 buttonGlow = GetButtonGlow(i.worldPos);
                 float3 ret = lerp(baseFill, grabFill, _Grabbedness);
-				ret += buttonGlow.rgb * .5;
+				ret += buttonGlow.rgb;
 				ret *= buttonGlow.a;
                 return float4(ret, 1);
             }

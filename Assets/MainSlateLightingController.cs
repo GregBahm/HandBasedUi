@@ -23,7 +23,7 @@ public class MainSlateLightingController : MonoBehaviour
     {
         for (int i = 0; i < Buttons.Length; i++)
         {
-            buttonColors[i] = Buttons[i].CurrentColor;
+            buttonColors[i] = Buttons[i].CurrentGlowColor;
             buttonPositions[i] = GetButtonPosition(i);
         }
         baseVisualController.FillMaterial.SetVectorArray("_ButtonPositions", buttonPositions);
@@ -32,7 +32,7 @@ public class MainSlateLightingController : MonoBehaviour
 
     private Vector4 GetButtonPosition(int i)
     {
-        Vector3 pos = Buttons[i].transform.position;
+        Vector3 pos = Buttons[i].ButtonContent.transform.position;
         float scale = Buttons[i].transform.lossyScale.x;
         return new Vector4(pos.x, pos.y, pos.z, scale);
     }
