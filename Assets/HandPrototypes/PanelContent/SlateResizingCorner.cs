@@ -16,12 +16,15 @@ public class SlateResizingCorner : MonoBehaviour
     
     public LineRenderer LineRender;
 
+    private bool lastShowVisuals;
     public bool ShowVisuals;
 
     private float cornerScale;
     private float cornerOpacity;
 
     public Transform Anchor { get; private set; }
+
+    public bool JustStartedShowing { get; private set; }
 
     private void Start()
     {
@@ -32,8 +35,10 @@ public class SlateResizingCorner : MonoBehaviour
 
     private void Update()
     {
+        JustStartedShowing = ShowVisuals && !lastShowVisuals;
         LineRender.enabled = ShowVisuals;
         UpdateCornerTransitions();
+        lastShowVisuals = ShowVisuals;
     }
 
     private void UpdateCornerTransitions()

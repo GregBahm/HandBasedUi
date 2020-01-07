@@ -8,6 +8,11 @@ public class SlateRepositioning : MonoBehaviour
     [SerializeField]
     private BoxFocusable focus;
     public BoxFocusable Focus { get { return this.focus; } }
+    
+    [SerializeField]
+    public AudioSource grabSound;
+    [SerializeField]
+    public AudioSource grabReleaseSound;
 
     public float Smoothing;
     public float SnapThreshold;
@@ -15,6 +20,7 @@ public class SlateRepositioning : MonoBehaviour
 
     public bool CurrentlyRepositioning { get; private set; }
     public SlateResizing Resizing;
+    public SlateVisualController VisualController;
     private Transform unsnappedTransform;
     private Transform snappedTransform;
 
@@ -39,21 +45,22 @@ public class SlateRepositioning : MonoBehaviour
     {
         targetPosition = transform.position;
         targetRotation = transform.rotation;
+        grabReleaseSound.Play();
     }
 
     public void UpdateSlatePositioning()
     {
         bool pinching = MainPinchDetector.Instance.Pinching;
-        if (pinching)
+        if(CurrentlyRepositioning)
         {
-            if (CurrentlyRepositioning)
+            if(pinching)
             {
                 UpdatePinchPoint();
             }
-        }
-        else
-        {
-            EndRepositioning();
+            else
+            {
+                EndRepositioning();
+            }
         }
         bool shoulStartPinch = GetShouldStartGrab(pinching);
         if (shoulStartPinch)
@@ -62,6 +69,7 @@ public class SlateRepositioning : MonoBehaviour
         }
         UpdatePosition();
         wasPinching = pinching;
+        VisualController.DoHighlightBorder = CurrentlyRepositioning || Resizing.CurrentlyResizing;
     }
     private void UpdatePosition()
     {
@@ -78,6 +86,7 @@ public class SlateRepositioning : MonoBehaviour
         snappedTransform.parent = null;
         unsnappedTransform.parent = null;
         Focus.ForceFocus = false;
+        grabReleaseSound.Play();
     }
 
     private void UpdatePinchPoint()
@@ -116,5 +125,12 @@ public class SlateRepositioning : MonoBehaviour
         snappedTransform.rotation = transform.rotation;
         snappedTransform.parent = MainPinchDetector.Instance.PinchPoint;
         Focus.ForceFocus = true;
+
+        grabSound.Play();
+    }
+
+    internal void OnStartResizing()
+    {
+        grabSound.Play();
     }
 }

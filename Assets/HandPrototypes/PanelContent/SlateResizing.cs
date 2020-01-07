@@ -39,6 +39,9 @@ public class SlateResizing : MonoBehaviour
 
     public SlateResizingCorner HoveredCorner { get; private set; }
 
+    [SerializeField]
+    private AudioSource resizingHoverSound;
+
     private void Start()
     {
         pivotPoint = new GameObject("Resizing PivotPoint").transform;
@@ -67,7 +70,16 @@ public class SlateResizing : MonoBehaviour
             }
         }
         UpdateCornerVisibility();
+        UpdateCornerSounds();
         PositionCorners();
+    }
+
+    private void UpdateCornerSounds()
+    {
+        if(corners.Any(item => item.JustStartedShowing))
+        {
+            resizingHoverSound.Play();
+        }
     }
 
     private void UpdateHoveredCorner()
@@ -143,6 +155,7 @@ public class SlateResizing : MonoBehaviour
 
         pinchHandStartPos = MainPinchDetector.Instance.PinchPoint.position;
         pinchCornerStartPos = grabbedCorner.Anchor.position;
+        Main.Repositioning.OnStartResizing();
     }
 
     private void PositionCorners()

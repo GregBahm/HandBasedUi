@@ -10,7 +10,11 @@ public abstract class FocusableItemBehavior : MonoBehaviour, IFocusableItem
     private bool isFocusable = true;
     public bool IsFocusable
     {
-        get { return this.isFocusable; }
+        get
+        {
+            return this.isFocusable &&
+                isActiveAndEnabled;
+        }
         set { this.isFocusable = value; }
     }
 

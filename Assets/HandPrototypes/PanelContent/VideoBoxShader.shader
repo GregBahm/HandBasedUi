@@ -37,6 +37,7 @@
 
             sampler2D _MainTex;
 			float _BorderThickness;
+			float _Fade;
 
             v2f vert (appdata v)
             {
@@ -70,6 +71,7 @@
 				//return sideCol;
 				//sideCol += (1 - (i.objSpace.z + .5)) * .5;
 				float4 ret = lerp(cardTex, sideCol, borderAlpha);
+				ret *= 1 - _Fade;
                 return ret;
             }
             ENDCG

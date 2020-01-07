@@ -19,16 +19,14 @@ public class SlateVisualController : MonoBehaviour
     [SerializeField]
     private int cornerVerts;
 
-
-
     private float highlightness;
-    private bool doGrab;
-    private bool doHover;
 
     private LineRenderer lineRenderer;
     private Material borderMaterial;
     private MeshFilter meshFilter;
     public Material FillMaterial { get; private set; }
+
+    public bool DoHighlightBorder;
 
     private AudioSource audioSource;
 
@@ -37,7 +35,6 @@ public class SlateVisualController : MonoBehaviour
     private static readonly int RightThumbShaderProp = Shader.PropertyToID("_RightThumbTip");
     private static readonly int RightIndexShaderProp = Shader.PropertyToID("_RightIndexTip");
     private static readonly int HighlightShaderProp = Shader.PropertyToID("_Highlight");
-    private static readonly int GrabbednessShaderProp = Shader.PropertyToID("_Grabbedness");
 
     private void Start()
     {
@@ -75,26 +72,6 @@ public class SlateVisualController : MonoBehaviour
         Vector3[] verts = GetVerts();
         UpdateVerts(verts);
         UpdateInteriorMesh(verts);
-    }
-
-    public void OnGrabStarted()
-    {
-        doGrab = true;
-    }
-
-    public void OnGrabEnded()
-    {
-        doGrab = false;
-    }
-
-    public void OnHoverStarted()
-    {
-        doHover = true;
-    }
-
-    public void OnHoverEnded()
-    {
-        doHover = false;
     }
 
     private void UpdateInteriorMesh(Vector3[] verts)
@@ -185,13 +162,8 @@ public class SlateVisualController : MonoBehaviour
 
     private void UpdateHighlight()
     {
-        float highlightTarget = doHover ? .5f : 0;
-        highlightTarget = doGrab ? 1f : highlightTarget;
+        float highlightTarget = DoHighlightBorder ? 1 : 0;
         highlightness = Mathf.Lerp(highlightness, highlightTarget, Time.deltaTime * 10);
         borderMaterial.SetFloat(HighlightShaderProp, highlightness);
-
-        float grabbednessTarget = doGrab ? 1 : 0;
-        grabbedness = Mathf.Lerp(grabbedness, grabbednessTarget, Time.deltaTime * 20);
-        FillMaterial.SetFloat(GrabbednessShaderProp, grabbedness);
     }
 }
