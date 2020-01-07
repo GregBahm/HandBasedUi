@@ -36,6 +36,8 @@ public class MainPanelArrangement : MonoBehaviour
     public SlateRepositioning Repositioning;
     public VideoCardTopButtons TopButtons;
     public VideoCardBottomButtons ButtomButtons;
+    
+    public SphereButton[] Buttons;
 
     public float ButtonHoverDist;
     public float VerticalButtonMargin;
@@ -46,7 +48,34 @@ public class MainPanelArrangement : MonoBehaviour
     public float NameplateMargin;
 
     private Vector3 unsummonedSlateScale;
-    
+
+    private void Start()
+    {
+        Buttons = GetButtons();
+        RegisterCooldowns();
+    }
+
+    private SphereButton[] GetButtons()
+    {
+        List<SphereButton> ret = new List<SphereButton>();
+        ret.AddRange(TopButtons.Buttons);
+        ret.AddRange(ButtomButtons.Buttons);
+        return ret.ToArray();
+    }
+
+    private void RegisterCooldowns()
+    {
+        foreach (SphereButton button in Buttons)
+        {
+            button.Released += Button_Released;
+        }
+    }
+
+    private void Button_Released(object sender, EventArgs e)
+    {
+        Repositioning.ResetInteractionCooldown();
+    }
+
     private void Update()
     {
         Thumbnail.UpdateThumbnail();

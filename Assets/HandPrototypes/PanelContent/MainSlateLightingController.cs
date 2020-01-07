@@ -6,24 +6,24 @@ using UnityEngine;
 [RequireComponent(typeof(SlateVisualController))]
 public class MainSlateLightingController : MonoBehaviour
 {
+    public MainPanelArrangement Main;
     private SlateVisualController baseVisualController;
 
     private Vector4[] buttonPositions;
     private Color[] buttonColors;
-    public SphereButton[] Buttons;
 
     private void Start()
     {
         this.baseVisualController = GetComponent<SlateVisualController>();
-        buttonPositions = new Vector4[Buttons.Length];
-        buttonColors = new Color[Buttons.Length];
+        buttonPositions = new Vector4[Main.Buttons.Length];
+        buttonColors = new Color[Main.Buttons.Length];
     }
 
     private void Update()
     {
-        for (int i = 0; i < Buttons.Length; i++)
+        for (int i = 0; i < Main.Buttons.Length; i++)
         {
-            buttonColors[i] = Buttons[i].CurrentGlowColor;
+            buttonColors[i] = Main.Buttons[i].CurrentGlowColor;
             buttonPositions[i] = GetButtonPosition(i);
         }
         baseVisualController.FillMaterial.SetVectorArray("_ButtonPositions", buttonPositions);
@@ -32,8 +32,8 @@ public class MainSlateLightingController : MonoBehaviour
 
     private Vector4 GetButtonPosition(int i)
     {
-        Vector3 pos = Buttons[i].ButtonContent.transform.position;
-        float scale = Buttons[i].transform.lossyScale.x;
+        Vector3 pos = Main.Buttons[i].ButtonContent.transform.position;
+        float scale = Main.Buttons[i].transform.lossyScale.x;
         return new Vector4(pos.x, pos.y, pos.z, scale);
     }
 }

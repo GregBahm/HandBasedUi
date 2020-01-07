@@ -55,7 +55,7 @@ public class PanelThumbnailBehavior : MonoBehaviour
         float param = 1 - (summonTime / SummonDuration);
 
         Panel.Summonness = Mathf.Pow(param, SummonRamp);
-        thumbnailGrabbed = MainPinchDetector.Instance.Pinching;
+        thumbnailGrabbed = thumbnailGrabbed && MainPinchDetector.Instance.Pinching;
         Visuals.SetActive(!thumbnailGrabbed);
     }
 

@@ -10,13 +10,17 @@ public class SlateRepositioning : MonoBehaviour
     public BoxFocusable Focus { get { return this.focus; } }
     
     [SerializeField]
-    public AudioSource grabSound;
+    private AudioSource grabSound;
     [SerializeField]
-    public AudioSource grabReleaseSound;
+    private AudioSource grabReleaseSound;
 
     public float Smoothing;
     public float SnapThreshold;
     private bool wasPinching;
+
+    [SerializeField]
+    private float InteractionCooldownDuration;// Just after a click, disable grab for a bit to reduce false grabs
+    private float currentInteractionCooldown;
 
     public bool CurrentlyRepositioning { get; private set; }
     public SlateResizing Resizing;
@@ -41,6 +45,11 @@ public class SlateRepositioning : MonoBehaviour
         targetRotation = transform.rotation;
     }
 
+    public void ResetInteractionCooldown()
+    {
+        currentInteractionCooldown = InteractionCooldownDuration;
+    }
+
     public void OnEndResizing()
     {
         targetPosition = transform.position;
@@ -50,6 +59,7 @@ public class SlateRepositioning : MonoBehaviour
 
     public void UpdateSlatePositioning()
     {
+        UpdateCooldowns();
         bool pinching = MainPinchDetector.Instance.Pinching;
         if(CurrentlyRepositioning)
         {
@@ -71,6 +81,16 @@ public class SlateRepositioning : MonoBehaviour
         wasPinching = pinching;
         VisualController.DoHighlightBorder = CurrentlyRepositioning || Resizing.CurrentlyResizing;
     }
+
+    private void UpdateCooldowns()
+    {
+        currentInteractionCooldown -= Time.deltaTime;
+        if(currentInteractionCooldown > 0)
+        {
+            CurrentlyRepositioning = false;
+        }
+    }
+
     private void UpdatePosition()
     {
         if(!Resizing.CurrentlyResizing)
@@ -111,7 +131,7 @@ public class SlateRepositioning : MonoBehaviour
 
     private bool GetShouldStartGrab(bool pinching)
     {
-        return pinching && !wasPinching && FocusManager.Instance.FocusedItem == Focus;
+        return pinching && !wasPinching && FocusManager.Instance.FocusedItem == Focus && currentInteractionCooldown < 0;
     }
 
     public void StartGrab()

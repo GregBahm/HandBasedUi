@@ -10,11 +10,11 @@ public class VideoCardTopButtons : MonoBehaviour
     public MainPanelArrangement MainPanel;
     public float MinMargin;
 
-    public Transform[] Buttons;
+    public SphereButton[] Buttons;
 
     private void Start()
     {
-        fullScale = Buttons[0].localScale.x;
+        fullScale = Buttons[0].transform.localScale.x;
         SphereButton[] sphereButtons = Buttons.Select(item => item.GetComponent<SphereButton>()).ToArray();
     }
 
@@ -35,10 +35,10 @@ public class VideoCardTopButtons : MonoBehaviour
         {
             float param = (float)i / (Buttons.Length - 1);
             float x = Mathf.Lerp(xStart, xEnd, param);
-            Buttons[i].localPosition = new Vector3(x, y, 0);
+            Buttons[i].transform.localPosition = new Vector3(x, y, 0);
 
             float effectiveScale = itemWidth * MainPanel.ButtonSummoness;
-            Buttons[i].localScale = new Vector3(effectiveScale, effectiveScale, effectiveScale);
+            Buttons[i].transform.localScale = new Vector3(effectiveScale, effectiveScale, effectiveScale);
         }
     }
 

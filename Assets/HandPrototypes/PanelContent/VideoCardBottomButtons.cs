@@ -8,13 +8,13 @@ public class VideoCardBottomButtons : MonoBehaviour
     private float fullScale;
     public MainPanelArrangement MainPanel;
 
-    public Transform[] Buttons;
+    public SphereButton[] Buttons;
 
     public float VerticalOffset;
 
     private void Start()
     {
-        fullScale = Buttons[0].localScale.x;
+        fullScale = Buttons[0].transform.localScale.x;
     }
 
     public void PlaceButtons()
@@ -30,10 +30,10 @@ public class VideoCardBottomButtons : MonoBehaviour
         for (int i = 0; i < Buttons.Length; i++)
         {
             float x = i * MainPanel.BottomButtonSpacing * shrinking - centering;
-            Buttons[i].localPosition = new Vector3(x, y + VerticalOffset, 0);
+            Buttons[i].transform.localPosition = new Vector3(x, y + VerticalOffset, 0);
 
             float effectiveScale = fullScale * shrinking * MainPanel.ButtonSummoness;
-            Buttons[i].localScale = new Vector3(effectiveScale, effectiveScale, effectiveScale);
+            Buttons[i].transform.localScale = new Vector3(effectiveScale, effectiveScale, effectiveScale);
         }
     }
 

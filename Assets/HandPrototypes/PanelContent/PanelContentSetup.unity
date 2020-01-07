@@ -336,6 +336,7 @@ MonoBehaviour:
   Repositioning: {fileID: 61310268}
   TopButtons: {fileID: 140238646}
   ButtomButtons: {fileID: 1543847197}
+  Buttons: []
   ButtonHoverDist: 0.03
   VerticalButtonMargin: 0.02
   HorizontalSlateMargin: 0.04
@@ -404,6 +405,7 @@ MonoBehaviour:
   grabReleaseSound: {fileID: 2009717729}
   Smoothing: 20
   SnapThreshold: 0.95
+  InteractionCooldownDuration: 0.5
   Resizing: {fileID: 61310267}
   VisualController: {fileID: 9197353186617495833}
 --- !u!114 &61310269
@@ -929,16 +931,16 @@ MonoBehaviour:
   MainPanel: {fileID: 61310265}
   MinMargin: 0.002
   Buttons:
-  - {fileID: 6643434730478794438}
-  - {fileID: 123117984}
-  - {fileID: 1203065306}
-  - {fileID: 1501509165}
-  - {fileID: 1498053465}
-  - {fileID: 878776397}
-  - {fileID: 291187006}
-  - {fileID: 893347605}
-  - {fileID: 2035565918}
-  - {fileID: 1627952907}
+  - {fileID: 1720849105}
+  - {fileID: 857989792}
+  - {fileID: 810500482}
+  - {fileID: 654749427}
+  - {fileID: 932216585}
+  - {fileID: 2143978461}
+  - {fileID: 1995774137}
+  - {fileID: 347987921}
+  - {fileID: 502333626}
+  - {fileID: 271660307}
 --- !u!1001 &167062575
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8295,11 +8297,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MainPanel: {fileID: 61310265}
   Buttons:
-  - {fileID: 869552244}
-  - {fileID: 890975192}
-  - {fileID: 1376779518}
-  - {fileID: 1116612462}
-  - {fileID: 819997930}
+  - {fileID: 1307630254}
+  - {fileID: 626520877}
+  - {fileID: 740162613}
+  - {fileID: 976651474}
+  - {fileID: 908225760}
   VerticalOffset: -0.02
 --- !u!1 &1576962593
 GameObject:
@@ -10234,22 +10236,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68d99980a066c244fb85bcb6cbc22884, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Buttons:
-  - {fileID: 1720849105}
-  - {fileID: 857989792}
-  - {fileID: 810500482}
-  - {fileID: 654749427}
-  - {fileID: 932216585}
-  - {fileID: 2143978461}
-  - {fileID: 1995774137}
-  - {fileID: 347987921}
-  - {fileID: 502333626}
-  - {fileID: 271660307}
-  - {fileID: 1307630254}
-  - {fileID: 626520877}
-  - {fileID: 740162613}
-  - {fileID: 976651474}
-  - {fileID: 908225760}
+  Main: {fileID: 61310265}
 --- !u!114 &9197353186617495833
 MonoBehaviour:
   m_ObjectHideFlags: 0
