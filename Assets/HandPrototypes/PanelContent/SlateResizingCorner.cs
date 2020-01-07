@@ -15,6 +15,8 @@ public class SlateResizingCorner : MonoBehaviour
     public Vector2 ResizingPivot;
     
     public LineRenderer LineRender;
+    private Material lineMat;
+    private float lineHighlight;
 
     private bool lastShowVisuals;
     public bool ShowVisuals;
@@ -31,6 +33,7 @@ public class SlateResizingCorner : MonoBehaviour
         Anchor = new GameObject("RisizingCornerAnchor").transform;
         Anchor.SetParent(Slate, false);
         Anchor.localPosition = new Vector3(ResizingPivot.x / 2, ResizingPivot.y / 2, 0);
+        lineMat = LineRender.material;
     }
 
     private void Update()
@@ -38,7 +41,15 @@ public class SlateResizingCorner : MonoBehaviour
         JustStartedShowing = ShowVisuals && !lastShowVisuals;
         LineRender.enabled = ShowVisuals;
         UpdateCornerTransitions();
+        UpdateMaterials();
         lastShowVisuals = ShowVisuals;
+    }
+
+    private void UpdateMaterials()
+    {
+        float lineHighlightTarget = IsGrabbed ? 1 : 0;
+        lineHighlight = Mathf.Lerp(lineHighlight, lineHighlightTarget, Time.deltaTime * 15);
+        lineMat.SetFloat("_Highlight", lineHighlight);
     }
 
     private void UpdateCornerTransitions()

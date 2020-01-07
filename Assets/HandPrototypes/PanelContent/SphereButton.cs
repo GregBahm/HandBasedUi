@@ -23,6 +23,8 @@ public class SphereButton : MonoBehaviour
     
     public Renderer SphereRenderer;
     private Material sphereMeshMat;
+    public Renderer RailRenderer;
+    private Material railMat;
 
     public Transform ButtonContent;
     public Transform Icon;
@@ -51,6 +53,7 @@ public class SphereButton : MonoBehaviour
     private void Start()
     {
         sphereMeshMat = SphereRenderer.material;
+        railMat = RailRenderer.material;
     }
 
     private void Update()
@@ -87,6 +90,11 @@ public class SphereButton : MonoBehaviour
             Icon.localPosition = toFinger.normalized * weight * .05f * hoveredness;
             Icon.forward = Vector3.Lerp(transform.forward, -toFinger.normalized, weight * .3f * hoveredness);
         }
+        else
+        {
+            Icon.localPosition = Vector3.zero;
+            Icon.localRotation = Quaternion.identity;
+        }
     }
 
     private void UpdateHoverFeatures()
@@ -95,6 +103,7 @@ public class SphereButton : MonoBehaviour
         hoveredness = Mathf.Lerp(hoveredness, hoverednessTarget, Time.deltaTime * 15);
         Rail.VerticalOffset = RailHeight * hoveredness;
         Label.color = new Color(1, 1, 1, hoveredness);
+        railMat.SetFloat("_Highlight", hoveredness);
     }
 
     private void UpdateMaterials()

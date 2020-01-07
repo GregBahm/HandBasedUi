@@ -896,6 +896,7 @@ MonoBehaviour:
   RailHeight: 1
   Styling: {fileID: 0}
   SphereRenderer: {fileID: 5806024203351892531}
+  RailRenderer: {fileID: 5797778062453766213}
   ButtonContent: {fileID: 407318385413742977}
   Icon: {fileID: 210057244040196211}
   ClickAnimationDuration: 0.5
