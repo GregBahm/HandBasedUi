@@ -24,7 +24,7 @@ public abstract class FocusableItemBehavior : MonoBehaviour, IFocusableItem
 
     [SerializeField]
     private float activationDistance = 0.03f;
-    public float ActivationDistance { get { return this.activationDistance; } }
+    public float ActivationDistance { get => activationDistance; set => activationDistance = value; }
 
     private bool forceFocus;
     public bool ForceFocus

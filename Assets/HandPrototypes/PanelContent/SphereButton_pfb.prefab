@@ -162,7 +162,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c7d9258e11668648ad9d92005bb350f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mode: 2
   icon: 0
+  color: {r: 0, g: 0, b: 0, a: 0}
 --- !u!1 &2279576059165427730
 GameObject:
   m_ObjectHideFlags: 0
@@ -909,6 +911,8 @@ MonoBehaviour:
   InteractionStyle: 1
   Toggled: 0
   RailHeight: 1
+  ActiviationScreenDistance: 100
+  DeactiviationScreenDistance: 120
   Styling: {fileID: 0}
   SphereRenderer: {fileID: 5806024203351892531}
   RailRenderer: {fileID: 5797778062453766213}

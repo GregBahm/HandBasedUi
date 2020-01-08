@@ -11,8 +11,8 @@ public class FocusManager : MonoBehaviour
     private readonly List<IFocusableItem> highPris = new List<IFocusableItem>();
     private readonly List<IFocusableItem> midPris = new List<IFocusableItem>();
     private readonly List<IFocusableItem> lowPris = new List<IFocusableItem>();
-
-    public FocusableItemBehavior Debug;
+    
+    
     public IFocusableItem FocusedItem { get; set; }
 
     public bool FocusForced
@@ -27,11 +27,10 @@ public class FocusManager : MonoBehaviour
 
     private void Update()
     {
-        if(!FocusForced)
+        if (!FocusForced)
         {
             FocusedItem = GetCurrentFocusedItem();
         }
-        Debug = FocusedItem as FocusableItemBehavior;
     }
 
     public void RegisterFocusable(IFocusableItem focusable)
@@ -54,13 +53,13 @@ public class FocusManager : MonoBehaviour
     private IFocusableItem GetCurrentFocusedItem()
     {
         IFocusableItem ret = TryGetFocusable(highPris);
-        if(ret != null)
+        if (ret != null)
         {
             return ret;
         }
 
         ret = TryGetFocusable(midPris);
-        if(ret != null)
+        if (ret != null)
         {
             return ret;
         }
@@ -79,7 +78,7 @@ public class FocusManager : MonoBehaviour
         {
             Vector3 pointer = item.Source == FocusSource.Fingertip ? pokePoint : grabPoint;
             float dist = item.GetDistanceToPointer(pointer);
-            if(dist < item.ActivationDistance && dist < closestDistance)
+            if (dist < item.ActivationDistance && dist < closestDistance)
             {
                 ret = item;
                 closestDistance = dist;

@@ -7,4 +7,6 @@ public interface ICursorSettings
     IconController.IconKey Icon { get; }
 
     Vector3 GetCursorEndPosition(Vector3 pointerPos);
+
+    Color Color { get; }
 }

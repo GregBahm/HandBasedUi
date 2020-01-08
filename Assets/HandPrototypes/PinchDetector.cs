@@ -24,7 +24,7 @@ public class PinchDetector : MonoBehaviour
     /// True on the frame where a pinch first starts
     /// </summary>
     public bool PinchBeginning { get; private set; }
-
+    
     public Transform PinchPoint { get; private set; }
 
     private void Start()

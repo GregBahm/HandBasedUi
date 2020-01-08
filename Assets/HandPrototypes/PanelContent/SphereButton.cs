@@ -8,7 +8,7 @@ public class SphereButton : MonoBehaviour
 {
     public TextMeshPro Label;
     public SphereButtonRailing Rail;
-    public FocusableItemBehavior Focus;
+    public ScreenspaceFocusable Focus;
     public bool IsDisabled;
     public ButtonInteractionStyles InteractionStyle;
     public bool Toggled;
@@ -16,6 +16,9 @@ public class SphereButton : MonoBehaviour
     public float RailHeight;
     public event EventHandler Pressed;
     public event EventHandler Released;
+
+    public float ActiviationScreenDistance = 100;
+    public float DeactiviationScreenDistance = 120;
 
     public ButtonStyling Styling;
 
@@ -69,8 +72,8 @@ public class SphereButton : MonoBehaviour
 
     private void Update()
     {
-        Focus.IsFocusable = !IsDisabled;
         UpdateInteraction();
+        UpdateFocus();
         UpdateVisuals();
     }
 
@@ -80,6 +83,15 @@ public class SphereButton : MonoBehaviour
         UpdateHoverFeatures();
         UpdateIconPosition();
         UpdateClickAnimation();
+    }
+
+    private void UpdateFocus()
+    {
+        Focus.IsFocusable = state != ButtonState.Disabled;
+
+        Focus.ActivationDistance = state == ButtonState.Hovered ? DeactiviationScreenDistance : ActiviationScreenDistance;
+        Focus.ForceFocus = state == ButtonState.ClickOutro;
+        this.cursorSettings.Mode = state == ButtonState.ClickOutro ? CursorMode.None : CursorMode.PointCursor;
     }
 
     private void UpdateClickAnimation()
@@ -127,6 +139,7 @@ public class SphereButton : MonoBehaviour
         sphereMeshMat.SetColor("_Color", CurrentColor);
         sphereMeshMat.SetFloat("_Disabledness", state == ButtonState.Disabled ? 1 : 0);
 
+        cursorSettings.Color = CurrentColor;
     }
 
     private Color GetStateColor()

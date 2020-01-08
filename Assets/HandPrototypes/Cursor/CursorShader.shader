@@ -11,6 +11,7 @@
         LOD 100
 
 		BlendOp Max
+		ZTest Always
 		ZWrite Off
         Pass
         {

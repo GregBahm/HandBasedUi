@@ -254,5 +254,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6716f1f3ba7ef8a4baca65222a1bad16, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mode: 1
   icon: 30
+  color: {r: 0, g: 0, b: 0, a: 1}
   focus: {fileID: 6398605360247727934}
