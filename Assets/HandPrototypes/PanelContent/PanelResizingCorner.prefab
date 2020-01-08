@@ -182,6 +182,7 @@ GameObject:
   - component: {fileID: 7443418158771677540}
   - component: {fileID: 5012297868976670124}
   - component: {fileID: 6398605360247727934}
+  - component: {fileID: 2181161466515396}
   m_Layer: 13
   m_Name: PanelResizingCorner
   m_TagString: Untagged
@@ -239,4 +240,19 @@ MonoBehaviour:
   isFocusable: 1
   priority: 1
   activationDistance: 0.03
+  cursorSettings: {fileID: 2181161466515396}
   box: {fileID: 8736834187542654923}
+--- !u!114 &2181161466515396
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7812374111291182323}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6716f1f3ba7ef8a4baca65222a1bad16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  icon: 30
+  focus: {fileID: 6398605360247727934}

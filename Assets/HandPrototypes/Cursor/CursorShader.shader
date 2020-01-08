@@ -1,15 +1,17 @@
-﻿Shader "Unlit/ProtoCursorShader"
+﻿Shader "Unlit/CursorShader"
 {
     Properties
     {
+		_StartColor("Start Color", Color) = (1,1,1,1)
+		_EndColor("End Color", Color) = (0,0,0,0)
     }
     SubShader
     {
-        Tags { "Queue" = "Transparent" }
+        Tags { "Queue"="Transparent" }
         LOD 100
-		ZWrite Off
-		Blend One One
 
+		BlendOp Max
+		ZWrite Off
         Pass
         {
             CGPROGRAM
@@ -22,7 +24,6 @@
             {
                 float4 vertex : POSITION;
                 float2 uv : TEXCOORD0;
-				float4 color : COLOR;
 				UNITY_VERTEX_INPUT_INSTANCE_ID
             };
 
@@ -30,10 +31,15 @@
             {
                 float2 uv : TEXCOORD0;
                 float4 vertex : SV_POSITION;
-				float4 color : COLOR;
+				float3 worldPos : TEXCOORD1;
 				UNITY_VERTEX_INPUT_INSTANCE_ID
 				UNITY_VERTEX_OUTPUT_STEREO
             };
+
+			float3 _CursorStart;
+			float3 _CursorEnd;
+			float4 _StartColor;
+			float4 _EndColor;
 
             v2f vert (appdata v)
             {
@@ -41,20 +47,24 @@
 				UNITY_SETUP_INSTANCE_ID(v);
 				UNITY_TRANSFER_INSTANCE_ID(v, o);
 				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
+
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 o.uv = v.uv;
-				o.color = v.color;
+				o.worldPos = mul(unity_ObjectToWorld, v.vertex);
                 return o;
             }
 
+			float GetCursorParam(float3 worldPos)
+			{
+				float distToStart = length(worldPos - _CursorStart);
+				float distToEnd = length(worldPos - _CursorEnd);
+				return saturate(distToStart / (distToEnd));
+			}
+
             fixed4 frag (v2f i) : SV_Target
             {
-				float ret = 1 - (abs(i.uv.y - .5) * 2);
-				ret = pow(ret, .5);
-				ret *= i.vertex.z * 20;
-				float fade = 1 - i.uv.x;
-				ret = fade * saturate(ret);
-				return ret;
+				float cursorParam = GetCursorParam(i.worldPos);
+				return lerp(_StartColor, _EndColor, cursorParam);
             }
             ENDCG
         }

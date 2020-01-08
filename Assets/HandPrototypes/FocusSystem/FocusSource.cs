@@ -1,4 +1,4 @@
-﻿public enum ItemFocusType
+﻿public enum FocusSource
 {
     GrabPoint,
     Fingertip

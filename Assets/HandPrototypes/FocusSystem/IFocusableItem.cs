@@ -2,10 +2,11 @@
 
 public interface IFocusableItem
 {
-    ItemFocusType FocusType { get; }
+    FocusSource Source { get; }
     bool IsFocusable { get; }
     FocusPriority Priority { get; }
     float ActivationDistance { get; }
     float GetDistanceToPointer(Vector3 pointerPos);
     bool ForceFocus { get; set; }
+    ICursorSettings CursorSettings { get; }
 }

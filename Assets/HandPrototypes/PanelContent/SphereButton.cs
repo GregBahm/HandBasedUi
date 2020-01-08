@@ -28,6 +28,14 @@ public class SphereButton : MonoBehaviour
 
     public Transform ButtonContent;
     public Transform Icon;
+    [SerializeField]
+    private IconController.IconKey iconKey;
+    [SerializeField]
+    private IconController iconFront;
+    [SerializeField]
+    private IconController iconShadow;
+    [SerializeField]
+    private ButtonCursorSettings cursorSettings;
 
     public float ClickAnimationDuration;
     private float clickProgression;
@@ -54,6 +62,9 @@ public class SphereButton : MonoBehaviour
     {
         sphereMeshMat = SphereRenderer.material;
         railMat = RailRenderer.material;
+        iconFront.Icon = iconKey;
+        iconShadow.Icon = iconKey;
+        cursorSettings.Icon = iconKey;
     }
 
     private void Update()

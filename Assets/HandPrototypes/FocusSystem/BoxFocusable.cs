@@ -4,6 +4,7 @@ public class BoxFocusable : FocusableItemBehavior
 {
     [SerializeField]
     private BoxCollider box;
+    public BoxCollider Box { get { return this.box; } }
 
     private void Start()
     {

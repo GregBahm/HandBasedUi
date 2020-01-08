@@ -77,7 +77,7 @@ public class FocusManager : MonoBehaviour
         float closestDistance = float.PositiveInfinity;
         foreach (IFocusableItem item in items.Where(item => item.IsFocusable))
         {
-            Vector3 pointer = item.FocusType == ItemFocusType.Fingertip ? pokePoint : grabPoint;
+            Vector3 pointer = item.Source == FocusSource.Fingertip ? pokePoint : grabPoint;
             float dist = item.GetDistanceToPointer(pointer);
             if(dist < item.ActivationDistance && dist < closestDistance)
             {

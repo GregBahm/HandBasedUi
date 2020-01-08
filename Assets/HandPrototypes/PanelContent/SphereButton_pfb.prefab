@@ -109,6 +109,7 @@ GameObject:
   m_Component:
   - component: {fileID: 407318385413742977}
   - component: {fileID: 3612274488573722874}
+  - component: {fileID: 2310793048356420216}
   m_Layer: 0
   m_Name: MovingContent
   m_TagString: Untagged
@@ -148,6 +149,20 @@ MonoBehaviour:
   isFocusable: 1
   priority: 1
   activationDistance: 100
+  cursorSettings: {fileID: 2310793048356420216}
+--- !u!114 &2310793048356420216
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1603071537342571680}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c7d9258e11668648ad9d92005bb350f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  icon: 0
 --- !u!1 &2279576059165427730
 GameObject:
   m_ObjectHideFlags: 0
@@ -484,7 +499,7 @@ GameObject:
   - component: {fileID: 5189382010841254804}
   - component: {fileID: 5189382010841254794}
   m_Layer: 0
-  m_Name: IconMain
+  m_Name: IconFront
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -899,6 +914,10 @@ MonoBehaviour:
   RailRenderer: {fileID: 5797778062453766213}
   ButtonContent: {fileID: 407318385413742977}
   Icon: {fileID: 210057244040196211}
+  iconKey: 0
+  iconFront: {fileID: 5189382010841254794}
+  iconShadow: {fileID: 5017616850577959404}
+  cursorSettings: {fileID: 2310793048356420216}
   ClickAnimationDuration: 0.5
 --- !u!1 &7143823786124929978
 GameObject:

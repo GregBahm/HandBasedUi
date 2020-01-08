@@ -3,8 +3,8 @@
 public abstract class FocusableItemBehavior : MonoBehaviour, IFocusableItem
 {
     [SerializeField]
-    private ItemFocusType focusType = ItemFocusType.Fingertip;
-    public ItemFocusType FocusType { get { return this.focusType; } }
+    private FocusSource focusType = FocusSource.Fingertip;
+    public FocusSource Source { get { return this.focusType; } }
 
     [SerializeField]
     private bool isFocusable = true;
@@ -55,4 +55,8 @@ public abstract class FocusableItemBehavior : MonoBehaviour, IFocusableItem
     }
 
     public abstract float GetDistanceToPointer(Vector3 pointerPos);
+
+    [SerializeField]
+    private CursorSettings cursorSettings;
+    public ICursorSettings CursorSettings { get { return this.cursorSettings; } }
 }
