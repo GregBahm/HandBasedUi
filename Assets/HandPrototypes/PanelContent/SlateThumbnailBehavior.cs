@@ -3,13 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PanelThumbnailBehavior : MonoBehaviour
+public class SlateThumbnailBehavior : MonoBehaviour
 {
     public HandMountedUiController HandMount;
     public BoxFocusable Focus;
     public GameObject Visuals;
     public MeshRenderer VideoMesh;
-    public MainPanelArrangement Panel; // TODO: Change this to an interface or something
+    [SerializeField]
+    private SlateController slate;
     public float SummonDuration = 1;
     public float SummonRamp = 1;
     private float summonTime;
@@ -54,7 +55,7 @@ public class PanelThumbnailBehavior : MonoBehaviour
         summonTime = Mathf.Clamp(summonTime, 0, SummonDuration);
         float param = 1 - (summonTime / SummonDuration);
 
-        Panel.Summonness = Mathf.Pow(param, SummonRamp);
+        slate.Summonness = Mathf.Pow(param, SummonRamp);
         thumbnailGrabbed = thumbnailGrabbed && MainPinchDetector.Instance.Pinching;
         Visuals.SetActive(!thumbnailGrabbed);
     }
@@ -62,9 +63,9 @@ public class PanelThumbnailBehavior : MonoBehaviour
     private void StartThumbnailGrab()
     {
         summonTime = SummonDuration;
-        Panel.transform.position = transform.position;
-        Panel.transform.rotation = transform.rotation;
-        Panel.Repositioning.StartGrab();
+        slate.transform.position = transform.position;
+        slate.transform.rotation = transform.rotation;
+        slate.Repositioning.StartGrab();
         thumbnailGrabbed = true;
     }
 }

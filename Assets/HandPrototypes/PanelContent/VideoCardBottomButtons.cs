@@ -6,7 +6,7 @@ using UnityEngine;
 public class VideoCardBottomButtons : MonoBehaviour
 {
     private float fullScale;
-    public MainPanelArrangement MainPanel;
+    public MainPaneController MainPanel;
 
     public SliderButton[] Buttons;
 
@@ -20,8 +20,8 @@ public class VideoCardBottomButtons : MonoBehaviour
     public void PlaceButtons()
     {
         transform.localPosition = Vector3.zero;
-        float videoSpan = MainPanel.VideoCard.localScale.x;
-        float y = -MainPanel.VideoCard.localScale.y / 2 - MainPanel.VerticalButtonMargin;
+        float videoSpan = MainPanel.SlateContent.localScale.x;
+        float y = -MainPanel.SlateContent.localScale.y / 2 - MainPanel.VerticalButtonMargin;
         float fullWidth = (Buttons.Length) * MainPanel.BottomButtonSpacing;
         float shrinking = GetShrinkingFactor(fullWidth, videoSpan);
 

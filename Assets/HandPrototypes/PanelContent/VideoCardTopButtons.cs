@@ -7,7 +7,7 @@ using UnityEngine;
 public class VideoCardTopButtons : MonoBehaviour
 {
     private float fullScale;
-    public MainPanelArrangement MainPanel;
+    public MainPaneController MainPanel;
     public float MinMargin;
 
     public SliderButton[] Buttons;
@@ -22,9 +22,9 @@ public class VideoCardTopButtons : MonoBehaviour
     {
         transform.localPosition = Vector3.zero;
 
-        float videoSpan = MainPanel.VideoCard.localScale.x;
+        float videoSpan = MainPanel.SlateContent.localScale.x;
 
-        float y = MainPanel.VideoCard.localScale.y / 2 + MainPanel.VerticalButtonMargin;
+        float y = MainPanel.SlateContent.localScale.y / 2 + MainPanel.VerticalButtonMargin;
         float itemWidth = GetItemWidth(videoSpan);
 
 

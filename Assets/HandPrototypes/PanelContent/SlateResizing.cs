@@ -16,7 +16,7 @@ public class SlateResizing : MonoBehaviour
                 || UpperRightCorner.IsGrabbed;
         }
     }
-    public MainPanelArrangement Main;
+    public SlateController Main;
     private Transform pivotPoint;
     
     public Transform Slate;

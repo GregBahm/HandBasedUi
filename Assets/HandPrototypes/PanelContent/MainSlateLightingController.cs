@@ -6,7 +6,7 @@ using UnityEngine;
 [RequireComponent(typeof(SlateVisualController))]
 public class MainSlateLightingController : MonoBehaviour
 {
-    public MainPanelArrangement Main;
+    public MainPaneController Main;
     private SlateVisualController baseVisualController;
 
     private Vector4[] buttonPositions;

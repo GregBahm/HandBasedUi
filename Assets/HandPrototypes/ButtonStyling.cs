@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class ButtonStyling : MonoBehaviour
 {
-    public MainPanelArrangement Main;
-    public float HoverRadius { get { return Main.ButtonHoverDist; } }
+    public MainPaneController Main;
+    public float HoverRadius { get { return 0.03f; } }
     public Color ReadyColor = Color.black;
     public Color ReadyToggledColor = Color.gray;
     public Color HoverColor = Color.blue;
