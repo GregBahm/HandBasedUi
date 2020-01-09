@@ -1,16 +1,16 @@
-﻿Shader "Unlit/CursorShader"
+﻿Shader "Unlit/CursorConesShader"
 {
     Properties
     {
     }
     SubShader
     {
-        Tags { "Queue"="Transparent" }
+		Tags { "Queue" = "Transparent" }
         LOD 100
 
-		BlendOp Max
-		ZTest Always
+		Cull Off
 		ZWrite Off
+		Blend One One
         Pass
         {
             CGPROGRAM
@@ -30,15 +30,10 @@
             {
                 float2 uv : TEXCOORD0;
                 float4 vertex : SV_POSITION;
-				float3 worldPos : TEXCOORD1;
+				float3 objSpace : TEXCOORD1;
 				UNITY_VERTEX_INPUT_INSTANCE_ID
 				UNITY_VERTEX_OUTPUT_STEREO
             };
-
-			float3 _CursorStart;
-			float3 _CursorEnd;
-			float4 _StartColor;
-			float4 _EndColor;
 
             v2f vert (appdata v)
             {
@@ -49,21 +44,13 @@
 
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 o.uv = v.uv;
-				o.worldPos = mul(unity_ObjectToWorld, v.vertex);
+				o.objSpace = v.vertex;
                 return o;
             }
 
-			float GetCursorParam(float3 worldPos)
-			{
-				float distToStart = length(worldPos - _CursorStart);
-				float distToEnd = length(worldPos - _CursorEnd);
-				return saturate(distToStart / (distToEnd));
-			}
-
             fixed4 frag (v2f i) : SV_Target
             {
-				float cursorParam = GetCursorParam(i.worldPos);
-				return lerp(_StartColor, _EndColor, cursorParam);
+				return i.objSpace.z * .2;
             }
             ENDCG
         }

@@ -129,10 +129,10 @@ RectTransform:
   m_GameObject: {fileID: 891730953996585833}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.02, y: 0.02, z: 0.02}
   m_Children:
   - {fileID: 891730953034721506}
-  m_Father: {fileID: 8481474709240887132}
+  m_Father: {fileID: 2027218056975633633}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -351,7 +351,7 @@ Transform:
   m_LocalScale: {x: 0.02, y: 0.02, z: 0.02}
   m_Children: []
   m_Father: {fileID: 2027218056975633633}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &5207841262289310078
 MeshFilter:
@@ -488,10 +488,9 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.02, y: 0.02, z: 0.02}
-  m_Children:
-  - {fileID: 891730953996585834}
+  m_Children: []
   m_Father: {fileID: 2027218056975633633}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &6686394351063964441
 MeshFilter:
@@ -569,7 +568,7 @@ Transform:
   - {fileID: 8578138962963140783}
   - {fileID: 3330171025884743654}
   m_Father: {fileID: 2027218056975633633}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6989612628893782360
 GameObject:
@@ -676,6 +675,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 891730953996585834}
   - {fileID: 8481474709240887132}
   - {fileID: 5423757584376299713}
   - {fileID: 7476645728650014376}
@@ -706,6 +706,8 @@ MonoBehaviour:
   defaultEndCursorColor: {r: 0.15659486, g: 0.3562729, b: 0.6509434, a: 1}
   defaultStartCursorColor: {r: 0.4339623, g: 0.4339623, b: 0.4339623, a: 1}
   grabbedStartCursorColor: {r: 0.6320754, g: 0.6320754, b: 0.6320754, a: 1}
+  velocityDecay: 0.1
+  velocityGain: 30
 --- !u!1001 &293348014219801509
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -776,7 +778,7 @@ PrefabInstance:
     - target: {fileID: 2300000, guid: 9151665df8288da4d875fbe39d2ce207, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 8d34103366d77074bb0c04338a73dcf7, type: 2}
+      objectReference: {fileID: 2100000, guid: eaa83a80f1b32b2458399a6e0a90a9e4, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9151665df8288da4d875fbe39d2ce207, type: 3}
 --- !u!4 &293348014219929893 stripped
@@ -855,7 +857,7 @@ PrefabInstance:
     - target: {fileID: 2300000, guid: 9151665df8288da4d875fbe39d2ce207, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 8d34103366d77074bb0c04338a73dcf7, type: 2}
+      objectReference: {fileID: 2100000, guid: eaa83a80f1b32b2458399a6e0a90a9e4, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9151665df8288da4d875fbe39d2ce207, type: 3}
 --- !u!4 &8411606219210888484 stripped

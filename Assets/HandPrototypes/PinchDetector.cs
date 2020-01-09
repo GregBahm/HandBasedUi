@@ -27,6 +27,14 @@ public class PinchDetector : MonoBehaviour
     
     public Transform PinchPoint { get; private set; }
 
+    public float FingerDistance
+    {
+        get
+        {
+            return (ThumbProxy.position - FingertipProxy.position).magnitude;
+        }
+    }
+
     private void Start()
     {
         PinchPoint = new GameObject("Pinch Point").transform;
@@ -34,14 +42,14 @@ public class PinchDetector : MonoBehaviour
 
     private void Update()
     {
-        float tipDistance = (ThumbProxy.position - FingertipProxy.position).magnitude;
+        float fingerDistance = FingerDistance;
         if(Pinching)
         {
-            Pinching = tipDistance < UnpinchDist;
+            Pinching = fingerDistance < UnpinchDist;
         }
         else
         {
-            Pinching = tipDistance < PinchDist;
+            Pinching = fingerDistance < PinchDist;
         }
 
         UpdateGrabPoint();

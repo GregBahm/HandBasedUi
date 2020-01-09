@@ -9939,16 +9939,6 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 0}
-    - target: {fileID: 1869567201904444727, guid: 9ad26df2fe4f0fa48ba3503f6ee15642,
-        type: 3}
-      propertyPath: velocityDecay
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1869567201904444727, guid: 9ad26df2fe4f0fa48ba3503f6ee15642,
-        type: 3}
-      propertyPath: velocityGain
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9ad26df2fe4f0fa48ba3503f6ee15642, type: 3}
 --- !u!1001 &3743138795546514718

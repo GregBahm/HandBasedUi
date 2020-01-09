@@ -73,7 +73,7 @@ public class CursorController : MonoBehaviour
             velocity -= Time.deltaTime * velocityDecay;
             float movement = (lastPosition - startPoint).magnitude;
             velocity += movement * velocityGain;
-            velocity = Mathf.Clamp01(velocity);
+            velocity = Mathf.Clamp01(velocity) * .75f;
         }
         else
         {
@@ -88,10 +88,14 @@ public class CursorController : MonoBehaviour
         pointerSpan.position = (pointerStart.position + pointerEnd.position) / 2;
         float pointerSpanLength = (pointerStart.position - pointerEnd.position).magnitude / 2;
 
-        pointerStart.localScale = new Vector3(pointerScale, pointerScale, pointerScale) * velocity;
-        pointerEnd.localScale = pointerStart.localScale;
-        pointerSpan.localScale = new Vector3(pointerScale * velocity, pointerScale * velocity, pointerSpanLength);
+        float tubePinchScale = GetTubePinchScale();
+        float effectiveScale = pointerScale * tubePinchScale * velocity;
 
+        pointerStart.localScale = new Vector3(effectiveScale, effectiveScale, effectiveScale);
+        pointerEnd.localScale = pointerStart.localScale;
+        pointerSpan.localScale = new Vector3(effectiveScale, effectiveScale, pointerSpanLength);
+
+        iconController.transform.position = pointerStart.position;
         iconController.transform.LookAt(Camera.main.transform);
         iconController.transform.Rotate(0, 180, 0);
 
@@ -101,15 +105,21 @@ public class CursorController : MonoBehaviour
         bottomCone.position = HandPrototypeProxies.Instance.RightThumb.position;
         bottomCone.LookAt(MainPinchDetector.Instance.PinchPoint.position);
 
-        float coneScale = GetConeScale() * velocity;
+        float coneScale = GetConeScale();
         bottomCone.localScale = new Vector3(coneScale, coneScale, coneScale);
         topCone.localScale = bottomCone.localScale;
     }
 
+    private float GetTubePinchScale()
+    {
+        float ret = (MainPinchDetector.Instance.FingerDistance - MainPinchDetector.Instance.PinchDist) / MainPinchDetector.Instance.PinchDist;
+        ret = Mathf.Clamp01(ret);
+        return Mathf.Lerp(ret, 1, pointOrGrabness);
+    }
+
     private float GetConeScale()
     {
-        float fingerDistance = (MainPinchDetector.Instance.ThumbProxy.position - MainPinchDetector.Instance.FingertipProxy.position).magnitude;
-        float pinchDist = fingerDistance - MainPinchDetector.Instance.PinchDist;
+        float pinchDist = MainPinchDetector.Instance.FingerDistance - MainPinchDetector.Instance.PinchDist;
         pinchDist = Mathf.Clamp(pinchDist, 0, pointerScale);
         return pinchDist * (1 - pointOrGrabness);
 
