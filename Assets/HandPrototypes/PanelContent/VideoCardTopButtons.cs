@@ -10,12 +10,12 @@ public class VideoCardTopButtons : MonoBehaviour
     public MainPanelArrangement MainPanel;
     public float MinMargin;
 
-    public SphereButton[] Buttons;
+    public SliderButton[] Buttons;
 
     private void Start()
     {
         fullScale = Buttons[0].transform.localScale.x;
-        SphereButton[] sphereButtons = Buttons.Select(item => item.GetComponent<SphereButton>()).ToArray();
+        SliderButton[] sphereButtons = Buttons.Select(item => item.GetComponent<SliderButton>()).ToArray();
     }
 
     public void PlaceButtons()

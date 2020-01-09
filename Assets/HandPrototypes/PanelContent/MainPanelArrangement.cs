@@ -37,7 +37,7 @@ public class MainPanelArrangement : MonoBehaviour
     public VideoCardTopButtons TopButtons;
     public VideoCardBottomButtons ButtomButtons;
     
-    public SphereButton[] Buttons;
+    public SliderButton[] Buttons;
 
     public float ButtonHoverDist;
     public float VerticalButtonMargin;
@@ -55,9 +55,9 @@ public class MainPanelArrangement : MonoBehaviour
         RegisterCooldowns();
     }
 
-    private SphereButton[] GetButtons()
+    private SliderButton[] GetButtons()
     {
-        List<SphereButton> ret = new List<SphereButton>();
+        List<SliderButton> ret = new List<SliderButton>();
         ret.AddRange(TopButtons.Buttons);
         ret.AddRange(ButtomButtons.Buttons);
         return ret.ToArray();
@@ -65,7 +65,7 @@ public class MainPanelArrangement : MonoBehaviour
 
     private void RegisterCooldowns()
     {
-        foreach (SphereButton button in Buttons)
+        foreach (SliderButton button in Buttons)
         {
             button.Released += Button_Released;
         }
