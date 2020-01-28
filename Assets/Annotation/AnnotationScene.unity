@@ -142,7 +142,7 @@ Transform:
   - {fileID: 257995807}
   - {fileID: 9197353186617495837}
   m_Father: {fileID: 1048707220}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &21731387
 GameObject:
@@ -175,8 +175,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AnnotationDepth: 1
   Annotation: {fileID: 5949057}
-  AnnotationPlane: {fileID: 0}
+  Frustum: {fileID: 41072333}
   Phone: {fileID: 1972360169}
+  PlaneTarget: {fileID: 1411376664}
 --- !u!4 &21731389
 Transform:
   m_ObjectHideFlags: 0
@@ -1047,6 +1048,7 @@ Transform:
   m_LocalPosition: {x: -0.0147663355, y: -0.006480098, z: 0.49647102}
   m_LocalScale: {x: 0.52935, y: 1, z: 1}
   m_Children:
+  - {fileID: 1411376663}
   - {fileID: 5949057}
   - {fileID: 41072333}
   m_Father: {fileID: 1972360168}
@@ -1296,6 +1298,51 @@ MonoBehaviour:
   icon: 30
   color: {r: 0, g: 0, b: 0, a: 1}
   focus: {fileID: 9197353186617495816}
+--- !u!1 &1411376662
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1411376663}
+  - component: {fileID: 1411376664}
+  m_Layer: 0
+  m_Name: PlaneRepositioner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1411376663
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1411376662}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1048707220}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1411376664
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1411376662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6ef23564be19ac458d02a2b525aec1e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  focus: {fileID: 9197353186617495816}
+  Smoothing: 20
 --- !u!1 &1446599211
 GameObject:
   m_ObjectHideFlags: 0
@@ -2197,7 +2244,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: a37a14c97400c7f46b9ec5d11f322112, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: a37a14c97400c7f46b9ec5d11f322112, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
