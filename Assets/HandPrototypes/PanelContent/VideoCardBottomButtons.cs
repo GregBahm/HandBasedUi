@@ -8,7 +8,7 @@ public class VideoCardBottomButtons : MonoBehaviour
     private float fullScale;
     public MainPaneController MainPanel;
 
-    public SliderButton[] Buttons;
+    public PushyButtonController[] Buttons;
 
     public float VerticalOffset;
 

@@ -17,7 +17,7 @@ public class MainPaneController : SlateController
     public VideoCardTopButtons TopButtons;
     public VideoCardBottomButtons ButtomButtons;
     
-    public SliderButton[] Buttons { get; private set; }
+    public PushyButtonController[] Buttons { get; private set; }
     
     [SerializeField]
     private float verticalButtonMargin;
@@ -35,9 +35,9 @@ public class MainPaneController : SlateController
         RegisterCooldowns();
     }
 
-    private SliderButton[] GetButtons()
+    private PushyButtonController[] GetButtons()
     {
-        List<SliderButton> ret = new List<SliderButton>();
+        List<PushyButtonController> ret = new List<PushyButtonController>();
         ret.AddRange(TopButtons.Buttons);
         ret.AddRange(ButtomButtons.Buttons);
         return ret.ToArray();
@@ -45,7 +45,7 @@ public class MainPaneController : SlateController
 
     private void RegisterCooldowns()
     {
-        foreach (SliderButton button in Buttons)
+        foreach (PushyButtonController button in Buttons)
         {
             button.Released += Button_Released;
         }
