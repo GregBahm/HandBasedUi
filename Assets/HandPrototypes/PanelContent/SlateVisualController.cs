@@ -14,6 +14,7 @@ public class SlateVisualController : MonoBehaviour
     [Range(0, .05f)]
     [SerializeField]
     private float rounding;
+    public float Rounding => rounding;
 
     [Range(1, 16)]
     [SerializeField]
@@ -109,10 +110,10 @@ public class SlateVisualController : MonoBehaviour
     {
         List<Vector3> points = new List<Vector3>();
 
-        points.AddRange(DoCorner(-1, 1, 180));
-        points.AddRange(DoCorner(-1, -1, 180, true));
         points.AddRange(DoCorner(1, -1, 180));
         points.AddRange(DoCorner(1, 1, 180, true));
+        points.AddRange(DoCorner(-1, 1, 180));
+        points.AddRange(DoCorner(-1, -1, 180, true));
         return points.ToArray();
     }
 

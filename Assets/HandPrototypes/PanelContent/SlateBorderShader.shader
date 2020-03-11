@@ -83,7 +83,7 @@
 
                 float ret = alpha / (i.scale * 5);
 				ret *= fingerLighting * 2;
-                ret = lerp(ret, 1, _Highlight);
+                ret = lerp(ret, 1, 1);
                 return ret;
             }
             ENDCG

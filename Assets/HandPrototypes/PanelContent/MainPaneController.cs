@@ -16,8 +16,19 @@ public class MainPaneController : SlateController
     public Transform NamePlate;
     public VideoCardTopButtons TopButtons;
     public VideoCardBottomButtons ButtomButtons;
-    
-    public PushyButtonController[] Buttons { get; private set; }
+
+    private PushyButtonController[] buttons;
+    public PushyButtonController[] Buttons
+    {
+        get
+        {
+            if(buttons == null)
+            {
+                buttons = GetButtons();
+            }
+            return this.buttons;
+        }
+    }
     
     [SerializeField]
     private float verticalButtonMargin;
@@ -28,10 +39,11 @@ public class MainPaneController : SlateController
     public float BottomButtonSpacing { get { return this.bottomButtonSpacing; } }
     [SerializeField]
     private float nameplateMargin;
+    [SerializeField]
+    private GrabberPlacer grabberPlacer;
 
     private void Start()
     {
-        Buttons = GetButtons();
         RegisterCooldowns();
     }
 
@@ -61,6 +73,7 @@ public class MainPaneController : SlateController
         Thumbnail.UpdateThumbnail();
         HandleSlateSizing();
         Repositioning.UpdateSlatePositioning();
+        grabberPlacer.DoUpdate();
         PositionContent();
         PositionNamePlate();
         TopButtons.PlaceButtons();
