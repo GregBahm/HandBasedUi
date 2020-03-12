@@ -6,11 +6,22 @@ using UnityEngine;
 public class GrabberPlacer : MonoBehaviour
 {
     [SerializeField]
+    private float maxRadius;
+    [Range(0, 1)]
+    [SerializeField]
+    private float summon;
+
+    [SerializeField]
+    private Transform slateSizing;
+    [SerializeField]
     private Transform slateFront;
     [SerializeField]
     private Transform slateBack;
     [SerializeField]
     private Transform grabber;
+
+    [SerializeField]
+    private BoxFocusable focus;
 
     [SerializeField]
     private float maxWidth;
@@ -19,17 +30,36 @@ public class GrabberPlacer : MonoBehaviour
     [SerializeField]
     private float margins;
 
+    [SerializeField]
+    private float tabDrop;
+
+    public float GrabberRadius
+    {
+        get { return maxRadius * summon; }
+    }
+
     public void DoUpdate()
     {
-        PlaceGrabber();
         ScaleGrabber();
+        PlaceSlates();
+        PlaceGrabber();
+    }
+
+    private void PlaceSlates()
+    {
+        slateFront.localPosition = new Vector3(0, 0, GrabberRadius);
+        slateBack.localPosition = new Vector3(0, 0, -GrabberRadius);
     }
 
     private void ScaleGrabber()
     {
-        float width = MainPinchDetector.Instance.FingerDistance - .03f;
-        width = Mathf.Clamp(width, minWidth, maxWidth);
-        grabber.localScale = new Vector3(width, grabber.localScale.y, grabber.localScale.z);
+        float width = maxWidth * summon;
+        if(FocusManager.Instance.FocusedItem == focus)
+        {
+            width = MainPinchDetector.Instance.FingerDistance - .03f;
+            width = Mathf.Clamp(width, minWidth, maxWidth);
+        }
+        grabber.localScale = new Vector3(width, GrabberRadius * 2, GrabberRadius * 2);
     }
 
     private void PlaceGrabber()
@@ -42,8 +72,9 @@ public class GrabberPlacer : MonoBehaviour
 
     private float GetGrabberX()
     {
+        return 0;
         Vector3 grabPos = MainPinchDetector.Instance.PinchPoint.position;
-        float maxX = slateFront.localScale.x / 2 - margins;
+        float maxX = .5f - margins;
         float ret = transform.InverseTransformPoint(grabPos).x;
         ret = Mathf.Clamp(ret, -maxX, maxX);
         return ret;
@@ -51,8 +82,8 @@ public class GrabberPlacer : MonoBehaviour
 
     private float GetGrabberY()
     {
-        float bottom = slateFront.localPosition.y - slateFront.localScale.y / 2;
+        float bottom = slateSizing.localPosition.y - slateSizing.localScale.y / 2;
         float grabberRadius = grabber.localScale.y / 2;
-        return bottom - grabberRadius;
+        return bottom - grabberRadius - tabDrop * summon;
     }
 }

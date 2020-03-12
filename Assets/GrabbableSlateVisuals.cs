@@ -7,7 +7,7 @@ using UnityEngine;
 public class GrabbableSlateVisuals : MonoBehaviour
 {
     [SerializeField]
-    private LineRenderer lineA;
+    private LineRenderer lineA; 
     [SerializeField]
     private LineRenderer lineB;
     [SerializeField]
@@ -15,15 +15,10 @@ public class GrabbableSlateVisuals : MonoBehaviour
     [SerializeField]
     private SlateVisualController slateFront;
     [SerializeField]
-    private SlateVisualController slateBack;
-    [SerializeField]
     private Transform grabber;
 
     [SerializeField]
     private int cornerVerts;
-
-    [SerializeField]
-    private float rounding;
     
     private void Start()
     {
@@ -44,6 +39,8 @@ public class GrabbableSlateVisuals : MonoBehaviour
 
     private IEnumerable<Vector3> GetLinePositions(float side)
     {
+        float rounding = grabber.localScale.y / 2;
+
         float zDepth = slateFront.transform.localPosition.z;
         float grabberX = grabber.localScale.x * side - grabber.localPosition.x;
         float slateY = slateResizing.localScale.y / 2;
