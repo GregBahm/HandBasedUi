@@ -13,8 +13,6 @@ public class MenuItemButton : MonoBehaviour
     public event EventHandler Pressed;
     public event EventHandler Released;
 
-    public ButtonColors Colors;
-
     private ButtonState state;
 
     public MeshCollider Backdrop;
@@ -81,26 +79,16 @@ public class MenuItemButton : MonoBehaviour
         switch (state)
         {
             case ButtonState.Ready:
-                return Toggled ? Colors.ReadyToggledColor :Colors.ReadyColor;
+                return Toggled ? ButtonColors.Instance.ReadyToggledColor : ButtonColors.Instance.ReadyColor;
             case ButtonState.Hovered:
-                return Colors.HoverColor;
+                return Toggled ? ButtonColors.Instance.ReadyToggledColor : ButtonColors.Instance.HoverColor;
             case ButtonState.Pressing:
-                return Colors.PressingColor;
+                return ButtonColors.Instance.PressingColor;
             case ButtonState.Disabled:
             default:
-                return Colors.DisabledColor;
+                return ButtonColors.Instance.DisabledColor;
         }
     }
-
-    public class ButtonColors
-    {
-        public Color ReadyToggledColor;
-        public Color ReadyColor;
-        public Color HoverColor;
-        public Color PressingColor;
-        public Color DisabledColor;
-    }
-
 
     private bool IsHoveringOver(out RaycastHit hitInfo)
     {

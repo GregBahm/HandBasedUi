@@ -47,6 +47,11 @@ public class SlateRepositioning : MonoBehaviour
         grabReleaseSound.Play();
     }
 
+    void Update()
+    {
+        UpdateSlatePositioning();
+    }
+
     public void UpdateSlatePositioning()
     {
         bool pinching = MainPinchDetector.Instance.Pinching;

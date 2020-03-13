@@ -46,7 +46,7 @@ public class PostWorkOrderController : MonoBehaviour, IBeatController
             callSpriteRenderer.color = new Color(1, 1, 1, alpha);
 
             float otherAlpha = (beat2Intro + Beat2IntroDuration) / Beat2IntroDuration;
-            otherAlpha = 1 - Mathf.Clamp01(otherAlpha);
+            otherAlpha = 1 - Mathf.Clamp01(otherAlpha * 2);
             firstPanelRenderer.color = new Color(1, 1, 1, otherAlpha);
         }
         else
