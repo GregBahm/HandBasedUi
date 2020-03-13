@@ -65,7 +65,7 @@ public class MainPaneController : SlateController
 
     private void Button_Released(object sender, EventArgs e)
     {
-        Repositioning.ResetInteractionCooldown();
+        //Repositioning.ResetInteractionCooldown();
     }
 
     private void Update()
