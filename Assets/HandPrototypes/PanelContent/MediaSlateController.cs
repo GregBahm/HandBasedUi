@@ -14,9 +14,9 @@ public class MediaSlateController : SlateController
     {
         PlaceButtons();
         Thumbnail.UpdateThumbnail();
-        HandleSlateSizing();
+        //HandleSlateSizing();
 
-        Repositioning.UpdateSlatePositioning();
+        //Repositioning.UpdateSlatePositioning();
         PositionContent();
     }
 

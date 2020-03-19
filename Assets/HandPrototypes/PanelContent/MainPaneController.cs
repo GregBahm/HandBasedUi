@@ -39,8 +39,6 @@ public class MainPaneController : SlateController
     public float BottomButtonSpacing { get { return this.bottomButtonSpacing; } }
     [SerializeField]
     private float nameplateMargin;
-    [SerializeField]
-    private GrabberPlacer grabberPlacer;
 
     private void Start()
     {
@@ -70,10 +68,7 @@ public class MainPaneController : SlateController
 
     private void Update()
     {
-        Thumbnail.UpdateThumbnail();
-        HandleSlateSizing();
         Repositioning.UpdateSlatePositioning();
-        grabberPlacer.DoUpdate();
         PositionContent();
         PositionNamePlate();
         TopButtons.PlaceButtons();

@@ -23,10 +23,6 @@ public abstract class SlateController : MonoBehaviour
     public float Summonness { get => this.summonness; set => this.summonness = value; }
 
     [SerializeField]
-    private SlateResizing resizing;
-    public SlateResizing Resizing { get { return this.resizing; } }
-
-    [SerializeField]
     private SlateRepositioning repositioning;
     public SlateRepositioning Repositioning { get { return this.repositioning; } }
 
@@ -48,20 +44,7 @@ public abstract class SlateController : MonoBehaviour
     private float verticalSlateMargin;
 
     private Vector3 unsummonedSlateScale;
-
-    protected void HandleSlateSizing()
-    {
-        if (Summonness < .999f)
-        {
-            Slate.localScale = Vector3.Lerp(Thumbnail.transform.localScale, unsummonedSlateScale, Summonness);
-        }
-        else
-        {
-            Resizing.UpdateSlateResizing();
-            unsummonedSlateScale = Slate.localScale;
-        }
-    }
-
+    
     protected void PositionContent()
     {
         float effectiveHorizontalMargin = this.horizontalSlateMargin * PanelSummoness;

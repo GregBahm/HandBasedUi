@@ -23,8 +23,6 @@ public class SlateRepositioning : MonoBehaviour
     private float currentInteractionCooldown;
 
     public bool CurrentlyRepositioning { get; private set; }
-    public SlateResizing Resizing;
-    public SlateVisualController VisualController;
     private Transform unsnappedTransform;
     private Transform snappedTransform;
 
@@ -79,7 +77,6 @@ public class SlateRepositioning : MonoBehaviour
         }
         UpdatePosition();
         wasPinching = pinching;
-        VisualController.DoHighlightBorder = CurrentlyRepositioning || Resizing.CurrentlyResizing;
     }
 
     private void UpdateCooldowns()
@@ -93,11 +90,8 @@ public class SlateRepositioning : MonoBehaviour
 
     private void UpdatePosition()
     {
-        if(!Resizing.CurrentlyResizing)
-        {
-            transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * Smoothing);
-            transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * Smoothing);
-        }
+        transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * Smoothing);
+        transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * Smoothing);
     }
 
     private void EndRepositioning()
