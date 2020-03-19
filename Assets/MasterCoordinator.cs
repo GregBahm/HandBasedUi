@@ -34,7 +34,7 @@ public class MasterCoordinator : MonoBehaviour
 
     void Start()
     {
-        controllers = new IBeatController[] { AssetMenu, SpatialInspection, PostWorkOrder, Recording};
+        controllers = new IBeatController[] { AssetMenu, Recording, SpatialInspection, PostWorkOrder};
         buttons = new MenuItemButton[] { AssetMenuButton, SpatialInspectionButton, PostWorkOrderButton, RecordingButton };
 
         AssetMenuButton.Released += AssetMenuButton_Released;
@@ -46,25 +46,29 @@ public class MasterCoordinator : MonoBehaviour
         PreviousButton.Released += PreviousButton_Released;
     }
 
+    private void AssetMenuButton_Released(object sender, System.EventArgs e)
+    {
+        MasterBeat = 0;
+        CurrentController.Beat = 1;
+    }
     private void RecordingButton_Released(object sender, System.EventArgs e)
     {
-        MasterBeat = 3;
-    }
-
-    private void PostWorkOrderButton_Released(object sender, System.EventArgs e)
-    {
-        MasterBeat = 2;
+        MasterBeat = 1;
+        CurrentController.Beat = 1;
     }
 
     private void SpatialInspectionButton_Released(object sender, System.EventArgs e)
     {
-        MasterBeat = 1;
+        MasterBeat = 2;
+        CurrentController.Beat = 1;
     }
 
-    private void AssetMenuButton_Released(object sender, System.EventArgs e)
+    private void PostWorkOrderButton_Released(object sender, System.EventArgs e)
     {
-        MasterBeat = 0;
+        MasterBeat = 3;
+        CurrentController.Beat = 1;
     }
+
 
     private void PreviousButton_Released(object sender, System.EventArgs e)
     {
@@ -80,9 +84,6 @@ public class MasterCoordinator : MonoBehaviour
     {
         SelectorRoot.SetActive(Summoning.IsSummoned);
         SetBeatVisibility();
-        PreviousButton.IsDisabled = CurrentController.Beat == 0;
-        NextButton.IsDisabled = CurrentController.Beat == (CurrentController.MaxBeats);
-
         BeatLabel.text = CurrentController.Beat + " / " + CurrentController.MaxBeats;
     }
 
@@ -99,42 +100,38 @@ public class MasterCoordinator : MonoBehaviour
         }
     }
 
-    public void GoToAssetMenu()
-    {
-        MasterBeat = 0;
-        NextSubBeat();
-    }
-
-    public void GotoSpatialInspection()
-    {
-        MasterBeat = 1;
-        NextSubBeat();
-    }
-
-    public void GoToPostWorkOrder()
-    {
-        MasterBeat = 2;
-        NextSubBeat();
-    }
-
-    public void GotoRecordingController()
-    {
-        MasterBeat = 3;
-        NextSubBeat();
-    }
-
     public void NextSubBeat()
     {
         int beat = CurrentController.Beat + 1;
-        beat = Mathf.Min(beat, CurrentController.MaxBeats);
-        CurrentController.Beat = beat;
+        if (beat > CurrentController.MaxBeats)
+        {
+            if ( MasterBeat < 3)
+            {
+                MasterBeat++;
+                CurrentController.Beat = 1;
+            }
+        }
+        else
+        {
+            CurrentController.Beat = beat;
+        }
     }
 
     public void PreviousSubBeat()
     {
         int beat = CurrentController.Beat - 1;
-        beat = Mathf.Max(beat, 0);
-        CurrentController.Beat = beat;
+        if (beat < 0)
+        {
+            if (MasterBeat > 0)
+            {
+                MasterBeat--;
+                CurrentController.Beat = CurrentController.MaxBeats;
+            }
+        }
+        else
+        {
+            CurrentController.Beat = beat;
+        }
     }
 }
 
