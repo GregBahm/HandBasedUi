@@ -8,7 +8,12 @@ public class SlateRepositioning : MonoBehaviour
     [SerializeField]
     private BoxFocusable focus;
     public BoxFocusable Focus { get { return this.focus; } }
-    
+
+    [SerializeField]
+    private float deadZoneMoveDistance;
+    [SerializeField]
+    private float deadZoneAngleDistance;
+
     [SerializeField]
     private AudioSource grabSound;
     [SerializeField]
@@ -55,6 +60,11 @@ public class SlateRepositioning : MonoBehaviour
         grabReleaseSound.Play();
     }
 
+    private void Update()
+    {
+        UpdateSlatePositioning();
+    }
+
     public void UpdateSlatePositioning()
     {
         UpdateCooldowns();
@@ -90,8 +100,18 @@ public class SlateRepositioning : MonoBehaviour
 
     private void UpdatePosition()
     {
-        transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * Smoothing);
+        Vector3 deadzoneTarget = GetDeadzoneTarget();
+
+        transform.position = Vector3.Lerp(transform.position, deadzoneTarget, Time.deltaTime * Smoothing);
         transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * Smoothing);
+    }
+
+    private Vector3 GetDeadzoneTarget()
+    {
+        Vector3 toTarget = targetPosition - transform.position;
+        float distToTarget = toTarget.magnitude;
+        float deadDist = Mathf.Max(0, distToTarget - deadZoneMoveDistance);
+        return transform.position + toTarget.normalized * deadDist;
     }
 
     private void EndRepositioning()

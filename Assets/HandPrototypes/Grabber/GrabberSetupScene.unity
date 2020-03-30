@@ -141,7 +141,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a12fe33560b08db4c8a6c91bc1ca37b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  focus: {fileID: 6418093422325025949}
+  focus: {fileID: 0}
   grabSound: {fileID: 1446599213}
   grabReleaseSound: {fileID: 2009717729}
   Smoothing: 20
@@ -7951,6 +7951,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 61310266}
     m_Modifications:
+    - target: {fileID: 1249309612227383979, guid: ebdae61122986c749b5abd95de27ff76,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2788337336747875732, guid: ebdae61122986c749b5abd95de27ff76,
         type: 3}
       propertyPath: Main
@@ -7974,7 +7979,7 @@ PrefabInstance:
     - target: {fileID: 6418093422141449561, guid: ebdae61122986c749b5abd95de27ff76,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6418093422141449561, guid: ebdae61122986c749b5abd95de27ff76,
         type: 3}
@@ -8018,18 +8023,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ebdae61122986c749b5abd95de27ff76, type: 3}
---- !u!114 &6418093422325025949 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4585988866452184069, guid: ebdae61122986c749b5abd95de27ff76,
-    type: 3}
-  m_PrefabInstance: {fileID: 6418093422325025948}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 529d63acc2e682242a0a9266c871cd10, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &6643434730478794438 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8052564052144481240, guid: f9e5cdcad640a1940bfaee0efd41f28f,
