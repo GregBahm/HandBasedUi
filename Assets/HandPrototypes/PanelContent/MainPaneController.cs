@@ -63,7 +63,6 @@ public class MainPaneController : SlateController
 
     private void Button_Released(object sender, EventArgs e)
     {
-        Repositioning.ResetInteractionCooldown();
     }
 
     private void Update()
@@ -80,8 +79,7 @@ public class MainPaneController : SlateController
         float x = -SlateContent.localScale.x / 2 - this.nameplateMargin;
         float y = SlateContent.localScale.y / 2 + this.nameplateMargin;
         NamePlate.localPosition = new Vector3(x, y, NamePlate.localPosition.z);
-
-
+        
         NamePlate.localScale = new Vector3(Summonness, Summonness, Summonness);
     }
 }

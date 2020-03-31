@@ -24,8 +24,19 @@ public class PinchDetector : MonoBehaviour
     /// True on the frame where a pinch first starts
     /// </summary>
     public bool PinchBeginning { get; private set; }
-    
-    public Transform PinchPoint { get; private set; }
+
+    private Transform pinchPoint;
+    public Transform PinchPoint
+    {
+        get
+        {
+            if(pinchPoint == null)
+            {
+                pinchPoint = new GameObject("Pinch Point").transform;
+            }
+            return pinchPoint;
+        }
+    }
 
     public float FingerDistance
     {
@@ -33,11 +44,6 @@ public class PinchDetector : MonoBehaviour
         {
             return (ThumbProxy.position - FingertipProxy.position).magnitude;
         }
-    }
-
-    private void Start()
-    {
-        PinchPoint = new GameObject("Pinch Point").transform;
     }
 
     private void Update()
