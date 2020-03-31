@@ -15,6 +15,10 @@ public class GrabbableSlateVisuals : MonoBehaviour
     [SerializeField]
     private Transform root;
     [SerializeField]
+    private Transform gripperRoot;
+    [SerializeField]
+    private Transform gripperStart;
+    [SerializeField]
     private Transform upperLeftCorner;
     [SerializeField]
     private Transform upperRightCorner;
@@ -22,6 +26,9 @@ public class GrabbableSlateVisuals : MonoBehaviour
     private Transform lowerLeftCorner;
     [SerializeField]
     private Transform lowerRightCorner;
+
+    [SerializeField]
+    private SlateRepositioning repositioner;
 
     private Transform upLeftGuide;
     private Transform upRightGuide;
@@ -97,7 +104,29 @@ public class GrabbableSlateVisuals : MonoBehaviour
 
         RotateAndPositionPanel(closestOption.Offset);
         UpdateBlendShapes(closestOption.GetDist(pinchPoint));
+
+
         UpdateMaterialProperties();
+    }
+
+    private void UpdateGripperBones()
+    {
+        float gripRootXTarget = GetGripRootTarget();
+        float currentGripRootX = gripperRoot.localPosition.x;
+        float gripRootX = Mathf.Lerp(currentGripRootX, gripRootXTarget, Time.deltaTime * 20);
+        gripperRoot.localPosition = new Vector3(gripRootX, 0, 0);
+    }
+
+    private float GetGripRootTarget()
+    {
+        if(repositioner.CurrentlyRepositioning)
+        {
+            Vector3 pinchPoint = MainPinchDetector.Instance.PinchPoint.position;
+            Vector3 rootToPinch = pinchPoint - root.position;
+            Vector3 projectedPoint = Vector3.Project(rootToPinch, root.right) + root.position;
+            return root.TransformPoint(projectedPoint).x;
+        }
+        return 0;
     }
 
     private void UpdateMaterialProperties()
@@ -109,6 +138,9 @@ public class GrabbableSlateVisuals : MonoBehaviour
     {
         root.position = GetPositions(rotationOffset);
         root.localRotation = Quaternion.Euler(0, 180, rotationOffset * 90);
+
+        //UpdateGripperBones();
+
         for (int i = 0; i < 4; i++)
         {
             int cornerGuideIndex = (i + rotationOffset) % 4;

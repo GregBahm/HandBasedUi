@@ -11,8 +11,6 @@ public class SlateRepositioning : MonoBehaviour
 
     [SerializeField]
     private float deadZoneMoveDistance;
-    [SerializeField]
-    private float deadZoneAngleDistance;
 
     [SerializeField]
     private AudioSource grabSound;
