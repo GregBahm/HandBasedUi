@@ -51,12 +51,7 @@ public class SlateRepositioning : MonoBehaviour
         targetRotation = transform.rotation;
         grabReleaseSound.Play();
     }
-
-    private void Update()
-    {
-        UpdateSlatePositioning();
-    }
-
+    
     public void UpdateSlatePositioning()
     {
         snappedRepositioner.UpdateSnappedPivot();
