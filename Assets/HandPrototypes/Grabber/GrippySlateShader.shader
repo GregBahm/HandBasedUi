@@ -3,6 +3,7 @@
     Properties
     {
 		_Color("Color", Color) = (1,1,1,1)
+		_BaseColor("Base Color", Color) = (1,1,1,1)
     }
     SubShader
     {
@@ -11,8 +12,6 @@
 
         Pass
         {
-			ZWrite Off
-			Blend One One
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
@@ -42,6 +41,7 @@
 
 			float4 _Color;
 			float3 _GripPos;
+			float4 _BaseColor;
 
             v2f vert (appdata v)
             {
@@ -71,7 +71,7 @@
 				//colorPow *= dist;
 				float shade = (colorPow * fresnel + colorPow) * dist;
 				shade += dist;
-				return _Color * shade;
+				return _Color * shade + _BaseColor;
             }
             ENDCG
         }
