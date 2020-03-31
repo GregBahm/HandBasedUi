@@ -13,6 +13,7 @@ ModelImporter:
     100014: root
     100016: upperLeft
     100018: upperRight
+    100020: gripperRoot
     400000: gripperEnd
     400002: gripperStart
     400004: //RootNode
@@ -23,6 +24,7 @@ ModelImporter:
     400014: root
     400016: upperLeft
     400018: upperRight
+    400020: gripperRoot
     2100000: lambert1
     2300000: pCube3
     3300000: pCube3
