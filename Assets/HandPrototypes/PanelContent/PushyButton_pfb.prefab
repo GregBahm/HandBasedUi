@@ -108,8 +108,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 407318385413742977}
-  - component: {fileID: 2310793048356420216}
   - component: {fileID: 5349930818299649995}
+  - component: {fileID: 6216896388672580572}
   m_Layer: 0
   m_Name: ButtonContent
   m_TagString: Untagged
@@ -133,21 +133,6 @@ Transform:
   m_Father: {fileID: 8052564052144481240}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2310793048356420216
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1603071537342571680}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2c7d9258e11668648ad9d92005bb350f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mode: 2
-  icon: 0
-  color: {r: 0, g: 0, b: 0, a: 0}
 --- !u!114 &5349930818299649995
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -164,7 +149,19 @@ MonoBehaviour:
   isFocusable: 1
   priority: 1
   activationDistance: 0.03
-  cursorSettings: {fileID: 2310793048356420216}
+  cursorSettings: {fileID: 0}
+--- !u!114 &6216896388672580572
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1603071537342571680}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9197cafed1b3d484fa6c314212fe3ca7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2279576059165427730
 GameObject:
   m_ObjectHideFlags: 0
@@ -584,8 +581,6 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: A
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 00e56237abb8f754b8b1a33c084b7e04, type: 2}
@@ -864,8 +859,6 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: A
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 00e56237abb8f754b8b1a33c084b7e04, type: 2}
@@ -1085,8 +1078,6 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: Label
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: afc8299d5d5bbd440a0616c8ecbc7217, type: 2}
