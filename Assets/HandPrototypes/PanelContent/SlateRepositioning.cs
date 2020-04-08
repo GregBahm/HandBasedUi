@@ -43,6 +43,11 @@ public class SlateRepositioning : MonoBehaviour
         targetRotation = transform.rotation;
     }
 
+    private void Update()
+    {
+        DoUpdate();
+    }
+
     public void OnEndResizing()
     {
         targetPosition = transform.position;
@@ -50,7 +55,7 @@ public class SlateRepositioning : MonoBehaviour
         grabReleaseSound.Play();
     }
     
-    public void UpdateSlatePositioning()
+    public void DoUpdate()
     {
         snappedRepositioner.UpdateSnappedPivot();
 

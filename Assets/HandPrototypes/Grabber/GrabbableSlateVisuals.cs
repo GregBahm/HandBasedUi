@@ -204,7 +204,7 @@ public class GrabbableSlateVisuals : MonoBehaviour
 
     private float GetPinchedness()
     {
-        if (FocusManager.Instance.FocusedItem != grippeFrocus)
+        if (FocusManager.Instance.FocusedItem != grippeFrocus) 
         {
             return 0;
         }

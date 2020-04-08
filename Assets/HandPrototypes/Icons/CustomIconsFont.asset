@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71c1514a6bd24e1e882cebbe1904ce04, type: 3}
   m_Name: CustomIconsFont
   m_EditorClassIdentifier: 
-  hashCode: -1391662280
+  hashCode: -455595575
   material: {fileID: 21122107932544870}
   materialHashCode: -1564156766
   m_Version: 1.1.0

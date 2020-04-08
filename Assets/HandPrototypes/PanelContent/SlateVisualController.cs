@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class SlateVisualController : MonoBehaviour
+public class SlateVisualController : MonoBehaviour 
 {
     private float borderBrightness;
 
@@ -104,14 +104,19 @@ public class SlateVisualController : MonoBehaviour
         return ret.ToArray();
     }
 
+    private static readonly Vector3 cornerA = new Vector3(.5f, -.5f, 0);
+    private static readonly Vector3 cornerB = new Vector3(.5f, .5f, 0);
+    private static readonly Vector3 cornerC = new Vector3(-.5f, .5f, 0);
+    private static readonly Vector3 cornerD = new Vector3(-.5f, -.5f, 0);
+
     private Vector3[] GetVerts()
     {
         List<Vector3> points = new List<Vector3>();
 
-        points.AddRange(DoCorner(1, -1, 180));
-        points.AddRange(DoCorner(1, 1, 180, true));
-        points.AddRange(DoCorner(-1, 1, 180));
-        points.AddRange(DoCorner(-1, -1, 180, true));
+        points.AddRange(DoCorner(cornerD, cornerA, cornerB));
+        points.AddRange(DoCorner(cornerA, cornerB, cornerC));
+        points.AddRange(DoCorner(cornerB, cornerC, cornerD));
+        points.AddRange(DoCorner(cornerC, cornerD, cornerA));
         return points.ToArray();
     }
 
@@ -120,41 +125,32 @@ public class SlateVisualController : MonoBehaviour
         lineRenderer.positionCount = verts.Length;
         lineRenderer.SetPositions(verts);
     }
-
-    private IEnumerable<Vector3> DoCorner(int xCorner, int yCorner, float angleOffset, bool reverseOrder = false)
+    
+    private IEnumerable<Vector3> DoCorner(Vector3 fromCorner, Vector3 corner, Vector3 toCorner)
     {
-        if (reverseOrder)
+        Vector3 startOffset = (corner - fromCorner).normalized * rounding;
+        Vector3 endOffset = (corner - toCorner).normalized * rounding;
+
+        Vector3 start = corner - startOffset;
+        Vector3 end = corner - endOffset;
+        Vector3 center = corner - startOffset - endOffset;
+
+        for (int i = 0; i < cornerVerts; i++)
         {
-            for (int i = cornerVerts - 1; i >= 0; i--)
-            {
-                yield return GetBorderVert(xCorner, yCorner, angleOffset, i);
-            }
-        }
-        else
-        {
-            for (int i = 0; i < cornerVerts; i++)
-            {
-                yield return GetBorderVert(xCorner, yCorner, angleOffset, i);
-            }
+            float param = (float)i / (cornerVerts - 1);
+            yield return SweepAboutCircle(center, start, end, param);
         }
     }
 
-    private Vector3 GetBorderVert(int xCorner, int yCorner, float angleOffset, int i)
+    private Vector3 SweepAboutCircle(Vector3 center,
+       Vector3 start,
+       Vector3 end,
+       float param)
     {
-        float angleIncrement = (Mathf.PI / 2) / (cornerVerts - 1);
-        float angle = angleIncrement * i;
-        angle += Mathf.Deg2Rad * angleOffset;
-        float x = Mathf.Sin(angle);
-        float y = Mathf.Cos(angle);
-        x *= rounding;
-        y *= rounding;
-        x = xCorner - x * xCorner;
-        x -= rounding * xCorner;
-        y = yCorner - y * yCorner;
-        y -= rounding * yCorner;
-        x /= 2;
-        y /= 2;
-        return new Vector3(x, y, 0);
+        Vector3 toStart = start - center;
+        Vector3 toEnd = end - center;
+        Vector3 toRet = Vector3.Slerp(toStart, toEnd, param);
+        return toRet + center;
     }
 
     private float grabbedness;

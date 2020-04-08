@@ -67,7 +67,7 @@ public class MainPaneController : SlateController
 
     private void Update()
     {
-        Repositioning.UpdateSlatePositioning();
+        Repositioning.DoUpdate();
         PositionContent();
         PositionNamePlate();
         TopButtons.PlaceButtons();

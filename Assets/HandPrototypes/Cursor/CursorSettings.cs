@@ -7,7 +7,7 @@ public abstract class CursorSettings : MonoBehaviour, ICursorSettings
     public CursorMode Mode { get => this.mode; set => this.mode = value; }
 
     [SerializeField]
-    private IconController.IconKey icon = IconController.IconKey.Drag;
+    private IconController.IconKey icon = IconController.IconKey.Move;
     public IconController.IconKey Icon { get => this.icon; set => this.icon = value; }
 
     [SerializeField]

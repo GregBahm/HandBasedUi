@@ -6,7 +6,7 @@ using UnityEngine;
 public class GrabberLineBehavior : MonoBehaviour
 {
     [SerializeField]
-    private GrabbableSlateVisuals slateVisuals;
+    private SlateRepositioning repositioner;
     [SerializeField]
     private GrabberComponentHalf halfA;
     [SerializeField]
@@ -17,13 +17,31 @@ public class GrabberLineBehavior : MonoBehaviour
 
     float showness;
 
+    public float Pinchedness { get; private set; }
+
+    private Transform baseParent;
+    private Vector3 baseOffset;
+
+    private void Start()
+    {
+        baseParent = transform.parent;
+        baseOffset = transform.localPosition;
+    }
+
     void Update()
     {
+        Pinchedness = GetPinchedness();
         UpdateShowness();
+        UpdateMainPosition();
+        UpdateDisks();
+    }
+
+    private void UpdateDisks()
+    {
         float diskADist = (halfA.DiskOnPanel.position - MainPinchDetector.Instance.FingertipProxy.position).magnitude;
         float diskBDist = (halfB.DiskOnPanel.position - MainPinchDetector.Instance.FingertipProxy.position).magnitude;
 
-        float pinchness = 1 - slateVisuals.Pinchedness;
+        float pinchness = 1 - Pinchedness;
         if (diskADist < diskBDist)
         {
             halfA.DoUpdate(MainPinchDetector.Instance.FingertipProxy.position, showness, pinchness);
@@ -36,10 +54,41 @@ public class GrabberLineBehavior : MonoBehaviour
         }
     }
 
+    private void UpdateMainPosition()
+    {
+        if(repositioner.CurrentlyRepositioning)
+        {
+            transform.SetParent(MainPinchDetector.Instance.PinchPoint);
+        }
+        else
+        {
+            transform.SetParent(baseParent);
+            transform.localPosition = baseOffset;
+            transform.localRotation = Quaternion.identity;
+        }
+    }
+
+    private float GetPinchedness()
+    {
+        if (FocusManager.Instance.FocusedItem != focus)
+        {
+            return 0;
+        }
+        if (repositioner.CurrentlyRepositioning)
+        {
+            return 1;
+        }
+        if (MainPinchDetector.Instance.Pinching && !repositioner.CurrentlyRepositioning)
+        {
+            return 0;
+        }
+        float pinchProg = (MainPinchDetector.Instance.FingerDistance - .03f) / MainPinchDetector.Instance.PinchDist;
+        return 1 - Mathf.Clamp01(pinchProg);
+    }
+
     private void UpdateShowness()
     {
-        bool shouldShow = FocusManager.Instance.FocusedItem == focus
-            && !MainPinchDetector.Instance.Pinching;
+        bool shouldShow = FocusManager.Instance.FocusedItem == focus;
         float shownessTarget = shouldShow ? 1 : 0;
         showness = Mathf.Lerp(showness, shownessTarget, Time.deltaTime * 10);
     }
