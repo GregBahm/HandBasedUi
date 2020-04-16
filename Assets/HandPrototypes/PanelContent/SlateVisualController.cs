@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class SlateVisualController : MonoBehaviour 
+public class SlateVisualController : MonoBehaviour
 {
     private float borderBrightness;
+    [SerializeField]
+    private BoxFocusable grabberFocus;
 
     [Range(0, .005f)]
     [SerializeField]
@@ -25,7 +27,10 @@ public class SlateVisualController : MonoBehaviour
     private MeshFilter meshFilter;
     public Material FillMaterial { get; private set; }
 
-    public bool DoHighlightBorder;
+    public bool GrabberFocused
+    {
+        get { return grabberFocus == FocusManager.Instance.FocusedItem; }
+    }
 
     private AudioSource audioSource;
 
@@ -43,12 +48,12 @@ public class SlateVisualController : MonoBehaviour
         lineRenderer = GetComponent<LineRenderer>();
         borderMaterial = lineRenderer.material;
         audioSource = GetComponent<AudioSource>();
-        UpdateMesh();
     }
 
     private void Update()
     {
         lineRenderer.widthMultiplier = lineWidth;
+        UpdateMesh();
         UpdateHighlight();
         UpdateShader();
     }
@@ -65,7 +70,7 @@ public class SlateVisualController : MonoBehaviour
         Shader.SetGlobalVector(RightThumbShaderProp, rightThumb);
         Shader.SetGlobalVector(RightIndexShaderProp, rightIndex);
     }
-        
+
     private void UpdateMesh()
     {
         Vector3[] verts = GetVerts();
@@ -109,14 +114,23 @@ public class SlateVisualController : MonoBehaviour
     private static readonly Vector3 cornerC = new Vector3(-.5f, .5f, 0);
     private static readonly Vector3 cornerD = new Vector3(-.5f, -.5f, 0);
 
+
+    private static readonly Vector3 nibStart = new Vector3(0, -.5f, 0);
+    private static readonly Vector3 nibEnd = new Vector3(0, -.6f, 0);
+
     private Vector3[] GetVerts()
     {
         List<Vector3> points = new List<Vector3>();
 
+        points.AddRange(DoCenterNib(nibEnd, nibStart, cornerA));
+
         points.AddRange(DoCorner(cornerD, cornerA, cornerB));
         points.AddRange(DoCorner(cornerA, cornerB, cornerC));
+
         points.AddRange(DoCorner(cornerB, cornerC, cornerD));
         points.AddRange(DoCorner(cornerC, cornerD, cornerA));
+
+        points.AddRange(DoCenterNib(cornerD, nibStart, nibEnd));
         return points.ToArray();
     }
 
@@ -124,6 +138,16 @@ public class SlateVisualController : MonoBehaviour
     {
         lineRenderer.positionCount = verts.Length;
         lineRenderer.SetPositions(verts);
+    }
+
+    private IEnumerable<Vector3> DoCenterNib(Vector3 fromCorner, Vector3 corner, Vector3 toCorner)
+    {
+        IEnumerable<Vector3> verts = DoCorner(fromCorner, corner, toCorner);
+        foreach (Vector3 vert in verts)
+        {
+            float y = Mathf.Lerp(-.5f, vert.y, highlightness);
+            yield return new Vector3(vert.x, y, vert.z);
+        }
     }
     
     private IEnumerable<Vector3> DoCorner(Vector3 fromCorner, Vector3 corner, Vector3 toCorner)
@@ -157,7 +181,7 @@ public class SlateVisualController : MonoBehaviour
 
     private void UpdateHighlight()
     {
-        float highlightTarget = DoHighlightBorder ? 1 : 0;
+        float highlightTarget = GrabberFocused ? 1 : 0;
         highlightness = Mathf.Lerp(highlightness, highlightTarget, Time.deltaTime * 10);
         borderMaterial.SetFloat(HighlightShaderProp, highlightness);
     }

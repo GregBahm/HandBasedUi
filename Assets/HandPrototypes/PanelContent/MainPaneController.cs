@@ -14,21 +14,6 @@ public class MainPaneController : SlateController
         }
     }
     public Transform NamePlate;
-    public VideoCardTopButtons TopButtons;
-    public VideoCardBottomButtons ButtomButtons;
-
-    private PushyButtonController[] buttons;
-    public PushyButtonController[] Buttons
-    {
-        get
-        {
-            if(buttons == null)
-            {
-                buttons = GetButtons();
-            }
-            return this.buttons;
-        }
-    }
     
     [SerializeField]
     private float verticalButtonMargin;
@@ -42,23 +27,6 @@ public class MainPaneController : SlateController
 
     private void Start()
     {
-        RegisterCooldowns();
-    }
-
-    private PushyButtonController[] GetButtons()
-    {
-        List<PushyButtonController> ret = new List<PushyButtonController>();
-        ret.AddRange(TopButtons.Buttons);
-        ret.AddRange(ButtomButtons.Buttons);
-        return ret.ToArray();
-    }
-
-    private void RegisterCooldowns()
-    {
-        foreach (PushyButtonController button in Buttons)
-        {
-            button.Released += Button_Released;
-        }
     }
 
     private void Button_Released(object sender, EventArgs e)
@@ -70,8 +38,6 @@ public class MainPaneController : SlateController
         Repositioning.DoUpdate();
         PositionContent();
         PositionNamePlate();
-        TopButtons.PlaceButtons();
-        ButtomButtons.PlaceButtons();
     }
 
     private void PositionNamePlate()

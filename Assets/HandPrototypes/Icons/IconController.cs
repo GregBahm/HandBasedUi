@@ -228,7 +228,11 @@ public class IconController : MonoBehaviour
     private IconKey icon;
     public IconKey Icon
     {
-        get => icon;
+        get
+        {
+            return icon;
+        }
+
         set
         {
             if (icon != value)
@@ -304,5 +308,23 @@ public class IconController : MonoBehaviour
             IsCustom = isCustom;
             IconCharacter = iconCharacter;
         }
+    }
+}
+
+public class IconSource : MonoBehaviour
+{
+    public static IconSource Instance { get; private set; }
+
+    [SerializeField]
+    private TMP_FontAsset customIconsFont;
+    public TMP_FontAsset CustomIconsFont { get { return this.customIconsFont; } }
+
+    [SerializeField]
+    private TMP_FontAsset officialIconsFont;
+    public TMP_FontAsset OfficialIconsFont { get { return this.officialIconsFont; } }
+
+    private void Start()
+    {
+        Instance = this;
     }
 }
