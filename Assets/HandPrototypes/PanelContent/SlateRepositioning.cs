@@ -8,7 +8,7 @@ public class SlateRepositioning : MonoBehaviour
     [SerializeField]
     private BoxFocusable focus;
     public BoxFocusable Focus { get { return this.focus; } }
-
+    
     [SerializeField]
     private float deadZoneMoveDistance;
 
@@ -18,7 +18,7 @@ public class SlateRepositioning : MonoBehaviour
     private AudioSource grabReleaseSound;
     [SerializeField]
     private float snappingThreshold;
-
+    
     public float Smoothing;
     public float SnapThreshold;
     private bool wasPinching;
@@ -41,11 +41,6 @@ public class SlateRepositioning : MonoBehaviour
 
         targetPosition = transform.position;
         targetRotation = transform.rotation;
-    }
-
-    private void Update()
-    {
-        DoUpdate();
     }
 
     public void OnEndResizing()
@@ -127,7 +122,6 @@ public class SlateRepositioning : MonoBehaviour
         snappedRepositioner.StartGrab(transform);
         finalRepositioner.StartGrab(transform);
         Focus.ForceFocus = true;
-
         grabSound.Play();
     }
 

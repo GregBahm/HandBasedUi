@@ -6,28 +6,36 @@ using UnityEngine;
 public class GrabberVisualController : MonoBehaviour
 {
     [SerializeField]
-    private SlateRepositioning repositioner;
-
-    [SerializeField]
     private BoxFocusable focus;
 
     [SerializeField]
-    private Transform grabberVisual;
+    private Transform movingContent;
+
+    [SerializeField]
+    private Transform scalingContent;
+
+    [SerializeField]
+    private Transform rotatingContent;
 
     [SerializeField]
     private SkinnedMeshRenderer grabberMesh;
 
+    [SerializeField]
+    private Transform grabberLocation;
+
+    [SerializeField]
+    private Vector3 grabberLocationOffset;
+
     float showness;
 
     public float Pinchedness { get; private set; }
-
-    private Transform baseParent;
-    private Vector3 baseOffset;
-
-    private void Start()
+    
+    public bool IsGrabbed { get { return focus.ForceFocus; } }
+    
+    public void SetGrabberLocation(Transform location, Vector3 offset)
     {
-        baseParent = transform.parent;
-        baseOffset = transform.localPosition;
+        this.grabberLocation = location;
+        this.grabberLocationOffset = offset;
     }
 
     void Update()
@@ -40,24 +48,33 @@ public class GrabberVisualController : MonoBehaviour
 
     private void UpdateMainPosition()
     {
-        if(repositioner.CurrentlyRepositioning)
+        if(IsGrabbed)
         {
-            transform.SetParent(MainPinchDetector.Instance.PinchPoint);
+            movingContent.SetParent(MainPinchDetector.Instance.PinchPoint);
         }
         else
         {
-            transform.SetParent(baseParent);
-            transform.localPosition = baseOffset;
-            transform.localRotation = Quaternion.identity;
+            SetMainPosition();
+
+            this.movingContent.SetParent(transform);
+            this.movingContent.localPosition = Vector3.zero;
+            this.movingContent.localRotation = Quaternion.identity;
             UpdateUnpinchedRotation();
         }
+    }
+
+    private void SetMainPosition()
+    {
+        Vector3 offset = grabberLocation.TransformDirection(grabberLocationOffset);
+        transform.position = grabberLocation.position + offset;
+        transform.rotation = grabberLocation.rotation;
     }
 
     private void UpdateUnpinchedRotation()
     {
         Quaternion handAlignmentRotation = GetHandAlignmentRotation();
 
-        grabberVisual.rotation = Quaternion.Lerp(grabberVisual.rotation, GetHandAlignmentRotation(), Time.deltaTime * 5);
+        rotatingContent.rotation = Quaternion.Lerp(rotatingContent.rotation, GetHandAlignmentRotation(), Time.deltaTime * 5);
     }
 
     private Quaternion GetHandAlignmentRotation()
@@ -76,11 +93,11 @@ public class GrabberVisualController : MonoBehaviour
         {
             return 0;
         }
-        if (repositioner.CurrentlyRepositioning)
+        if (IsGrabbed)
         {
             return 1;
         }
-        if (MainPinchDetector.Instance.Pinching && !repositioner.CurrentlyRepositioning)
+        if (MainPinchDetector.Instance.Pinching && !IsGrabbed)
         {
             return 0;
         }
@@ -93,5 +110,7 @@ public class GrabberVisualController : MonoBehaviour
         bool shouldShow = FocusManager.Instance.FocusedItem == focus;
         float shownessTarget = shouldShow ? 1 : 0;
         showness = Mathf.Lerp(showness, shownessTarget, Time.deltaTime * 10);
+
+        scalingContent.localScale = new Vector3(showness, showness, showness);
     }
 }

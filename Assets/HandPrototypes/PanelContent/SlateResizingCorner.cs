@@ -7,55 +7,87 @@ public class SlateResizingCorner : MonoBehaviour
 {
     [SerializeField]
     private BoxFocusable focus;
-    public BoxFocusable Focus { get { return focus; } }
-
-    public Transform Slate;
-
-    public bool IsGrabbed;
-    public Vector2 ResizingPivot;
     
-    public LineRenderer LineRender;
-    private Material lineMat;
-    private float lineHighlight;
+    private Transform resizingPivot;
+    private Transform resizingContent;
 
-    private bool lastShowVisuals;
-    public bool ShowVisuals;
-
-    private float cornerScale;
-    private float cornerOpacity;
-
-    public Transform Anchor { get; private set; }
-
-    public bool JustStartedShowing { get; private set; }
-
-    private void Start()
+    public bool IsGrabbed { get; private set; }
+    
+    public void DoUpdate()
     {
-        Anchor = new GameObject("RisizingCornerAnchor").transform;
-        Anchor.SetParent(Slate, false);
-        Anchor.localPosition = new Vector3(ResizingPivot.x / 2, ResizingPivot.y / 2, 0);
-        lineMat = LineRender.material;
+        if(IsGrabbed)
+        {
+            if(MainPinchDetector.Instance.Pinching)
+            {
+                DoGrabUpdate();
+            }
+            else
+            {
+                EndGrab();
+            }
+        }
+        else if(ShouldStartGrab())
+        {
+            StartGrab();
+        }
+    }
+    
+    private float resizeStartDistance;
+
+    private Transform scalePivot;
+
+    private Transform resizingContentBaseParent;
+    
+    public void Initialize(Transform resizingContent, Transform resizingPivot)
+    {
+        this.resizingContent = resizingContent;
+        this.resizingPivot = resizingPivot;
+
+        scalePivot = new GameObject("Scale Pivot").transform;
+        scalePivot.parent = resizingContent.parent;
+
+        GrabberVisualController grabber = GetComponent<GrabberVisualController>();
     }
 
-    private void Update()
+    private void DoGrabUpdate()
     {
-        JustStartedShowing = ShowVisuals && !lastShowVisuals;
-        LineRender.enabled = ShowVisuals;
-        UpdateCornerTransitions();
-        UpdateMaterials();
-        lastShowVisuals = ShowVisuals;
+        float scale = GetScale();
+        scalePivot.localScale = new Vector3(scale, scale, scale);
     }
 
-    private void UpdateMaterials()
+    private float GetScale()
     {
-        float lineHighlightTarget = IsGrabbed ? 1 : 0;
-        lineHighlight = Mathf.Lerp(lineHighlight, lineHighlightTarget, Time.deltaTime * 15);
-        lineMat.SetFloat("_Highlight", lineHighlight);
+        Vector3 grabPoint = MainPinchDetector.Instance.PinchPoint.position;
+        float resizeDistance = (scalePivot.position - grabPoint).magnitude;
+        return resizeDistance / resizeStartDistance;
     }
 
-    private void UpdateCornerTransitions()
+    private void EndGrab()
     {
-        float target = ShowVisuals ? 1 : 0;
-        cornerScale = Mathf.Lerp(cornerScale, target, Time.deltaTime * 15);
-        LineRender.transform.localScale = new Vector3(cornerScale, cornerScale, cornerScale);
+        focus.ForceFocus = false;
+        IsGrabbed = false;
+        resizingContent.parent = resizingContentBaseParent;
+    }
+
+    private void StartGrab()
+    {
+        focus.ForceFocus = true;
+        IsGrabbed = true;
+        
+        scalePivot.position = resizingPivot.position;
+        scalePivot.rotation = resizingPivot.rotation;
+        scalePivot.localScale = Vector3.one;
+
+        resizingContentBaseParent = resizingContent.parent;
+        resizingContent.parent = scalePivot;
+
+        Vector3 grabPoint = MainPinchDetector.Instance.PinchPoint.position;
+        resizeStartDistance = (scalePivot.position - grabPoint).magnitude;
+    }
+
+    private bool ShouldStartGrab()
+    {
+        return MainPinchDetector.Instance.PinchBeginning
+            && focus.Equals(FocusManager.Instance.FocusedItem);
     }
 }

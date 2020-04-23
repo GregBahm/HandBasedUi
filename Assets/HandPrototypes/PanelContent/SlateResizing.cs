@@ -16,161 +16,75 @@ public class SlateResizing : MonoBehaviour
                 || UpperRightCorner.IsGrabbed;
         }
     }
-    public SlateController Main;
-    private Transform pivotPoint;
-    
-    public Transform Slate;
-
-    public SlateResizingCorner LowerLeftCorner;
-    public SlateResizingCorner LowerRightCorner;
-    public SlateResizingCorner UpperLeftCorner;
-    public SlateResizingCorner UpperRightCorner;
-
-    public float MinWidth;
-    public float MaxWidth;
-    public float MinHeight;
-    public float MaxHeight;
-
-    public float ResizingMargin;
-
-    private IEnumerable<SlateResizingCorner> corners;
-    private Vector3 pinchHandStartPos;
-    private Vector3 pinchCornerStartPos;
-
-    public SlateResizingCorner HoveredCorner { get; private set; }
 
     [SerializeField]
-    private AudioSource resizingHoverSound;
+    private Transform  resizableContent;
+
+    [SerializeField]
+    private Transform slate;
+
+    [SerializeField]
+    private float minScale;
+    [SerializeField]
+    private float maxScale;
+    
+    [SerializeField]
+    private GameObject resizingGrabberPrefab;
+
+    [SerializeField]
+    private float grabberOffset;
+    
+    private SlateResizingCorner LowerLeftCorner;
+    private SlateResizingCorner LowerRightCorner;
+    private SlateResizingCorner UpperLeftCorner;
+    private SlateResizingCorner UpperRightCorner;
+
+    private IEnumerable<SlateResizingCorner> corners;
 
     private void Start()
     {
-        pivotPoint = new GameObject("Resizing PivotPoint").transform;
+        Transform lowerLeftLocator = CreateLocator(-.5f, -.5f);
+        Transform lowerRightLocator = CreateLocator(.5f, -.5f);
+        Transform upperLeftLocator = CreateLocator(-.5f, .5f);
+        Transform upperRightLocator = CreateLocator(.5f, .5f);
+        LowerLeftCorner = CreateCorner(lowerLeftLocator, upperRightLocator, -1, -1);
+        LowerRightCorner = CreateCorner(lowerRightLocator, upperLeftLocator, 1, -1);
+        UpperLeftCorner = CreateCorner(upperLeftLocator, lowerRightLocator, -1, 1);
+        UpperRightCorner = CreateCorner(upperRightLocator, lowerLeftLocator, 1, 1);
         corners = new SlateResizingCorner[] { LowerLeftCorner, LowerRightCorner, UpperLeftCorner, UpperRightCorner };
     }
 
-    public void UpdateSlateResizing()
+    private Transform CreateLocator(float localX, float localY)
     {
-        if (CurrentlyResizing)
-        {
-            if (MainPinchDetector.Instance.Pinching)
-            {
-                DoGrabUpdate();
-            }
-            else
-            {
-                EndGrab();
-            }
-        }
-        else
-        {
-            UpdateHoveredCorner();
-            if (ShouldStartGrab())
-            {
-                StartGrab(HoveredCorner);
-            }
-        }
-        UpdateCornerVisibility();
-        UpdateCornerSounds();
-        PositionCorners();
+        Transform ret = new GameObject("Corner").transform;
+        ret.parent = slate;
+        ret.localPosition = new Vector3(localX, localY);
+        return ret;
     }
 
-    private void UpdateCornerSounds()
+    private SlateResizingCorner CreateCorner(Transform grabberLocation, Transform oppositeCorner, float xDirection, float yDirection)
     {
-        if(corners.Any(item => item.JustStartedShowing))
-        {
-            resizingHoverSound.Play();
-        }
+        GameObject retObj = Instantiate(resizingGrabberPrefab);
+        SlateResizingCorner ret = retObj.GetComponent<SlateResizingCorner>();
+        ret.Initialize(resizableContent, oppositeCorner);
+
+        GrabberVisualController grabberVisual = retObj.GetComponent<GrabberVisualController>();
+        Vector3 grabberOffset = GetGrabberOffset(xDirection, yDirection);
+        grabberVisual.SetGrabberLocation(grabberLocation, grabberOffset);
+
+        return ret;
     }
 
-    private void UpdateHoveredCorner()
+    private Vector3 GetGrabberOffset(float xDirection, float yDirection)
     {
-        HoveredCorner = corners.FirstOrDefault(corner => corner.Focus == FocusManager.Instance.FocusedItem);
+        return new Vector3(xDirection * grabberOffset, yDirection * grabberOffset, 0);
     }
 
-    private void UpdateCornerVisibility()
-    {
-        bool isAvailable = Main.Summonness > .9f;
-        foreach (SlateResizingCorner item in corners)
-        {
-            item.ShowVisuals = HoveredCorner == item;
-            item.gameObject.SetActive(isAvailable);
-        }
-    }
-
-    private void DoGrabUpdate()
-    {
-        Slate.parent = pivotPoint;
-        Vector3 grabPoint = MainPinchDetector.Instance.PinchPoint.position;
-        Vector3 grabOffset = grabPoint - pinchHandStartPos;
-        Vector3 effectiveGrabPoint = pinchCornerStartPos + grabOffset;
-
-        Vector2 newScale = GetScale(effectiveGrabPoint);
-
-        pivotPoint.localScale = new Vector3(newScale.x, newScale.y, 1);
-        transform.position = Slate.position;
-        Slate.parent = transform;
-    }
-
-    private Vector2 GetScale(Vector3 grabPoint)
-    {
-        Plane rightPlane = new Plane(pivotPoint.right, pivotPoint.position);
-        Vector3 rightProjection = rightPlane.ClosestPointOnPlane(grabPoint);
-        float xDist = (grabPoint - rightProjection).magnitude;
-        
-        Plane upPlane = new Plane(pivotPoint.up, pivotPoint.position);
-        Vector3 upProjection = upPlane.ClosestPointOnPlane(grabPoint);
-        float yDist = (grabPoint - upProjection).magnitude;
-
-        float clampedX = Mathf.Clamp(Mathf.Abs(xDist), MinWidth, MaxWidth);
-        float clampedy = Mathf.Clamp(Mathf.Abs(yDist), MinHeight, MaxHeight);
-
-        return new Vector2(clampedX, clampedy);
-    }
-
-    private void EndGrab()
+    public void DoUpdate()
     {
         foreach (SlateResizingCorner corner in corners)
         {
-            corner.Focus.ForceFocus = false;
-            corner.IsGrabbed = false;
+            corner.DoUpdate();
         }
-        Main.Repositioning.OnEndResizing();
-    }
-
-    private bool ShouldStartGrab()
-    {
-        return MainPinchDetector.Instance.PinchBeginning && HoveredCorner != null;
-    }
-
-    private void StartGrab(SlateResizingCorner grabbedCorner)
-    {
-        grabbedCorner.Focus.ForceFocus = true;
-        grabbedCorner.IsGrabbed = true;
-        
-        pivotPoint.SetParent(Slate);
-        pivotPoint.localPosition = - grabbedCorner.ResizingPivot / 2;
-        pivotPoint.localRotation = Quaternion.identity;
-        pivotPoint.SetParent(null);
-        pivotPoint.localScale = Slate.localScale;
-
-        pinchHandStartPos = MainPinchDetector.Instance.PinchPoint.position;
-        pinchCornerStartPos = grabbedCorner.Anchor.position;
-        Main.Repositioning.OnStartResizing();
-    }
-
-    private void PositionCorners()
-    {
-        PositionCorner(-1, -1, LowerLeftCorner);
-        PositionCorner(-1, 1, UpperLeftCorner);
-        PositionCorner(1, 1, UpperRightCorner);
-        PositionCorner(1, -1, LowerRightCorner);
-    }
-
-    private void PositionCorner(int horizontal, int vertical, SlateResizingCorner corner)
-    {
-        float x = Slate.localScale.x / 2 + ResizingMargin;
-        float y = Slate.localScale.y / 2 + ResizingMargin;
-        Vector3 pos = new Vector3(x * horizontal, y * vertical, 0);
-        corner.transform.localPosition = pos;
     }
 }
