@@ -26,10 +26,16 @@ public class GrabberVisualController : MonoBehaviour
     [SerializeField]
     private Vector3 grabberLocationOffset;
 
+    [SerializeField]
+    private AudioSource grabSound;
+    [SerializeField]
+    private AudioSource grabReleaseSound;
+
     float showness;
 
     public float Pinchedness { get; private set; }
-    
+
+    private bool wasGrabbed;
     public bool IsGrabbed { get { return focus.ForceFocus; } }
     
     public void SetGrabberLocation(Transform location, Vector3 offset)
@@ -44,13 +50,28 @@ public class GrabberVisualController : MonoBehaviour
         UpdateShowness();
         UpdateMainPosition();
         grabberMesh.SetBlendShapeWeight(0, Pinchedness * 100);
+
+        if (!IsGrabbed && wasGrabbed)
+        {
+            EndGrab();
+        }
+        wasGrabbed = IsGrabbed;
+    }
+
+    private void StartGrab()
+    {
+        movingContent.SetParent(MainPinchDetector.Instance.PinchPoint);
+        grabSound.Play();
     }
 
     private void UpdateMainPosition()
     {
-        if(IsGrabbed)
+        if (IsGrabbed)
         {
-            movingContent.SetParent(MainPinchDetector.Instance.PinchPoint);
+            if(!wasGrabbed)
+            {
+                StartGrab();
+            }
         }
         else
         {
@@ -61,6 +82,11 @@ public class GrabberVisualController : MonoBehaviour
             this.movingContent.localRotation = Quaternion.identity;
             UpdateUnpinchedRotation();
         }
+    }
+
+    private void EndGrab()
+    {
+        grabReleaseSound.Play();
     }
 
     private void SetMainPosition()

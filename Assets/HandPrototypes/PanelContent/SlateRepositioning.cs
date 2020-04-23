@@ -13,10 +13,6 @@ public class SlateRepositioning : MonoBehaviour
     private float deadZoneMoveDistance;
 
     [SerializeField]
-    private AudioSource grabSound;
-    [SerializeField]
-    private AudioSource grabReleaseSound;
-    [SerializeField]
     private float snappingThreshold;
     
     public float Smoothing;
@@ -41,13 +37,6 @@ public class SlateRepositioning : MonoBehaviour
 
         targetPosition = transform.position;
         targetRotation = transform.rotation;
-    }
-
-    public void OnEndResizing()
-    {
-        targetPosition = transform.position;
-        targetRotation = transform.rotation;
-        grabReleaseSound.Play();
     }
     
     public void DoUpdate()
@@ -96,7 +85,6 @@ public class SlateRepositioning : MonoBehaviour
         CurrentlyRepositioning = false;
         unsnappedTransform.parent = null;
         Focus.ForceFocus = false;
-        grabReleaseSound.Play();
     }
 
     private void UpdatePositionTargets()
@@ -122,12 +110,6 @@ public class SlateRepositioning : MonoBehaviour
         snappedRepositioner.StartGrab(transform);
         finalRepositioner.StartGrab(transform);
         Focus.ForceFocus = true;
-        grabSound.Play();
-    }
-
-    internal void OnStartResizing()
-    {
-        grabSound.Play();
     }
 
     private class FinalRepositioner

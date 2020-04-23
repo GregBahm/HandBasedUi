@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   focus: {fileID: 3206016016582779887}
+  icon: {fileID: 1714930798148639226}
 --- !u!1001 &1206412685577980788
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -103,7 +104,7 @@ PrefabInstance:
     - target: {fileID: 8177558607969955481, guid: b16dbd6ee2e4f6e4dab2b31fd1da3978,
         type: 3}
       propertyPath: m_Name
-      value: ResizingGrabber
+      value: ResizingGrabberPrefab
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b16dbd6ee2e4f6e4dab2b31fd1da3978, type: 3}
@@ -125,3 +126,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 529d63acc2e682242a0a9266c871cd10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!224 &1714930798148639226 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 536668926505931406, guid: b16dbd6ee2e4f6e4dab2b31fd1da3978,
+    type: 3}
+  m_PrefabInstance: {fileID: 1206412685577980788}
+  m_PrefabAsset: {fileID: 0}

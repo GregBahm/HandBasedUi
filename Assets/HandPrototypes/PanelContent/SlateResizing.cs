@@ -47,10 +47,10 @@ public class SlateResizing : MonoBehaviour
         Transform lowerRightLocator = CreateLocator(.5f, -.5f);
         Transform upperLeftLocator = CreateLocator(-.5f, .5f);
         Transform upperRightLocator = CreateLocator(.5f, .5f);
-        LowerLeftCorner = CreateCorner(lowerLeftLocator, upperRightLocator, -1, -1);
-        LowerRightCorner = CreateCorner(lowerRightLocator, upperLeftLocator, 1, -1);
-        UpperLeftCorner = CreateCorner(upperLeftLocator, lowerRightLocator, -1, 1);
-        UpperRightCorner = CreateCorner(upperRightLocator, lowerLeftLocator, 1, 1);
+        LowerLeftCorner = CreateCorner(lowerLeftLocator, upperRightLocator, -1, -1, 0);
+        LowerRightCorner = CreateCorner(lowerRightLocator, upperLeftLocator, 1, -1, 90);
+        UpperLeftCorner = CreateCorner(upperLeftLocator, lowerRightLocator, -1, 1, 90);
+        UpperRightCorner = CreateCorner(upperRightLocator, lowerLeftLocator, 1, 1, 0);
         corners = new SlateResizingCorner[] { LowerLeftCorner, LowerRightCorner, UpperLeftCorner, UpperRightCorner };
     }
 
@@ -62,11 +62,11 @@ public class SlateResizing : MonoBehaviour
         return ret;
     }
 
-    private SlateResizingCorner CreateCorner(Transform grabberLocation, Transform oppositeCorner, float xDirection, float yDirection)
+    private SlateResizingCorner CreateCorner(Transform grabberLocation, Transform oppositeCorner, float xDirection, float yDirection, float iconRotation)
     {
         GameObject retObj = Instantiate(resizingGrabberPrefab);
         SlateResizingCorner ret = retObj.GetComponent<SlateResizingCorner>();
-        ret.Initialize(resizableContent, oppositeCorner);
+        ret.Initialize(resizableContent, oppositeCorner, iconRotation);
 
         GrabberVisualController grabberVisual = retObj.GetComponent<GrabberVisualController>();
         Vector3 grabberOffset = GetGrabberOffset(xDirection, yDirection);

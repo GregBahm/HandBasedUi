@@ -718,6 +718,10 @@ MonoBehaviour:
   scalingContent: {fileID: 1329411622136684109}
   rotatingContent: {fileID: 9172444799074940609}
   grabberMesh: {fileID: 3973402841544159162}
+  grabberLocation: {fileID: 0}
+  grabberLocationOffset: {x: 0, y: 0, z: 0}
+  grabSound: {fileID: 3389231957799224295}
+  grabReleaseSound: {fileID: 8372383577884646932}
 --- !u!114 &4377506975370946715
 MonoBehaviour:
   m_ObjectHideFlags: 0
