@@ -7007,10 +7007,20 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1730906851016468429, guid: 6b84f7d98a80f164294b139ecbd34010,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5694575601483139583, guid: 6b84f7d98a80f164294b139ecbd34010,
         type: 3}
       propertyPath: m_Name
       value: RightHandJoints
+      objectReference: {fileID: 0}
+    - target: {fileID: 8076810060867179964, guid: 6b84f7d98a80f164294b139ecbd34010,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6b84f7d98a80f164294b139ecbd34010, type: 3}
