@@ -6,7 +6,7 @@ using UnityEngine;
 public class GrabberVisualController : MonoBehaviour
 {
     [SerializeField]
-    private BoxFocusable focus;
+    private ScreenspaceFocusable focus;
 
     [SerializeField]
     private Transform movingContent;
@@ -25,6 +25,9 @@ public class GrabberVisualController : MonoBehaviour
 
     [SerializeField]
     private Vector3 grabberLocationOffset;
+
+    [SerializeField]
+    private Transform icon;
 
     [SerializeField]
     private AudioSource grabSound;
@@ -50,12 +53,18 @@ public class GrabberVisualController : MonoBehaviour
         UpdateShowness();
         UpdateMainPosition();
         grabberMesh.SetBlendShapeWeight(0, Pinchedness * 100);
-
+        UpdateIcon();
         if (!IsGrabbed && wasGrabbed)
         {
             EndGrab();
         }
         wasGrabbed = IsGrabbed;
+    }
+
+    private void UpdateIcon()
+    {
+        icon.LookAt(Camera.main.transform);
+        icon.Rotate(0, 180, 0);
     }
 
     private void StartGrab()
@@ -72,6 +81,7 @@ public class GrabberVisualController : MonoBehaviour
             {
                 StartGrab();
             }
+            this.movingContent.localPosition *= .9f; // Lerp to the pinch point
         }
         else
         {

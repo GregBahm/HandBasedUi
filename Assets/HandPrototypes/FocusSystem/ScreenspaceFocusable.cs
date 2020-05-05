@@ -7,6 +7,9 @@ public class ScreenspaceFocusable : FocusableItemBehavior
     [SerializeField]
     private float spacialActiviationDistance = .1f;
 
+    [SerializeField]
+    private bool useSpacialActiviationDistance;
+
     private void Start()
     {
         FocusManager.Instance.RegisterFocusable(this);
@@ -15,7 +18,7 @@ public class ScreenspaceFocusable : FocusableItemBehavior
     public override float GetDistanceToPointer(Vector3 pointerPos)
     {
         float spacialDistance = (transform.position - pointerPos).magnitude;
-        if(spacialDistance > spacialActiviationDistance)
+        if(useSpacialActiviationDistance && spacialDistance > spacialActiviationDistance)
         {
             return float.PositiveInfinity;
         }

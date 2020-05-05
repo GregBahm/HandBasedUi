@@ -5,7 +5,7 @@ public class SlateVisualController : MonoBehaviour
 {
     private float borderBrightness;
     [SerializeField]
-    private BoxFocusable grabberFocus;
+    private ScreenspaceFocusable grabberFocus;
 
     [Range(0, .005f)]
     [SerializeField]

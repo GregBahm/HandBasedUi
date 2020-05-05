@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a4b2f36b09830f40b19916c23871dd3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  focus: {fileID: 3206016016582779887}
+  focus: {fileID: 2120602164346266598}
   icon: {fileID: 1714930798148639226}
 --- !u!1001 &1206412685577980788
 PrefabInstance:
@@ -114,16 +114,16 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 1206412685577980788}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &3206016016582779887 stripped
+--- !u!114 &2120602164346266598 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4377506975370946715, guid: b16dbd6ee2e4f6e4dab2b31fd1da3978,
+  m_CorrespondingSourceObject: {fileID: 996401200132663442, guid: b16dbd6ee2e4f6e4dab2b31fd1da3978,
     type: 3}
   m_PrefabInstance: {fileID: 1206412685577980788}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7044350857082185197}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 529d63acc2e682242a0a9266c871cd10, type: 3}
+  m_Script: {fileID: 11500000, guid: 1f78de357dc4109488023d4cf7357f88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!224 &1714930798148639226 stripped

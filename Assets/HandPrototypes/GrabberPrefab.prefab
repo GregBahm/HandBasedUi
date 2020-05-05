@@ -677,8 +677,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2887304178800656330}
   - component: {fileID: 5346317407229647074}
-  - component: {fileID: 4377506975370946715}
   - component: {fileID: 9212325731282821731}
+  - component: {fileID: 996401200132663442}
   m_Layer: 0
   m_Name: GrabberPrefab
   m_TagString: Untagged
@@ -713,33 +713,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5cfcd887e9ebbcd4c9a6a0a019fd1de7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  focus: {fileID: 4377506975370946715}
+  focus: {fileID: 996401200132663442}
   movingContent: {fileID: 5593771436629926841}
   scalingContent: {fileID: 1329411622136684109}
   rotatingContent: {fileID: 9172444799074940609}
   grabberMesh: {fileID: 3973402841544159162}
   grabberLocation: {fileID: 0}
   grabberLocationOffset: {x: 0, y: 0, z: 0}
+  icon: {fileID: 536668926505931406}
   grabSound: {fileID: 3389231957799224295}
   grabReleaseSound: {fileID: 8372383577884646932}
---- !u!114 &4377506975370946715
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8177558607969955481}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 529d63acc2e682242a0a9266c871cd10, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  focusType: 0
-  isFocusable: 1
-  priority: 1
-  activationDistance: 0.03
-  cursorSettings: {fileID: 0}
-  box: {fileID: 9212325731282821731}
 --- !u!65 &9212325731282821731
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -753,6 +736,25 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 2, y: 2, z: 2}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &996401200132663442
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8177558607969955481}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f78de357dc4109488023d4cf7357f88, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  focusType: 0
+  isFocusable: 1
+  priority: 1
+  activationDistance: 100
+  cursorSettings: {fileID: 0}
+  spacialActiviationDistance: 0
+  useSpacialActiviationDistance: 0
 --- !u!1 &8352151098386137538
 GameObject:
   m_ObjectHideFlags: 0

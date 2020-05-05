@@ -6,7 +6,7 @@ using UnityEngine;
 public class SlateResizingCorner : MonoBehaviour
 {
     [SerializeField]
-    private BoxFocusable focus;
+    private ScreenspaceFocusable focus;
 
     [SerializeField]
     private Transform icon;
