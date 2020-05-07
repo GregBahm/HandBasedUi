@@ -5,6 +5,11 @@ using UnityEngine;
 
 public class PushyButtonController : MonoBehaviour
 {
+    [SerializeField]
+    private ScreenspaceFocusable focus;
+
+    public bool IsFocused { get { return FocusManager.Instance.FocusedItem == focus; } }
+
     public event EventHandler Released;
     public Transform ButtonContent;
     public Color CurrentGlowColor { get; set; }
@@ -17,16 +22,44 @@ public class PushyButtonController : MonoBehaviour
     public Renderer SphereRenderer;
     private Material sphereMeshMat;
 
+    private float baseGlobalSize;
+    private Vector3 baseLocalSize;
+
     private void Start()
     {
         sphereMeshMat = SphereRenderer.material;
         state = ButtonState.Ready;
+        baseGlobalSize = transform.lossyScale.x;
+        baseLocalSize = transform.localScale;
     }
 
 
     private void Update()
     {
+        state = IsFocused ? ButtonState.Hovered : ButtonState.Ready;
         UpdateMaterials();
+        UpdateSize();
+    }
+
+    private void UpdateSize()
+    {
+        Vector3 scaleTarget = GetScaleTarget();
+        transform.localScale = Vector3.Lerp(transform.localScale, scaleTarget, Time.deltaTime * 4);
+    }
+
+    private Vector3 GetScaleTarget()
+    {
+        if (IsFocused)
+        {
+            float factor = Mathf.Min(transform.lossyScale.x, baseGlobalSize);
+            float newScale = baseGlobalSize / factor;
+            newScale = Mathf.Pow(newScale, 2);
+            return baseLocalSize * newScale;
+        }
+        else
+        {
+            return baseLocalSize;
+        }
     }
 
     private void UpdateMaterials()

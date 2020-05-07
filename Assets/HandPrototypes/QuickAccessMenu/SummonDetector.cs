@@ -4,9 +4,15 @@ using UnityEngine;
 
 public class SummonDetector : MonoBehaviour
 {
-    public UiPositionCore PositionCore;
-
+    private bool wasSummoned;
     public bool IsSummoned { get; private set; }
+
+    /// <summary>
+    /// True on the frame a new summoning occurs
+    /// </summary>
+    public bool JustSummoned { get; private set; }
+
+    private HandMountedUiController PositionCore { get { return HandMountedUiController.Instance; } }
 
     [Range(0, 1)]
     public float PalmSummonThreshold;
@@ -16,6 +22,8 @@ public class SummonDetector : MonoBehaviour
     private void Update()
     {
         IsSummoned = GetPrimaryVisibility();
+        JustSummoned = IsSummoned && !wasSummoned;
+        wasSummoned = IsSummoned;
     }
 
     private bool GetPrimaryVisibility()

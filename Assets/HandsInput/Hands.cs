@@ -23,6 +23,8 @@ using Microsoft.Windows.UI.Input.Spatial;
 
 public class Hands : MonoBehaviour
 {
+    public static Hands Instance { get; private set; }
+
     #if UNITY_WSA
     private static readonly HandJointKind[] jointIndices = new HandJointKind[]
     {
@@ -55,13 +57,12 @@ public class Hands : MonoBehaviour
     };
     private readonly JointPose[] jointPoses = new JointPose[jointIndices.Length];
 
+    public HandProxy LeftHandProxy => this.leftHandProxy;
     [SerializeField]
     private HandProxy leftHandProxy;
-    public HandProxy LeftHandProxy { get { return this.leftHandProxy; } }
-
+    public HandProxy RightHandProxy => this.rightHandProxy;
     [SerializeField]
     private HandProxy rightHandProxy;
-    public HandProxy RightHandProxy { get { return this.rightHandProxy; } }
 
 #if NETFX_CORE
         [DllImport("DotNetNativeWorkaround.dll", EntryPoint = "MarshalIInspectable")]
@@ -126,6 +127,11 @@ public class Hands : MonoBehaviour
     }
 
     private SpatialInteractionManager spatialInteractionManager = null;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     private void Start()
     {

@@ -10,13 +10,18 @@ public class SlateRepositioning : MonoBehaviour
     public IFocusableItem Focus { get { return this.focus; } }
 
     [SerializeField]
+    private GrabberVisualController slateGrabber;
+
+    [SerializeField]
     private float deadZoneMoveDistance;
 
     [SerializeField]
     private float snapRotateDistance;
 
+    [SerializeField]
+    private ProceeduralTether tether;
+
     public float Smoothing;
-    private bool wasPinching;
 
     private Vector3 pinchStartPoint;
     private Quaternion originalRotation;
@@ -42,10 +47,9 @@ public class SlateRepositioning : MonoBehaviour
 
     public void DoUpdate()
     {
-        bool pinching = MainPinchDetector.Instance.Pinching;
         if(CurrentlyRepositioning)
         {
-            if(pinching)
+            if(MainPinchDetector.Instance.Pinching)
             {
                 UpdateTargetPosition();
             }
@@ -54,13 +58,17 @@ public class SlateRepositioning : MonoBehaviour
                 EndRepositioning();
             }
         }
-        bool shoulStartPinch = GetShouldStartGrab(pinching);
+        bool shoulStartPinch = GetShouldStartGrab();
         if (shoulStartPinch)
         {
             StartGrab();
         }
         UpdatePosition();
-        wasPinching = pinching;
+        if(tether != null)
+        {
+            tether.DoUpdate();
+            tether.TetherMat.SetFloat("_Highlight", CurrentlyRepositioning ? 1 : 0);
+        }
     }
 
     private void UpdateTargetPosition()
@@ -107,9 +115,11 @@ public class SlateRepositioning : MonoBehaviour
         Focus.ForceFocus = false;
     }
     
-    private bool GetShouldStartGrab(bool pinching)
+    private bool GetShouldStartGrab()
     {
-        return pinching && !wasPinching && FocusManager.Instance.FocusedItem == Focus;
+        return MainPinchDetector.Instance.PinchBeginning
+            && FocusManager.Instance.FocusedItem == Focus
+            && !CurrentlyRepositioning;
     }
 
     public void StartGrab()
@@ -122,5 +132,17 @@ public class SlateRepositioning : MonoBehaviour
         positionTarget.position = transform.position;
 
         Focus.ForceFocus = true;
+    }
+    
+    public void StartSummon(GrabberVisualController summonGrabber)
+    {
+        slateGrabber.SetTo(summonGrabber);
+        Vector3 panelDiff = transform.position - slateGrabber.transform.position;
+        Vector3 panelTarget = MainPinchDetector.Instance.PinchPoint.position + panelDiff;
+        StartGrab();
+        positionTarget.position = panelTarget;
+        positionTarget.LookAt(Camera.main.transform);
+        positionTarget.Rotate(0, 180, 0);
+        originalRotation = positionTarget.rotation;
     }
 }

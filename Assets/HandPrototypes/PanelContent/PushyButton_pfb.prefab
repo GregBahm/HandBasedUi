@@ -108,8 +108,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 407318385413742977}
-  - component: {fileID: 5349930818299649995}
-  - component: {fileID: 6216896388672580572}
   m_Layer: 0
   m_Name: ButtonContent
   m_TagString: Untagged
@@ -133,36 +131,6 @@ Transform:
   m_Father: {fileID: 8052564052144481240}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5349930818299649995
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1603071537342571680}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9c76e9d50ec877b4ea502ef76b63ebad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  focusType: 1
-  isFocusable: 1
-  priority: 1
-  activationDistance: 0.03
-  cursorSettings: {fileID: 0}
---- !u!114 &6216896388672580572
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1603071537342571680}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9197cafed1b3d484fa6c314212fe3ca7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  focus: {fileID: 0}
 --- !u!1 &2279576059165427730
 GameObject:
   m_ObjectHideFlags: 0
@@ -699,6 +667,7 @@ GameObject:
   - component: {fileID: 8052564052144481240}
   - component: {fileID: 3514389781883204457}
   - component: {fileID: 8669893040606896232}
+  - component: {fileID: 1202359956528944824}
   m_Layer: 5
   m_Name: PushyButton_pfb
   m_TagString: Untagged
@@ -742,10 +711,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b9bedc9ad37d9c47971e5289fe0fcdf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  focus: {fileID: 1202359956528944824}
   ButtonContent: {fileID: 407318385413742977}
   Styling: {fileID: 0}
   Toggled: 0
   SphereRenderer: {fileID: 5806024203351892531}
+--- !u!114 &1202359956528944824
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6351473654030787009}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f78de357dc4109488023d4cf7357f88, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  focusType: 1
+  isFocusable: 1
+  priority: 1
+  activationDistance: 100
+  cursorSettings: {fileID: 0}
+  spacialActiviationDistance: 0.1
+  useSpacialActiviationDistance: 0
 --- !u!1 &7143823786124929978
 GameObject:
   m_ObjectHideFlags: 0

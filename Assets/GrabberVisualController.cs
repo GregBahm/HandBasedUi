@@ -149,4 +149,10 @@ public class GrabberVisualController : MonoBehaviour
 
         scalingContent.localScale = new Vector3(showness, showness, showness);
     }
+
+    public void SetTo(GrabberVisualController grabber)
+    {
+        movingContent.position = grabber.movingContent.position;
+        rotatingContent.rotation = grabber.rotatingContent.rotation;
+    }
 }
