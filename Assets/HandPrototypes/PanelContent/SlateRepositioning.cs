@@ -35,6 +35,7 @@ public class SlateRepositioning : MonoBehaviour
 
     private void Start()
     {
+        originalRotation = transform.rotation;
         positionTarget = new GameObject(gameObject.name + "Position Target").transform;
         positionTargetOffset = new GameObject(gameObject.name + "Position Target Offset").transform;
         positionTarget.parent = positionTargetOffset;

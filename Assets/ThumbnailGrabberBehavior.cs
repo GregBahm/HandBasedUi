@@ -85,6 +85,7 @@ public class ThumbnailGrabberBehavior : MonoBehaviour
     {
         grabbed = true;
         grabberVisual.gameObject.SetActive(false);
+        slateRepositioning.gameObject.SetActive(true);
         currentTransition = HandMountedUiController.Instance.SummonTransitionTime;
         slateRepositioning.StartSummon(grabberVisual);
     }
