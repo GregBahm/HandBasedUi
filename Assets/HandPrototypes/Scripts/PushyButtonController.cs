@@ -58,6 +58,11 @@ public class PushyButtonController : MonoBehaviour
 
     private float pressedness;
 
+#if UNITY_EDITOR
+    [SerializeField]
+    private bool testClick;
+#endif
+
     private void Start()
     {
         styling = ButtonStylingManager.Instance.GetStyling(style);
@@ -83,6 +88,13 @@ public class PushyButtonController : MonoBehaviour
 
     private void Update()
     {
+#if UNITY_EDITOR
+        if(testClick)
+        {
+            testClick = false;
+            OnPressed();
+        }
+#endif
         state = UpdateState();
         if(state == ButtonState.Pressed && oldState != ButtonState.Pressed)
         {
