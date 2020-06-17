@@ -34,10 +34,16 @@ public class ChatController : MonoBehaviour
     private Transform scrollGrabberPosition;
 
     [SerializeField]
-    private GameObject scrollGrabberPrefab;
+    private GrabberVisualController scrollGrabber;
+
+    [SerializeField]
+    private float overScrollDampening = 0.2f;
 
     private float openWidth;
     private float currentWidth;
+
+    [SerializeField]
+    private bool simulateGrab;
 
     private void Start()
     {
@@ -53,10 +59,25 @@ public class ChatController : MonoBehaviour
     private void Update()
     {
         UpdateMainOpenness();
-        UpdateScrollPosition();
-        scrollProg = GetScrollProgress();
+        if(simulateGrab) //scrollGrabber.IsGrabbed)
+        {
+            UpdateGrabbedScrollPosition();
+            scrollProg = GetScrollProgress();
+        }
+        else
+        {
+            UpdatePassiveScrollPosition();
+        }
         ApplyScrolling();
         showChat = chatButton.Toggled;
+    }
+
+    private void UpdatePassiveScrollPosition()
+    {
+        float scrollTarget = Mathf.Clamp01(scrollProg);
+        scrollProg = Mathf.Lerp(scrollProg, scrollTarget, Time.deltaTime * 4);
+        scrollPosition.position = Vector3.Lerp(scrollTop.position, scrollBottom.position, scrollProg);
+        scrollGrabberPosition.position = Vector3.Lerp(scrollGrabberPosition.position, scrollPosition.position, Time.deltaTime * 4);
     }
 
     private float GetScrollProgress()
@@ -64,11 +85,26 @@ public class ChatController : MonoBehaviour
         Vector3 topToBottom = scrollTop.position - scrollBottom.position;
         Plane plane = new Plane(topToBottom, scrollBottom.position);
         float dist = plane.GetDistanceToPoint(scrollPosition.position);
-        //dist = Mathf.Clamp(dist, 0, topToBottom.magnitude);
-        return 1 - (dist / topToBottom.magnitude);
+        float ret = 1 - (dist / topToBottom.magnitude);
+        return DampenOverscrolling(ret);
     }
 
-    private void UpdateScrollPosition()
+    private float DampenOverscrolling(float ret)
+    {
+        if (ret > 1)
+        {
+            return Mathf.Pow(ret, overScrollDampening);
+        }
+        if (ret < 0)
+        {
+            float valToSoften = 1 - ret;
+            valToSoften = Mathf.Pow(valToSoften, overScrollDampening);
+            return -(valToSoften - 1);
+        }
+        return ret;
+    }
+
+    private void UpdateGrabbedScrollPosition()
     {
         Vector3 topToBottom = scrollBottom.position - scrollTop.position;
         Vector3 topToGrabber = scrollGrabberPosition.position - scrollTop.position;
