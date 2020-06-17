@@ -119,7 +119,8 @@ public class IconController : MonoBehaviour
         Complete,
         StreamIcon,
         ResizeArrows,
-        Expand
+        Expand,
+        Scroll
     }
 
     public static readonly Dictionary<IconKey, IconCharacterMapping> IconsMap = new Dictionary<IconKey, IconCharacterMapping>
@@ -225,7 +226,8 @@ public class IconController : MonoBehaviour
             { IconKey.Complete, new IconCharacterMapping("") },
             { IconKey.StreamIcon, new IconCharacterMapping("") },
             { IconKey.ResizeArrows, new IconCharacterMapping("") },
-            { IconKey.Expand, new IconCharacterMapping("") }
+            { IconKey.Expand, new IconCharacterMapping("") },
+            { IconKey.Scroll, new IconCharacterMapping("") }
         };
 
     [SerializeField]
