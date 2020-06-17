@@ -18,14 +18,24 @@ public class ChatController : MonoBehaviour
     private float bottomY;
     [SerializeField]
     private float topY;
-
-    [SerializeField]
-    [Range(0, 1)]
+    
     private float scrollProg;
 
     [SerializeField]
     private RectTransform scrollableContent;
-    
+
+    [SerializeField]
+    private Transform scrollTop;
+    [SerializeField]
+    private Transform scrollBottom;
+    [SerializeField]
+    private Transform scrollPosition;
+    [SerializeField]
+    private Transform scrollGrabberPosition;
+
+    [SerializeField]
+    private GameObject scrollGrabberPrefab;
+
     private float openWidth;
     private float currentWidth;
 
@@ -43,13 +53,31 @@ public class ChatController : MonoBehaviour
     private void Update()
     {
         UpdateMainOpenness();
-        UpdateScrolling();
+        UpdateScrollPosition();
+        scrollProg = GetScrollProgress();
+        ApplyScrolling();
         showChat = chatButton.Toggled;
     }
 
-    private void UpdateScrolling()
+    private float GetScrollProgress()
     {
-        float scrollTarget = Mathf.Lerp(bottomY, topY, scrollProg);
+        Vector3 topToBottom = scrollTop.position - scrollBottom.position;
+        Plane plane = new Plane(topToBottom, scrollBottom.position);
+        float dist = plane.GetDistanceToPoint(scrollPosition.position);
+        //dist = Mathf.Clamp(dist, 0, topToBottom.magnitude);
+        return 1 - (dist / topToBottom.magnitude);
+    }
+
+    private void UpdateScrollPosition()
+    {
+        Vector3 topToBottom = scrollBottom.position - scrollTop.position;
+        Vector3 topToGrabber = scrollGrabberPosition.position - scrollTop.position;
+        scrollPosition.position = Vector3.Project(topToGrabber, topToBottom.normalized) + scrollTop.position;
+    }
+
+    private void ApplyScrolling()
+    {
+        float scrollTarget = Mathf.LerpUnclamped(bottomY, topY, scrollProg);
         scrollableContent.localPosition = new Vector3(scrollableContent.localPosition.x, scrollTarget, scrollableContent.localPosition.z);
     }
 
