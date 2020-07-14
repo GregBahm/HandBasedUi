@@ -41,10 +41,7 @@ public class ChatController : MonoBehaviour
 
     private float openWidth;
     private float currentWidth;
-
-    [SerializeField]
-    private bool simulateGrab;
-
+    
     private void Start()
     {
         openWidth = chatContainer.sizeDelta.x;
@@ -55,11 +52,13 @@ public class ChatController : MonoBehaviour
     {
         return showChat? openWidth : 0;
     }
-
+    
     private void Update()
     {
+        showChat = chatButton.Toggled;
         UpdateMainOpenness();
-        if(simulateGrab) //scrollGrabber.IsGrabbed)
+        UpdateGrabbedness();
+        if(scrollGrabber.IsGrabbed)
         {
             UpdateGrabbedScrollPosition();
             scrollProg = GetScrollProgress();
@@ -69,7 +68,19 @@ public class ChatController : MonoBehaviour
             UpdatePassiveScrollPosition();
         }
         ApplyScrolling();
-        showChat = chatButton.Toggled;
+    }
+
+    private void UpdateGrabbedness()
+    {
+        if(FocusManager.Instance.FocusedItem == scrollGrabber.Focus
+            && MainPinchDetector.Instance.PinchBeginning)
+        {
+            scrollGrabber.Focus.ForceFocus = true;
+        }
+        if(!MainPinchDetector.Instance.Pinching)
+        {
+            scrollGrabber.Focus.ForceFocus = false;
+        }
     }
 
     private void UpdatePassiveScrollPosition()
@@ -106,6 +117,7 @@ public class ChatController : MonoBehaviour
 
     private void UpdateGrabbedScrollPosition()
     {
+        scrollGrabberPosition.position = MainPinchDetector.Instance.PinchPoint.position;
         Vector3 topToBottom = scrollBottom.position - scrollTop.position;
         Vector3 topToGrabber = scrollGrabberPosition.position - scrollTop.position;
         scrollPosition.position = Vector3.Project(topToGrabber, topToBottom.normalized) + scrollTop.position;

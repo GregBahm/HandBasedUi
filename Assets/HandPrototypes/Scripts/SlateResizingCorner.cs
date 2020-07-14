@@ -7,6 +7,7 @@ public class SlateResizingCorner : MonoBehaviour
 {
     [SerializeField]
     private ScreenspaceFocusable focus;
+    public IFocusableItem Focus => focus;
 
     [SerializeField]
     private Transform icon;
@@ -15,7 +16,9 @@ public class SlateResizingCorner : MonoBehaviour
     private Transform resizingContent;
 
     public bool IsGrabbed { get; private set; }
-    
+
+    public Vector3 LocalSlatePosition { get; private set; }
+
     public void DoUpdate()
     {
         if(IsGrabbed)
@@ -41,7 +44,7 @@ public class SlateResizingCorner : MonoBehaviour
 
     private Transform resizingContentBaseParent;
     
-    public void Initialize(Transform resizingContent, Transform resizingPivot, float iconRotation)
+    public void Initialize(Transform resizingContent, Transform resizingPivot, float iconRotation, Vector3 localSlatePosition)
     {
         this.resizingContent = resizingContent;
         this.resizingPivot = resizingPivot;
@@ -52,6 +55,7 @@ public class SlateResizingCorner : MonoBehaviour
         GrabberVisualController grabber = GetComponent<GrabberVisualController>();
 
         icon.Rotate(new Vector3(0, 0, iconRotation));
+        LocalSlatePosition = localSlatePosition;
     }
 
     private void DoGrabUpdate()

@@ -3,10 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// Need to figure out a way to seperate grabber controller from grabber visuals controller or something. This class name is inaccurate.
 public class GrabberVisualController : MonoBehaviour
 {
     [SerializeField]
     private ScreenspaceFocusable focus;
+    public ScreenspaceFocusable Focus { get { return focus; } }
 
     [SerializeField]
     private Transform movingContent;
@@ -19,6 +21,12 @@ public class GrabberVisualController : MonoBehaviour
 
     [SerializeField]
     private SkinnedMeshRenderer grabberMesh;
+
+    [SerializeField]
+    private Transform leftRing;
+    [SerializeField]
+    private Transform rightRing;
+    private float ringMaxSeperation;
 
     [SerializeField]
     private Transform grabberLocation;
@@ -47,17 +55,24 @@ public class GrabberVisualController : MonoBehaviour
         this.grabberLocationOffset = offset;
     }
 
+    private void Start()
+    {
+        ringMaxSeperation = leftRing.localPosition.x;
+    }
+
     void Update()
     {
         Pinchedness = GetPinchedness();
         UpdateShowness();
         UpdateMainPosition();
-        grabberMesh.SetBlendShapeWeight(0, Pinchedness * 100);
-        UpdateIcon();
         if (!IsGrabbed && wasGrabbed)
         {
             EndGrab();
         }
+        leftRing.localPosition = new Vector3((1 - Pinchedness) * ringMaxSeperation, 0, 0);
+        rightRing.localPosition = -leftRing.localPosition;
+        grabberMesh.SetBlendShapeWeight(0, Pinchedness * 100);
+        UpdateIcon();
         wasGrabbed = IsGrabbed;
     }
 
@@ -69,7 +84,7 @@ public class GrabberVisualController : MonoBehaviour
 
     private void StartGrab()
     {
-        movingContent.SetParent(MainPinchDetector.Instance.PinchPoint);
+        movingContent.SetParent(MainPinchDetector.Instance.PinchPoint, true);
         grabSound.Play();
     }
 
@@ -108,8 +123,6 @@ public class GrabberVisualController : MonoBehaviour
 
     private void UpdateUnpinchedRotation()
     {
-        Quaternion handAlignmentRotation = GetHandAlignmentRotation();
-
         rotatingContent.rotation = Quaternion.Lerp(rotatingContent.rotation, GetHandAlignmentRotation(), Time.deltaTime * 5);
     }
 
@@ -135,7 +148,7 @@ public class GrabberVisualController : MonoBehaviour
         }
         if (MainPinchDetector.Instance.Pinching && !IsGrabbed)
         {
-            return 0;
+            return 1;
         }
         float pinchProg = (MainPinchDetector.Instance.FingerDistance - .03f) / MainPinchDetector.Instance.PinchDist;
         return 1 - Mathf.Clamp01(pinchProg);

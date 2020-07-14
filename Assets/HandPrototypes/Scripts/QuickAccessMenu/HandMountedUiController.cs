@@ -72,7 +72,10 @@ public class HandMountedUiController : MonoBehaviour
         CoreTransform.position = Hands.Instance.LeftHandProxy.Palm.position;
         Vector3 psuedoPalmForward = GetForwardVector();
         Vector3 psuedoPalmUp = GetUpVector(psuedoPalmForward);
-        CoreTransform.rotation = Quaternion.LookRotation(psuedoPalmUp, -psuedoPalmForward);
+        if(psuedoPalmForward.magnitude > 0)
+        {
+            CoreTransform.rotation = Quaternion.LookRotation(psuedoPalmUp, -psuedoPalmForward);
+        }
     }
 
     private void UpdatePrimaryVisibility()

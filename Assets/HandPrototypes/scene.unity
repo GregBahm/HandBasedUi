@@ -2583,6 +2583,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 19492610, guid: 3795fe98600ef044ca2d97076a5fb718, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1321806084, guid: 3795fe98600ef044ca2d97076a5fb718, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -3178,6 +3182,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Mesh
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7142469625867403425, guid: 3795fe98600ef044ca2d97076a5fb718,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7961765203177557786, guid: 3795fe98600ef044ca2d97076a5fb718,
         type: 3}

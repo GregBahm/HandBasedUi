@@ -9,12 +9,16 @@ public class PushyButtonController : MonoBehaviour
 {
     public bool IsFocused { get { return FocusManager.Instance.FocusedItem == focus; } }
 
+    [SerializeField]
+    public ButtonInteractionStyles interactionStyle;
+
     public Color CurrentColor { get; private set; }
 
     public event EventHandler Pressed;
 
     [SerializeField]
     private ScreenspaceFocusable focus;
+    public ScreenspaceFocusable Focus { get { return focus; } }
 
     [SerializeField]
     private Transform buttonContent;
@@ -57,6 +61,11 @@ public class PushyButtonController : MonoBehaviour
     private float highlightness;
 
     private float pressedness;
+
+    [SerializeField]
+    private float minimumOutroDuration;
+    private float outro;
+
 
 #if UNITY_EDITOR
     [SerializeField]
@@ -105,9 +114,6 @@ public class PushyButtonController : MonoBehaviour
         UpdateMaterials();
         UpdateSize();
     }
-
-    private float outro;
-
     private void UpdateOuterRing()
     {
         float highlightnessTarget = IsFocused ? 1f : 0;
@@ -133,6 +139,10 @@ public class PushyButtonController : MonoBehaviour
 
     private void OnPressed()
     {
+        if(interactionStyle == ButtonInteractionStyles.ToggleButton)
+        {
+            Toggled = !Toggled;
+        }
         pressSound.Play();
         EventHandler handler = Pressed;
         handler?.Invoke(this, EventArgs.Empty);
@@ -141,6 +151,10 @@ public class PushyButtonController : MonoBehaviour
     
     private ButtonState UpdateState()
     {
+        if(state == ButtonState.Pressed && outro < minimumOutroDuration)
+        {
+            return ButtonState.Pressed;
+        }
         if(IsFocused)
         {
             Vector3 localPos = GetLocalFingerPosition();
@@ -220,8 +234,7 @@ public class PushyButtonController : MonoBehaviour
         Disabled,
         Ready,
         Hovered,
-        Pressed,
-        Released,
+        Pressed
     }
     public enum ButtonInteractionStyles
     {

@@ -20,7 +20,7 @@
             #include "UnityCG.cginc"
 
             float _Highlight;
-			float _Fade;
+            float _Length;
 
             struct appdata
             {
@@ -53,37 +53,22 @@
                 return o;
             }
 
-			float3 _LeftThumbTip;
-			float3 _LeftIndexTip;
-			float3 _RightThumbTip;
-			float3 _RightIndexTip;
-
-			float GetFingerContribution(float3 fingerPos, float3 worldPos)
-			{
-				float3 toFinger = fingerPos - worldPos;
-				float dist = length(toFinger);
-				float distShade = 1 - saturate(dist * .5);
-				distShade = pow(distShade, 10);
-				return distShade;
-			}
-
-
-			float GetFingerLighting(float3 worldPos)
-			{
-				float leftIndex = GetFingerContribution(_LeftIndexTip, worldPos);
-				float rightIndex = GetFingerContribution(_RightIndexTip, worldPos);
-				return leftIndex + rightIndex;
-			}
 
             fixed4 frag (v2f i) : SV_Target
             {
-				float fingerLighting = GetFingerLighting(i.worldPos);
-                float alpha = abs(i.uv.y - .5) * 2;
-                alpha = 1 - pow(alpha, 2);
 
-                float ret = alpha / (i.scale * 5);
-				ret *= fingerLighting * 2;
-                ret = lerp(ret, 1, _Highlight);
+                float xAlpha = (i.uv.x * 300) % 1;
+                xAlpha = abs(xAlpha - .5) * 2;
+                xAlpha = (xAlpha - .5) * 4;
+                float yAlpha = 1 - abs(i.uv.y - .5) * 2;
+                float ret = yAlpha * xAlpha;
+
+                float normalizedU = i.uv.x / _Length;
+                float fadeEnd = pow(normalizedU, 1);
+                float fadeStart = 1 - pow(normalizedU, 10);
+                ret *= fadeEnd;
+                ret *= fadeStart;
+                ret *= _Highlight;
                 return ret;
             }
             ENDCG

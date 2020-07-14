@@ -34,12 +34,12 @@ public class SlateResizing : MonoBehaviour
     [SerializeField]
     private float grabberOffset;
     
-    private SlateResizingCorner LowerLeftCorner;
-    private SlateResizingCorner LowerRightCorner;
-    private SlateResizingCorner UpperLeftCorner;
-    private SlateResizingCorner UpperRightCorner;
+    public SlateResizingCorner LowerLeftCorner { get; private set; }
+    public SlateResizingCorner LowerRightCorner { get; private set; }
+    public SlateResizingCorner UpperLeftCorner { get; private set; }
+    public SlateResizingCorner UpperRightCorner { get; private set; }
 
-    private IEnumerable<SlateResizingCorner> corners;
+    public IEnumerable<SlateResizingCorner> Corners { get; private set; }
 
     private void Start()
     {
@@ -51,7 +51,29 @@ public class SlateResizing : MonoBehaviour
         LowerRightCorner = CreateCorner(lowerRightLocator, upperLeftLocator, 1, -1, 90);
         UpperLeftCorner = CreateCorner(upperLeftLocator, lowerRightLocator, -1, 1, 90);
         UpperRightCorner = CreateCorner(upperRightLocator, lowerLeftLocator, 1, 1, 0);
-        corners = new SlateResizingCorner[] { LowerLeftCorner, LowerRightCorner, UpperLeftCorner, UpperRightCorner };
+        Corners = new SlateResizingCorner[] { LowerLeftCorner, LowerRightCorner, UpperLeftCorner, UpperRightCorner };
+    }
+
+    private void OnEnable()
+    {
+        if(Corners != null)
+        {
+            foreach (SlateResizingCorner corner in Corners)
+            {
+                corner.gameObject.SetActive(true);
+            }
+        }
+    }
+
+    private void OnDisable()
+    {
+        foreach (SlateResizingCorner corner in Corners)
+        {
+            if(corner != null)
+            {
+                corner.gameObject.SetActive(false);
+            }
+        }
     }
 
     private Transform CreateLocator(float localX, float localY)
@@ -66,7 +88,7 @@ public class SlateResizing : MonoBehaviour
     {
         GameObject retObj = Instantiate(resizingGrabberPrefab);
         SlateResizingCorner ret = retObj.GetComponent<SlateResizingCorner>();
-        ret.Initialize(resizableContent, oppositeCorner, iconRotation);
+        ret.Initialize(resizableContent, oppositeCorner, iconRotation, grabberLocation.localPosition);
 
         GrabberVisualController grabberVisual = retObj.GetComponent<GrabberVisualController>();
         Vector3 grabberOffset = GetGrabberOffset(xDirection, yDirection);
@@ -82,7 +104,7 @@ public class SlateResizing : MonoBehaviour
 
     public void DoUpdate()
     {
-        foreach (SlateResizingCorner corner in corners)
+        foreach (SlateResizingCorner corner in Corners)
         {
             corner.DoUpdate();
         }

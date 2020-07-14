@@ -840,6 +840,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b9bedc9ad37d9c47971e5289fe0fcdf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  interactionStyle: 0
   focus: {fileID: 1202359956528944824}
   buttonContent: {fileID: 407318385413742977}
   sphereRenderer: {fileID: 5806024203351892531}
@@ -850,6 +851,8 @@ MonoBehaviour:
   lineRenderer: {fileID: 1869745074283199899}
   style: 0
   Toggled: 0
+  minimumOutroDuration: 1
+  testClick: 0
 --- !u!114 &1202359956528944824
 MonoBehaviour:
   m_ObjectHideFlags: 0
