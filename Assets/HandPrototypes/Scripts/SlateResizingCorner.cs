@@ -52,8 +52,6 @@ public class SlateResizingCorner : MonoBehaviour
         scalePivot = new GameObject("Scale Pivot").transform;
         scalePivot.parent = resizingContent.parent;
 
-        GrabberVisualController grabber = GetComponent<GrabberVisualController>();
-
         icon.Rotate(new Vector3(0, 0, iconRotation));
         LocalSlatePosition = localSlatePosition;
     }

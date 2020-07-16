@@ -2,11 +2,15 @@
 {
     Properties
     {
+        _Shine("Test", Range(-1, 1)) = 0
     }
     SubShader
     {
         Tags { "RenderType"="Opaque" }
         LOD 100
+
+        ZWrite Off
+        BlendOp Max
 
         Pass
         {
@@ -30,8 +34,12 @@
                 float3 normal : NORMAL;
                 float4 vertex : SV_POSITION;
                 float3 viewDir : TEXCOORD2;
+                float scale : TEXCOORD1;
                 UNITY_VERTEX_OUTPUT_STEREO
-            };
+            }; 
+
+            float _Shine;
+            float _Fade;
 
             v2f vert (appdata v)
             {
@@ -43,14 +51,26 @@
                 o.normal = v.normal;
                 o.uv = v.uv;
                 o.viewDir = ObjSpaceViewDir(v.vertex);
+                o.scale = o.vertex.w;
                 return o;
             }
 
+#define LowVal .2
+
             fixed4 frag(v2f i) : SV_Target
             {
-                float fresnel = dot(normalize(i.viewDir), normalize(i.normal));
-                fresnel = pow(fresnel, .5);
-                return fresnel;
+                float baseAlpha = 1 - (abs(i.uv.y - .5) * 2);
+
+                float flatVal = (_Shine > 0) ? 1 : LowVal;
+
+                float perpendicularVal = 1 - abs(i.uv.x - .5) * 2;
+                perpendicularVal = lerp(LowVal, 1, pow(1 - perpendicularVal, 3));
+
+                float perpendicularity = abs(_Shine);
+                float ret = lerp(perpendicularVal, flatVal, perpendicularity);
+                ret *= baseAlpha;
+                ret *= _Fade;
+                return ret;
             }
             ENDCG
         }

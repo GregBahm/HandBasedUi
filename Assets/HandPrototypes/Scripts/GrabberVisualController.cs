@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 // Need to figure out a way to seperate grabber controller from grabber visuals controller or something. This class name is inaccurate.
@@ -20,12 +21,13 @@ public class GrabberVisualController : MonoBehaviour
     private Transform rotatingContent;
 
     [SerializeField]
-    private SkinnedMeshRenderer grabberMesh;
-
-    [SerializeField]
     private Transform leftRing;
+    private LineRenderer leftRingLineRenderer;
     [SerializeField]
     private Transform rightRing;
+    private LineRenderer rightRingLineRenderer;
+
+
     private float ringMaxSeperation;
 
     [SerializeField]
@@ -34,8 +36,11 @@ public class GrabberVisualController : MonoBehaviour
     [SerializeField]
     private Vector3 grabberLocationOffset;
 
+    private TextMeshPro iconText;
     [SerializeField]
     private Transform icon;
+    [SerializeField]
+    private Transform iconPivot;
 
     [SerializeField]
     private AudioSource grabSound;
@@ -57,7 +62,30 @@ public class GrabberVisualController : MonoBehaviour
 
     private void Start()
     {
+        leftRingLineRenderer = leftRing.gameObject.GetComponent<LineRenderer>();
+        rightRingLineRenderer = rightRing.gameObject.GetComponent<LineRenderer>();
+
+        Setup(leftRingLineRenderer);
+        Setup(rightRingLineRenderer);
+
         ringMaxSeperation = leftRing.localPosition.x;
+        iconText = icon.GetComponent<TextMeshPro>();
+    }
+
+    private void Setup(LineRenderer lineRenderer)
+    {
+        const int positionsCount = 32;
+        lineRenderer.positionCount = positionsCount;
+        Vector3[] positions = new Vector3[positionsCount];
+        for (int i = 0; i < positionsCount; i++)
+        {
+            float param = (float)i / positionsCount;
+            param *= Mathf.PI * 2;
+            float x = Mathf.Cos(param) * .01f;
+            float y = Mathf.Sin(param) * .01f;
+            positions[i] = new Vector3(0, y, x);
+        }
+        lineRenderer.SetPositions(positions);
     }
 
     void Update()
@@ -71,15 +99,36 @@ public class GrabberVisualController : MonoBehaviour
         }
         leftRing.localPosition = new Vector3((1 - Pinchedness) * ringMaxSeperation, 0, 0);
         rightRing.localPosition = -leftRing.localPosition;
-        grabberMesh.SetBlendShapeWeight(0, Pinchedness * 100);
-        UpdateIcon();
+        UpdateIconRotation();
+        UpdateRingVisuals();
         wasGrabbed = IsGrabbed;
     }
 
-    private void UpdateIcon()
+    private void UpdateRingVisuals()
     {
-        icon.LookAt(Camera.main.transform);
-        icon.Rotate(0, 180, 0);
+        RotateRing(leftRing);
+        RotateRing(rightRing);
+
+        Vector3 toCamera = (transform.position - Camera.main.transform.position).normalized;
+        float leftShine = Vector3.Dot(-leftRing.right, toCamera);
+        float rightShine = Vector3.Dot(rightRing.right, toCamera);
+
+        leftRingLineRenderer.material.SetFloat("_Shine", leftShine);
+        rightRingLineRenderer.material.SetFloat("_Shine", rightShine);
+    }
+
+    private void RotateRing(Transform ring)
+    {
+        Vector3 ringToCamera = (Camera.main.transform.position - ring.position);
+        Vector3 projected = Vector3.ProjectOnPlane(ringToCamera, ring.right);
+        Vector3 up = Vector3.Cross(projected, ring.right);
+        ring.LookAt(ring.position + projected, up);
+    }
+
+    private void UpdateIconRotation()
+    {
+        iconPivot.LookAt(Camera.main.transform);
+        iconPivot.Rotate(0, 180, 0);
     }
 
     private void StartGrab()
@@ -96,7 +145,6 @@ public class GrabberVisualController : MonoBehaviour
             {
                 StartGrab();
             }
-            this.movingContent.localPosition *= .9f; // Lerp to the pinch point
         }
         else
         {
@@ -104,9 +152,10 @@ public class GrabberVisualController : MonoBehaviour
 
             this.movingContent.SetParent(transform);
             this.movingContent.localPosition = Vector3.zero;
-            this.movingContent.localRotation = Quaternion.identity;
+            this.movingContent.localRotation = Quaternion.Lerp(this.movingContent.localRotation, Quaternion.identity, Time.deltaTime * 4);
             UpdateUnpinchedRotation();
         }
+        this.movingContent.localPosition = Vector3.Lerp(this.movingContent.localPosition, Vector3.zero, Time.deltaTime * 2);
     }
 
     private void EndGrab()
@@ -154,13 +203,18 @@ public class GrabberVisualController : MonoBehaviour
         return 1 - Mathf.Clamp01(pinchProg);
     }
 
+    private Quaternion rightLook = Quaternion.Euler(0, 90, 0);
+
     private void UpdateShowness()
     {
         bool shouldShow = FocusManager.Instance.FocusedItem == focus;
         float shownessTarget = shouldShow ? 1 : 0;
         showness = Mathf.Lerp(showness, shownessTarget, Time.deltaTime * 10);
 
-        scalingContent.localScale = new Vector3(showness, showness, showness);
+        rotatingContent.localRotation = Quaternion.Lerp(rightLook, rotatingContent.localRotation, showness);
+        rightRingLineRenderer.material.SetFloat("_Fade", showness);
+        leftRingLineRenderer.material.SetFloat("_Fade", showness);
+        iconText.color = new Color(1, 1, 1, showness);
     }
 
     public void SetTo(GrabberVisualController grabber)
