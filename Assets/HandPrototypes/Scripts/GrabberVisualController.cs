@@ -23,9 +23,11 @@ public class GrabberVisualController : MonoBehaviour
     [SerializeField]
     private Transform leftRing;
     private LineRenderer leftRingLineRenderer;
+    private MeshRenderer leftDiskInterior;
     [SerializeField]
     private Transform rightRing;
     private LineRenderer rightRingLineRenderer;
+    private MeshRenderer rightDiskInterior;
 
 
     private float ringMaxSeperation;
@@ -64,6 +66,8 @@ public class GrabberVisualController : MonoBehaviour
     {
         leftRingLineRenderer = leftRing.gameObject.GetComponent<LineRenderer>();
         rightRingLineRenderer = rightRing.gameObject.GetComponent<LineRenderer>();
+        leftDiskInterior = leftRing.gameObject.GetComponentInChildren<MeshRenderer>();
+        rightDiskInterior = rightRing.gameObject.GetComponentInChildren<MeshRenderer>();
 
         Setup(leftRingLineRenderer);
         Setup(rightRingLineRenderer);
@@ -214,6 +218,8 @@ public class GrabberVisualController : MonoBehaviour
         rotatingContent.localRotation = Quaternion.Lerp(rightLook, rotatingContent.localRotation, showness);
         rightRingLineRenderer.material.SetFloat("_Fade", showness);
         leftRingLineRenderer.material.SetFloat("_Fade", showness);
+        rightDiskInterior.material.SetFloat("_Fade", showness);
+        leftDiskInterior.material.SetFloat("_Fade", showness);
         iconText.color = new Color(1, 1, 1, showness);
     }
 

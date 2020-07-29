@@ -55,22 +55,14 @@
             fixed4 frag(v2f i) : SV_Target
             {
                 float xAlpha = (i.uv.x * 200) % 1;
-            xAlpha = abs(xAlpha - .5) * 2;
-            xAlpha = (xAlpha - .5) * 4;
-            float yAlpha = 1 - abs(i.uv.y - .5) * 2;
-            float ret = yAlpha * xAlpha;
-            ret *= _Highlight;
-            return ret;
-                //float alpha = abs(i.uv.y - .5) * 2;
-                //alpha = 1 - pow(alpha, 2);
-				//float dottedAlpha = (i.uv.x * 5) % 1;
-				//dottedAlpha = abs(dottedAlpha - .5) * 2;
-				//dottedAlpha = 1 - dottedAlpha;
-				//dottedAlpha = dottedAlpha > .5;
-				//alpha *= dottedAlpha;
-				//alpha *= 1 - pow(1 - i.uv.x, 4);
-				//alpha *= _Highlight;
-				//return alpha;
+                xAlpha = abs(xAlpha - .5) * 2;
+                xAlpha = (xAlpha - .5) * 4;
+                float yAlpha = 1 - abs(i.uv.y - .5) * 2;
+                float ret = yAlpha * xAlpha;
+                ret *= i.uv.y * 4;
+                ret *= _Highlight;
+                ret *= 1 - saturate(i.uv.x * 30);
+                return ret;
             }
             ENDCG
         }
