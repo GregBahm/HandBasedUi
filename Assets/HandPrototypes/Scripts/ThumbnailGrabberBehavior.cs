@@ -19,9 +19,6 @@ public class ThumbnailGrabberBehavior : MonoBehaviour
     private GameObject content;
 
     [SerializeField]
-    private TMPro.TMP_Text Title;
-
-    [SerializeField]
     private Image Image;
 
     private float currentTransition;
@@ -57,7 +54,6 @@ public class ThumbnailGrabberBehavior : MonoBehaviour
     {
         content.SetActive(Transition > float.Epsilon);
         Color fade = new Color(1, 1, 1, Transition);
-        Title.color = fade;
         Image.color = fade;
 
         grabberVisual.transform.localScale = originalGrabberScale * Transition;

@@ -120,7 +120,10 @@ public class IconController : MonoBehaviour
         StreamIcon,
         ResizeArrows,
         Expand,
-        Scroll
+        Scroll,
+        Assets,
+        Mic_solid,
+        Video_solid
     }
 
     public static readonly Dictionary<IconKey, IconCharacterMapping> IconsMap = new Dictionary<IconKey, IconCharacterMapping>
@@ -134,7 +137,7 @@ public class IconController : MonoBehaviour
             { IconKey.Backspace, new IconCharacterMapping("") },
             { IconKey.Call, new IconCharacterMapping("") },
             { IconKey.Calendar, new IconCharacterMapping("") },
-            { IconKey.Capture, new IconCharacterMapping("") },
+            { IconKey.Capture, new IconCharacterMapping("") },
             { IconKey.Chat_cutout, new IconCharacterMapping("B", true) },
             { IconKey.Chat_dot, new IconCharacterMapping("") },
             { IconKey.Chat_lines, new IconCharacterMapping("") },
@@ -149,7 +152,7 @@ public class IconController : MonoBehaviour
             { IconKey.Cloud_download, new IconCharacterMapping("") },
             { IconKey.Cloud_upload, new IconCharacterMapping("") },
             { IconKey.Colorpicker, new IconCharacterMapping("I", true) },
-            { IconKey.Contacts, new IconCharacterMapping("") },
+            { IconKey.Contacts, new IconCharacterMapping("") },
             { IconKey.Copy, new IconCharacterMapping("") },
             { IconKey.Copy_sdf, new IconCharacterMapping("") },
             { IconKey.Delete, new IconCharacterMapping("") },
@@ -205,7 +208,7 @@ public class IconController : MonoBehaviour
             { IconKey.Switch_user, new IconCharacterMapping("G", true) },
             { IconKey.Three_dimensional_file, new IconCharacterMapping("") },
             { IconKey.Undo, new IconCharacterMapping("") },
-            { IconKey.Undock, new IconCharacterMapping("") },
+            { IconKey.Undock, new IconCharacterMapping("") },
             { IconKey.Unshift_left, new IconCharacterMapping("") },
             { IconKey.Unshift_right, new IconCharacterMapping("") },
             { IconKey.Uptotop, new IconCharacterMapping("") },
@@ -227,7 +230,10 @@ public class IconController : MonoBehaviour
             { IconKey.StreamIcon, new IconCharacterMapping("") },
             { IconKey.ResizeArrows, new IconCharacterMapping("") },
             { IconKey.Expand, new IconCharacterMapping("") },
-            { IconKey.Scroll, new IconCharacterMapping("") }
+            { IconKey.Scroll, new IconCharacterMapping("") },
+            { IconKey.Assets, new IconCharacterMapping("")},
+            { IconKey.Mic_solid, new IconCharacterMapping("") },
+            { IconKey.Video_solid, new IconCharacterMapping("") }
         };
 
     [SerializeField]

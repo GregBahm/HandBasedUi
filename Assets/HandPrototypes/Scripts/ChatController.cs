@@ -12,7 +12,7 @@ public class ChatController : MonoBehaviour
     private RectTransform chatContainer;
 
     [SerializeField]
-    private PushyButtonController chatButton;
+    private UguiButtonController chatButton;
 
     [SerializeField]
     private float bottomY;

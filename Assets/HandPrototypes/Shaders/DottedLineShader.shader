@@ -1,15 +1,17 @@
-﻿Shader "Unlit/TetherShader"
+﻿Shader "Unlit/DottedLineShader"
 {
     Properties
     {
+        _DotFrequency("Dot Frequency", Float) = 200
+        _LengthFade("Length Fade", Range(0, 1)) = 1
+        _Length("Length", Float) = 1
     }
     SubShader
     {
         Tags { "Queue" = "Transparent" }
         LOD 100
 
-		BlendOp Max
-		//Blend OneMinusDstColor One
+        BlendOp Max
         ZWrite Off
         Pass
         {
@@ -18,6 +20,11 @@
             #pragma fragment frag
 
             #include "UnityCG.cginc"
+
+            float _Highlight;
+            float _Length;
+            float _LengthFade;
+            float _DotFrequency;
 
             struct appdata
             {
@@ -31,11 +38,11 @@
                 float2 uv : TEXCOORD0;
                 float4 vertex : SV_POSITION;
                 float scale : TEXCOORD1;
-				float3 worldPos : TEXCOORD2;
+                float3 worldPos : TEXCOORD2;
                 UNITY_VERTEX_OUTPUT_STEREO
             };
 
-            v2f vert (appdata v)
+            v2f vert(appdata v)
             {
                 v2f o;
                 UNITY_SETUP_INSTANCE_ID(v);
@@ -45,27 +52,28 @@
                 o.vertex = vPosition;
                 o.uv = v.uv;
                 o.scale = vPosition.w;
-				o.worldPos = mul(unity_ObjectToWorld, v.vertex);
+                o.worldPos = mul(unity_ObjectToWorld, v.vertex);
 
                 return o;
             }
 
-			float _Highlight;
 
             fixed4 frag(v2f i) : SV_Target
             {
-                float xAlpha = (i.uv.x * 200) % 1;
+                float xAlpha = (i.uv.x * _DotFrequency) % 1;
                 xAlpha = abs(xAlpha - .5) * 2;
                 xAlpha = (xAlpha - .5) * 4;
                 float yAlpha = 1 - abs(i.uv.y - .5) * 2;
                 float ret = yAlpha * xAlpha;
 
-                ret *= i.uv.y * 4;
-                ret *= _Highlight;
-                ret *= 1 - saturate(i.uv.x * 30);
+                float normalizedU = saturate(_Length / i.uv.x);
+                float fadeEnd = lerp(normalizedU, 1.0, _LengthFade);
+                ret *= fadeEnd;
+                //ret *= _Highlight;
                 return ret;
             }
             ENDCG
         }
     }
 }
+

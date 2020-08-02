@@ -9,9 +9,6 @@ public class HandMountedUiController : MonoBehaviour
     private float summonTransitionTime = .5f;
     public float SummonTransitionTime => summonTransitionTime;
 
-    [SerializeField]
-    private TMPro.TMP_Text recentDocumentsLabel;
-
     public static HandMountedUiController Instance { get; private set; }
     public Transform CoreTransform { get; private set; }
 
@@ -88,7 +85,6 @@ public class HandMountedUiController : MonoBehaviour
             }
             item.DoUpdate(Summoning.IsSummoned);
         }
-        recentDocumentsLabel.gameObject.SetActive(Summoning.IsSummoned);
     }
 
     private void UpdatePosition()

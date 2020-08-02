@@ -48,7 +48,8 @@
 
             fixed4 frag(v2f i) : SV_Target
             {
-                return 1 - _Fade;
+                float val = 1 - _Fade;
+                return float4(val, val, val, 1);
             }
             ENDCG
         }
