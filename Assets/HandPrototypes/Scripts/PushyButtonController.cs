@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using TMPro;
 using UnityEngine;
 
 public class PushyButtonController : MonoBehaviour
@@ -10,61 +6,30 @@ public class PushyButtonController : MonoBehaviour
     public bool IsFocused { get { return FocusManager.Instance.FocusedItem == focus; } }
 
     [SerializeField]
-    public ButtonInteractionStyles interactionStyle;
+    private ButtonInteractionStyles interactionStyle;
+    public ButtonInteractionStyles InteractionStyle => interactionStyle;
 
-    public Color CurrentColor { get; private set; }
-
-    public event EventHandler Pressed;
+    [SerializeField]
+    private bool toggled;
+    public bool Toggled { get => toggled; set => toggled = value; }
 
     [SerializeField]
     private ScreenspaceFocusable focus;
-    public ScreenspaceFocusable Focus { get { return focus; } }
-
-    [SerializeField]
-    private Transform buttonContent;
-
-    [SerializeField]
-    private Renderer sphereRenderer;
-
-    [SerializeField]
-    private TMP_Text label;
+    public ScreenspaceFocusable Focus => focus;
 
     [SerializeField]
     private AudioSource pressSound;
 
-    [SerializeField]
-    private AudioSource releaseSound;
-
-    [SerializeField]
-    private float distToFlex = 1;
-
-    [SerializeField]
-    private LineRenderer lineRenderer;
-    private Material lineMat;
-
-    [SerializeField]
-    private ButtonStyle style;
-    private ButtonStyling styling;
-
-    public bool Toggled;
-
-    private Color currentGlowColor;
-    private float currentLabelAlpha;
     private ButtonState oldState;
-    private ButtonState state;
+    public ButtonState State { get; private set; }
 
-    private Material sphereMeshMat;
-
-    private float baseGlobalSize;
-    private Vector3 baseLocalSize;
-
-    private float highlightness;
-
-    private float pressedness;
+    public float Pressedness { get; private set; }
 
     [SerializeField]
-    private float minimumOutroDuration;
-    private float outro;
+    private float minimumOutroDuration = .3f;
+    public float Outro { get; private set; }
+
+    public event EventHandler Pressed;
 
 
 #if UNITY_EDITOR
@@ -74,72 +39,35 @@ public class PushyButtonController : MonoBehaviour
 
     private void Start()
     {
-        styling = ButtonStylingManager.Instance.GetStyling(style);
-        sphereMeshMat = sphereRenderer.material;
-        state = ButtonState.Ready;
-        baseGlobalSize = transform.lossyScale.x;
-        baseLocalSize = transform.localScale;
-        lineMat = lineRenderer.material;
-    }
-
-    private IEnumerable<Vector3> CreateCircleVerts()
-    {
-        float increment = 360f / 32;
-        for (int i = 0; i < 32; i++)
-        {
-            float angle = i * increment;
-            angle = Mathf.Deg2Rad * angle;
-            float x = Mathf.Sin(angle);
-            float y = Mathf.Cos(angle);
-            yield return new Vector3(x, y, 0) * .5f;
-        }
+        State = ButtonState.Ready;
     }
 
     private void Update()
     {
 #if UNITY_EDITOR
-        if(testClick)
+        if (testClick)
         {
             testClick = false;
             OnPressed();
         }
 #endif
-        state = UpdateState();
-        if(state == ButtonState.Pressed && oldState != ButtonState.Pressed)
+        State = UpdateState();
+        if (State == ButtonState.Pressed && oldState != ButtonState.Pressed)
         {
             OnPressed();
         }
-        oldState = state;
-        UpdateOuterRing();
-        UpdateMaterials();
-        UpdateSize();
+        oldState = State;
+        UpdateOutro();
     }
-    private void UpdateOuterRing()
-    {
-        float highlightnessTarget = IsFocused ? 1f : 0;
-        highlightness = Mathf.Lerp(highlightness, highlightnessTarget, Time.deltaTime * 10);
 
-        float flex;
-        if(state == ButtonState.Pressed)
-        {
-            outro += Time.deltaTime;
-            flex = outro / .3f;
-            flex = Mathf.Pow(flex, .5f);
-        }
-        else
-        {
-            outro = 0;
-            flex = Mathf.Max(0, -pressedness) / distToFlex;
-        }
-        float brightness = Mathf.Clamp01(1 - flex) * highlightness;
-        lineMat.SetFloat("_Brightness", brightness);
-        float lineScale = flex + 1;
-        lineRenderer.transform.localScale = new Vector3(lineScale, lineScale, lineScale);
+    private void UpdateOutro()
+    {
+        Outro = State == ButtonState.Pressed ? Outro + Time.deltaTime : 0;
     }
 
     private void OnPressed()
     {
-        if(interactionStyle == ButtonInteractionStyles.ToggleButton)
+        if (interactionStyle == ButtonInteractionStyles.ToggleButton)
         {
             Toggled = !Toggled;
         }
@@ -148,22 +76,21 @@ public class PushyButtonController : MonoBehaviour
         handler?.Invoke(this, EventArgs.Empty);
     }
 
-    
     private ButtonState UpdateState()
     {
-        if(state == ButtonState.Pressed && outro < minimumOutroDuration)
+        if (State == ButtonState.Pressed && Outro < minimumOutroDuration)
         {
             return ButtonState.Pressed;
         }
-        if(IsFocused)
+        if (IsFocused)
         {
             Vector3 localPos = GetLocalFingerPosition();
-            pressedness = localPos.z;
-            if(localPos.z < 0 && (state == ButtonState.Ready || state == ButtonState.Hovered))
+            Pressedness = localPos.z;
+            if (localPos.z < 0 && (State == ButtonState.Ready || State == ButtonState.Hovered))
             {
                 return ButtonState.Hovered;
             }
-            if((state == ButtonState.Hovered || state == ButtonState.Pressed) && localPos.z > 0)
+            if ((State == ButtonState.Hovered || State == ButtonState.Pressed) && localPos.z > 0)
             {
                 return ButtonState.Pressed;
             }
@@ -177,68 +104,17 @@ public class PushyButtonController : MonoBehaviour
         return transform.InverseTransformPoint(fingerPos);
     }
 
-    private void UpdateSize()
-    {
-        Vector3 scaleTarget = GetScaleTarget();
-        transform.localScale = Vector3.Lerp(transform.localScale, scaleTarget, Time.deltaTime * 4);
-    }
-
-    private Vector3 GetScaleTarget()
-    {
-        if (IsFocused)
-        {
-            float factor = Mathf.Min(transform.lossyScale.x, baseGlobalSize);
-            float newScale = baseGlobalSize / factor;
-            newScale = Mathf.Pow(newScale, 2);
-            return baseLocalSize * newScale;
-        }
-        else
-        {
-            return baseLocalSize;
-        }
-    }
-
-    private void UpdateMaterials()
-    {
-        Color colorTarget = GetStateColor();
-        CurrentColor = Color.Lerp(CurrentColor, colorTarget, Time.deltaTime * 15);
-        Color targetGlowColor = colorTarget * (state == ButtonState.Hovered ? 1 : 0);
-        currentGlowColor = Color.Lerp(currentGlowColor, targetGlowColor, Time.deltaTime * 15);
-
-        sphereMeshMat.SetColor("_Color", CurrentColor);
-        sphereMeshMat.SetFloat("_Disabledness", state == ButtonState.Disabled ? 1 : 0);
-
-        float labelAlpha = IsFocused ? 1 : 0;
-        currentLabelAlpha = Mathf.Lerp(currentLabelAlpha, labelAlpha, Time.deltaTime * 15);
-        label.color = new Color(1, 1, 1, currentLabelAlpha);
-    }
-
-    private Color GetStateColor()
-    {
-        switch (state)
-        {
-            case ButtonState.Ready:
-                return Toggled ? styling.ReadyToggledColor : styling.ReadyColor;
-            case ButtonState.Hovered:
-                return styling.HoverColor;
-            case ButtonState.Pressed:
-                return styling.PressingColor;
-            case ButtonState.Disabled:
-            default:
-                return styling.DisabledColor;
-        }
-    }
-
-    private enum ButtonState
-    {
-        Disabled,
-        Ready,
-        Hovered,
-        Pressed
-    }
     public enum ButtonInteractionStyles
     {
         ToggleButton,
         ClickButton
     }
+}
+
+public enum ButtonState
+{
+    Disabled,
+    Ready,
+    Hovered,
+    Pressed
 }

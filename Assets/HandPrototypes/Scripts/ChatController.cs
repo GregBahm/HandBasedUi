@@ -12,7 +12,7 @@ public class ChatController : MonoBehaviour
     private RectTransform chatContainer;
 
     [SerializeField]
-    private UguiButtonController chatButton;
+    private PushyButtonController chatButton;
 
     [SerializeField]
     private float bottomY;
@@ -56,6 +56,7 @@ public class ChatController : MonoBehaviour
     private void Update()
     {
         showChat = chatButton.Toggled;
+        scrollGrabber.gameObject.SetActive(showChat);
         UpdateMainOpenness();
         UpdateGrabbedness();
         if(scrollGrabber.IsGrabbed)

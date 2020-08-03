@@ -667,9 +667,10 @@ GameObject:
   - component: {fileID: 8052564052144481240}
   - component: {fileID: 3514389781883204457}
   - component: {fileID: 8669893040606896232}
+  - component: {fileID: 6079116408045676962}
   - component: {fileID: 1202359956528944824}
   m_Layer: 5
-  m_Name: PushyButton_pfb
+  m_Name: RoundButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -714,18 +715,33 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactionStyle: 0
+  toggled: 0
   focus: {fileID: 1202359956528944824}
-  buttonContent: {fileID: 407318385413742977}
-  sphereRenderer: {fileID: 5806024203351892531}
-  label: {fileID: 5481616898860326639}
   pressSound: {fileID: 1477269531598392084}
-  releaseSound: {fileID: 0}
-  distToFlex: 10
-  lineRenderer: {fileID: 1869745074283199899}
-  style: 0
-  Toggled: 0
   minimumOutroDuration: 1
   testClick: 0
+--- !u!114 &6079116408045676962
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6351473654030787009}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d646ed2d0fc19e444a37d1adaeee54d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sphereRenderer: {fileID: 5806024203351892531}
+  lineRenderer: {fileID: 1869745074283199899}
+  hoverRadius: 0.03
+  distToFlex: 1
+  readyColor: {r: 0, g: 0.29411766, b: 0.58431375, a: 1}
+  readyToggledColor: {r: 0.18823531, g: 0.46274513, b: 0.7372549, a: 1}
+  hoverColor: {r: 0.21176472, g: 0.60784316, b: 1, a: 1}
+  pressingColor: {r: 0.7843138, g: 0.7843138, b: 0.7843138, a: 1}
+  disabledColor: {r: 0.5019608, g: 0.5019608, b: 0.5019608, a: 1}
+  label: {fileID: 5481616898860326639}
 --- !u!114 &1202359956528944824
 MonoBehaviour:
   m_ObjectHideFlags: 0
