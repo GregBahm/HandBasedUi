@@ -212,7 +212,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b9bedc9ad37d9c47971e5289fe0fcdf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionStyle: 0
+  interactionStyle: 1
   toggled: 0
   focus: {fileID: 4740404185345162967}
   pressSound: {fileID: 4996866513072381586}

@@ -21,11 +21,19 @@ public class UguiButtonVisualsController : ButtonVisualController
     private Material backgroundMat;
 
     [SerializeField]
+    private float iconZRaiseAmount = -.4f;
+    private float iconZ;
+
+    private RectTransform backgroundRect;
+
+    [SerializeField]
     private Image buttonBackground;
     private void Start()
     {
+        buttonBackground.material = new Material(buttonBackground.material);
         backgroundMat = buttonBackground.material;
         button = GetComponent<PushyButtonController>();
+        backgroundRect = buttonBackground.GetComponent<RectTransform>();
         button.Pressed += Button_Pressed;
     }
 
@@ -41,8 +49,36 @@ public class UguiButtonVisualsController : ButtonVisualController
 
     private void Update()
     {
+        UpdateIconPosition();
         UpdateColors();
         UpdatePulse();
+    }
+
+    private void UpdateIconPosition()
+    {
+        float zTarget = GetIconZTarget();
+        iconZ = Mathf.Lerp(iconZ, zTarget, Time.deltaTime * 10);
+        iconController.transform.localPosition = new Vector3(iconController.transform.localPosition.x, iconController.transform.localPosition.y, iconZ);
+    }
+
+    private float GetIconZTarget()
+    {
+        if(button.State == ButtonState.Hovered)
+        {
+            float dist = GetDistToFinger(backgroundRect.transform, Hands.Instance.RightHandProxy.IndexTip.position);
+            return Mathf.Max(dist, iconZRaiseAmount);
+        }
+        if(button.State == ButtonState.Pressed)
+        {
+            return iconZRaiseAmount;
+        }
+        return 0;
+    }
+
+    private float GetDistToFinger(Transform transform, Vector3 position)
+    {
+        Plane plane = new Plane(transform.forward, transform.position);
+        return plane.GetDistanceToPoint(position);
     }
 
     private void UpdatePulse()

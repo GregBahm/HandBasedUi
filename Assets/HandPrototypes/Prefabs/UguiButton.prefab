@@ -187,6 +187,7 @@ MonoBehaviour:
   iconController: {fileID: 2585705128737116992}
   toggledKey: 0
   untoggledKey: 0
+  iconZRaiseAmount: -0.4
   buttonBackground: {fileID: 2030449889531097754}
 --- !u!114 &1505123739738324399
 MonoBehaviour:

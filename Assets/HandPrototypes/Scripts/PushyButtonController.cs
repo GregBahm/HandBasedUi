@@ -98,7 +98,7 @@ public class PushyButtonController : MonoBehaviour
         {
             Vector3 localPos = GetLocalFingerPosition();
             Pressedness = localPos.z;
-            if (localPos.z < 0 && (State == ButtonState.Ready || State == ButtonState.Hovered))
+            if (localPos.z <= 0 && (State == ButtonState.Ready || State == ButtonState.Hovered))
             {
                 return ButtonState.Hovered;
             }
