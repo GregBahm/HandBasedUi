@@ -6,10 +6,8 @@ using TMPro;
 using UnityEngine;
 
 [RequireComponent(typeof(PushyButtonController))]
-public class RoundButtonVisualsController : MonoBehaviour
+public class RoundButtonVisualsController : ButtonVisualController
 {
-    private PushyButtonController button;
-
     [SerializeField]
     private Renderer sphereRenderer;
 
@@ -27,17 +25,6 @@ public class RoundButtonVisualsController : MonoBehaviour
 
     [SerializeField]
     private float distToFlex = 1;
-
-    [SerializeField]
-    public Color readyColor = Color.black;
-    [SerializeField]
-    public Color readyToggledColor = Color.gray;
-    [SerializeField]
-    public Color hoverColor = Color.blue;
-    [SerializeField]
-    public Color pressingColor = Color.cyan;
-    [SerializeField]
-    public Color disabledColor = Color.gray;
 
 
     public Color CurrentColor { get; private set; }
@@ -129,21 +116,5 @@ public class RoundButtonVisualsController : MonoBehaviour
         float labelAlpha = button.IsFocused ? 1 : 0;
         currentLabelAlpha = Mathf.Lerp(currentLabelAlpha, labelAlpha, Time.deltaTime * 15);
         label.color = new Color(1, 1, 1, currentLabelAlpha);
-    }
-
-    private Color GetStateColor()
-    {
-        switch (button.State)
-        {
-            case ButtonState.Ready:
-                return button.Toggled ? readyToggledColor : readyColor;
-            case ButtonState.Hovered:
-                return hoverColor;
-            case ButtonState.Pressed:
-                return pressingColor;
-            case ButtonState.Disabled:
-            default:
-                return disabledColor;
-        }
     }
 }

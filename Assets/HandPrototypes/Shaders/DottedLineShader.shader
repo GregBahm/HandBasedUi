@@ -5,6 +5,7 @@
         _DotFrequency("Dot Frequency", Float) = 200
         _LengthFade("Length Fade", Range(0, 1)) = 1
         _Length("Length", Float) = 1
+        _Fade("Fade", Range(0,1)) = 1
     }
     SubShader
     {
@@ -25,6 +26,7 @@
             float _Length;
             float _LengthFade;
             float _DotFrequency;
+            float _Fade;
 
             struct appdata
             {
@@ -69,7 +71,7 @@
                 float normalizedU = saturate(_Length / i.uv.x);
                 float fadeEnd = lerp(normalizedU, 1.0, _LengthFade);
                 ret *= fadeEnd;
-                //ret *= _Highlight;
+                ret *= _Fade;
                 return ret;
             }
             ENDCG

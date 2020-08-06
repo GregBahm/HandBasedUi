@@ -168,6 +168,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4238454411803791480}
   - component: {fileID: 8401349481245260125}
+  - component: {fileID: 8265895154665787772}
+  - component: {fileID: 4740404185345162967}
   m_Layer: 5
   m_Name: TabButton
   m_TagString: Untagged
@@ -212,10 +214,48 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactionStyle: 0
   toggled: 0
-  focus: {fileID: 0}
+  focus: {fileID: 4740404185345162967}
   pressSound: {fileID: 4996866513072381586}
-  minimumOutroDuration: 0.3
+  outroDuration: 0.3
   testClick: 0
+--- !u!114 &8265895154665787772
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3886790325843832425}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ca023b2e32fb4a4dbd7df9a9334a8ae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  readyColor: {r: 0.13725491, g: 0.13725491, b: 0.13725491, a: 1}
+  readyToggledColor: {r: 0.18823531, g: 0.46274513, b: 0.7372549, a: 1}
+  hoverColor: {r: 0.6603774, g: 0.6603774, b: 0.6603774, a: 1}
+  pressingColor: {r: 0.3931559, g: 0.64469117, b: 0.8962264, a: 1}
+  disabledColor: {r: 0.13725491, g: 0.13725491, b: 0.13725491, a: 1}
+  iconController: {fileID: 8114023106000018801}
+  toggledKey: 0
+  untoggledKey: 0
+  buttonBackground: {fileID: 2663467152587275744}
+--- !u!114 &4740404185345162967
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3886790325843832425}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1be9e4ac04398ba48a3bdac83fce99df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  focusType: 1
+  isFocusable: 1
+  priority: 1
+  activationDistance: 10
+  cursorSettings: {fileID: 0}
 --- !u!1 &5010752141291783612
 GameObject:
   m_ObjectHideFlags: 0
@@ -443,7 +483,7 @@ MonoBehaviour:
   m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 2100000, guid: 74ce5fc80569aa54e9a54bc85747caaf, type: 2}
   m_Color: {r: 0.13725491, g: 0.13725491, b: 0.13725491, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:

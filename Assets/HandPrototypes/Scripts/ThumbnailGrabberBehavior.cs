@@ -21,6 +21,9 @@ public class ThumbnailGrabberBehavior : MonoBehaviour
     [SerializeField]
     private Image Image;
 
+    [SerializeField]
+    private LineRenderer border;
+
     private float currentTransition;
 
     public float Transition { get { return currentTransition / HandMountedUiController.Instance.SummonTransitionTime; } }
@@ -30,9 +33,13 @@ public class ThumbnailGrabberBehavior : MonoBehaviour
     private bool grabbed;
     private Vector3 originalGrabberScale;
 
+    private float borderFade;
+    private Material borderMat;
+
     private void Start()
     {
         originalGrabberScale = grabberVisual.transform.localScale;
+        borderMat = border.material;
     }
 
     public void DoUpdate(bool summoned)
@@ -57,6 +64,10 @@ public class ThumbnailGrabberBehavior : MonoBehaviour
         Image.color = fade;
 
         grabberVisual.transform.localScale = originalGrabberScale * Transition;
+
+        float borderFadeTarget = grabbed ? 1 : 0;
+        borderFade = Mathf.Lerp(borderFade, borderFadeTarget, Time.deltaTime * 10);
+        borderMat.SetFloat("_Fade", borderFade);
     }
 
     private void UpdateTransition(bool summoned)

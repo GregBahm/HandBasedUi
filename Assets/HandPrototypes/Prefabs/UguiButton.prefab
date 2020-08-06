@@ -85,8 +85,9 @@ GameObject:
   - component: {fileID: 2030449889531097754}
   - component: {fileID: 7689896410566340210}
   - component: {fileID: 2264288032279184651}
+  - component: {fileID: 1505123739738324399}
   m_Layer: 5
-  m_Name: BottomVideoButton
+  m_Name: UguiButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -133,7 +134,7 @@ MonoBehaviour:
   m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 2100000, guid: 74ce5fc80569aa54e9a54bc85747caaf, type: 2}
   m_Color: {r: 0.1764706, g: 0.18431373, b: 0.18431373, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
@@ -162,9 +163,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactionStyle: 0
   toggled: 0
-  focus: {fileID: 0}
+  focus: {fileID: 1505123739738324399}
   pressSound: {fileID: 1873489581791399979}
-  minimumOutroDuration: 0
+  outroDuration: 0.3
   testClick: 0
 --- !u!114 &2264288032279184651
 MonoBehaviour:
@@ -178,6 +179,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ca023b2e32fb4a4dbd7df9a9334a8ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  readyColor: {r: 0.18039216, g: 0.18431373, b: 0.18823531, a: 1}
+  readyToggledColor: {r: 0.18039216, g: 0.18431373, b: 0.18823531, a: 1}
+  hoverColor: {r: 0.26666668, g: 0.27058825, b: 0.27450982, a: 1}
+  pressingColor: {r: 0.35686275, g: 0.34901962, b: 0.35686275, a: 1}
+  disabledColor: {r: 0.18039216, g: 0.18431373, b: 0.18823531, a: 1}
+  iconController: {fileID: 2585705128737116992}
+  toggledKey: 0
+  untoggledKey: 0
+  buttonBackground: {fileID: 2030449889531097754}
+--- !u!114 &1505123739738324399
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 724145006763088048}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1be9e4ac04398ba48a3bdac83fce99df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  focusType: 1
+  isFocusable: 1
+  priority: 0
+  activationDistance: 10
+  cursorSettings: {fileID: 0}
 --- !u!1 &7969095133252618607
 GameObject:
   m_ObjectHideFlags: 0

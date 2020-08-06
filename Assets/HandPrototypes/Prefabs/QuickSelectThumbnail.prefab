@@ -179,6 +179,7 @@ MonoBehaviour:
   grabberVisual: {fileID: 1797536188353742103}
   content: {fileID: 5963837899094212959}
   Image: {fileID: 5963837898940486821}
+  border: {fileID: 8688483975061591480}
 --- !u!1 &5963837898940486823
 GameObject:
   m_ObjectHideFlags: 0

@@ -78,7 +78,7 @@ VideoPlayer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1872570606287788132}
-  m_Enabled: 1
+  m_Enabled: 0
   m_VideoClip: {fileID: 32900000, guid: 7d4a6f94fe0995641b3f961f27838311, type: 3}
   m_TargetCameraAlpha: 1
   m_TargetCamera3DLayout: 0
@@ -131,6 +131,61 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Color.b
       value: 0.3254902
+      objectReference: {fileID: 0}
+    - target: {fileID: 2264288032279184651, guid: a193c7f8a518d8649aa3860812d3cbfa,
+        type: 3}
+      propertyPath: readyColor.r
+      value: 0.8431373
+      objectReference: {fileID: 0}
+    - target: {fileID: 2264288032279184651, guid: a193c7f8a518d8649aa3860812d3cbfa,
+        type: 3}
+      propertyPath: readyColor.g
+      value: 0.27058825
+      objectReference: {fileID: 0}
+    - target: {fileID: 2264288032279184651, guid: a193c7f8a518d8649aa3860812d3cbfa,
+        type: 3}
+      propertyPath: readyColor.b
+      value: 0.3254902
+      objectReference: {fileID: 0}
+    - target: {fileID: 2264288032279184651, guid: a193c7f8a518d8649aa3860812d3cbfa,
+        type: 3}
+      propertyPath: hoverColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2264288032279184651, guid: a193c7f8a518d8649aa3860812d3cbfa,
+        type: 3}
+      propertyPath: hoverColor.b
+      value: 0.4754459
+      objectReference: {fileID: 0}
+    - target: {fileID: 2264288032279184651, guid: a193c7f8a518d8649aa3860812d3cbfa,
+        type: 3}
+      propertyPath: hoverColor.g
+      value: 0.4198113
+      objectReference: {fileID: 0}
+    - target: {fileID: 2264288032279184651, guid: a193c7f8a518d8649aa3860812d3cbfa,
+        type: 3}
+      propertyPath: pressingColor.r
+      value: 0.9150943
+      objectReference: {fileID: 0}
+    - target: {fileID: 2264288032279184651, guid: a193c7f8a518d8649aa3860812d3cbfa,
+        type: 3}
+      propertyPath: pressingColor.g
+      value: 0.6517889
+      objectReference: {fileID: 0}
+    - target: {fileID: 2264288032279184651, guid: a193c7f8a518d8649aa3860812d3cbfa,
+        type: 3}
+      propertyPath: pressingColor.b
+      value: 0.67669624
+      objectReference: {fileID: 0}
+    - target: {fileID: 2264288032279184651, guid: a193c7f8a518d8649aa3860812d3cbfa,
+        type: 3}
+      propertyPath: toggledKey
+      value: 31
+      objectReference: {fileID: 0}
+    - target: {fileID: 2264288032279184651, guid: a193c7f8a518d8649aa3860812d3cbfa,
+        type: 3}
+      propertyPath: untoggledKey
+      value: 31
       objectReference: {fileID: 0}
     - target: {fileID: 3485697125443259178, guid: a193c7f8a518d8649aa3860812d3cbfa,
         type: 3}
@@ -245,6 +300,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Video Button
+      objectReference: {fileID: 0}
+    - target: {fileID: 2264288032279184651, guid: a193c7f8a518d8649aa3860812d3cbfa,
+        type: 3}
+      propertyPath: untoggledKey
+      value: 105
+      objectReference: {fileID: 0}
+    - target: {fileID: 2264288032279184651, guid: a193c7f8a518d8649aa3860812d3cbfa,
+        type: 3}
+      propertyPath: toggledKey
+      value: 105
       objectReference: {fileID: 0}
     - target: {fileID: 2585705128737116992, guid: a193c7f8a518d8649aa3860812d3cbfa,
         type: 3}
@@ -410,7 +475,7 @@ PrefabInstance:
     - target: {fileID: 5963837898371137169, guid: d689932e7ea482a49b69589c6ef6ac3c,
         type: 3}
       propertyPath: m_Name
-      value: Main Thumbnail Variant
+      value: MainThumbnail
       objectReference: {fileID: 0}
     - target: {fileID: 5963837898371137169, guid: d689932e7ea482a49b69589c6ef6ac3c,
         type: 3}
@@ -568,6 +633,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Mute Button
+      objectReference: {fileID: 0}
+    - target: {fileID: 2264288032279184651, guid: a193c7f8a518d8649aa3860812d3cbfa,
+        type: 3}
+      propertyPath: toggledKey
+      value: 104
+      objectReference: {fileID: 0}
+    - target: {fileID: 2264288032279184651, guid: a193c7f8a518d8649aa3860812d3cbfa,
+        type: 3}
+      propertyPath: untoggledKey
+      value: 47
       objectReference: {fileID: 0}
     - target: {fileID: 2585705128737116992, guid: a193c7f8a518d8649aa3860812d3cbfa,
         type: 3}

@@ -14,8 +14,8 @@ public class PushyButtonController : MonoBehaviour
     public bool Toggled { get => toggled; set => toggled = value; }
 
     [SerializeField]
-    private ScreenspaceFocusable focus;
-    public ScreenspaceFocusable Focus => focus;
+    private FocusableItemBehavior focus;
+    public FocusableItemBehavior Focus => focus;
 
     [SerializeField]
     private AudioSource pressSound;
@@ -26,7 +26,8 @@ public class PushyButtonController : MonoBehaviour
     public float Pressedness { get; private set; }
 
     [SerializeField]
-    private float minimumOutroDuration = .3f;
+    private float outroDuration = .3f;
+    public float OutroDuration => outroDuration;
     public float Outro { get; private set; }
 
     public event EventHandler Pressed;
@@ -56,13 +57,24 @@ public class PushyButtonController : MonoBehaviour
         {
             OnPressed();
         }
-        oldState = State;
         UpdateOutro();
+        oldState = State;
     }
 
     private void UpdateOutro()
     {
-        Outro = State == ButtonState.Pressed ? Outro + Time.deltaTime : 0;
+        if(State == ButtonState.Pressed)
+        {
+            Outro += Time.deltaTime;
+            if (Outro > outroDuration)
+            {
+                State = ButtonState.Ready;
+            }
+        }
+        else
+        {
+            Outro = 0;
+        }
     }
 
     private void OnPressed()
@@ -78,7 +90,7 @@ public class PushyButtonController : MonoBehaviour
 
     private ButtonState UpdateState()
     {
-        if (State == ButtonState.Pressed && Outro < minimumOutroDuration)
+        if (State == ButtonState.Pressed && Outro < outroDuration)
         {
             return ButtonState.Pressed;
         }
